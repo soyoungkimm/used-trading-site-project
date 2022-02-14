@@ -102,7 +102,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Tables
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="/admin/users">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                                 Users
                             </a>
