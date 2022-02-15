@@ -1,3 +1,4 @@
+/* admin goods 시작 */
 th, .card-header {
     vertical-align: middle;
 }
@@ -13,3 +14,10 @@ th, .card-header {
     margin-right : 10px; 
     float : right;
 }
+/* admin goods 끝 */
+
+/* admin review 시작*/
+#star1, #star2, #star3, #star4, #star5 {
+    color : rgb(248, 223, 0);
+} 
+/* admin review 끝*/
