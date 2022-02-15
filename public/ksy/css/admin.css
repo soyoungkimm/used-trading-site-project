@@ -1,0 +1,15 @@
+th, .card-header {
+    vertical-align: middle;
+}
+
+.file_name_span {
+    background-color : rgb(230, 230, 230); 
+    width :500px; 
+    border-radius: 0.2rem; 
+    padding: 0.3rem 0.75rem;
+}
+
+.admin_button {
+    margin-right : 10px; 
+    float : right;
+}
