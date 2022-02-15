@@ -37,7 +37,7 @@
                             <tr>
                                 <td><a href="/admin/reviews/{{ $review->id }}">{{ $review->id }}</a></td>
                                 <td>[{{ $review->user_id }}] {{ $review->user_name }}</td>
-                                <td>{{ $review->goods_id }}</td>
+                                <td>[{{ $review->goods_id }}] {{ $review->good_title }}</td>
                                 <td>
                                     <div id="review_star_{{ $review->id }}">
                                         <script src="{{ asset('ksy/js/admin.js'); }}"></script>
