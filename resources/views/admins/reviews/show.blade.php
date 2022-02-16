@@ -60,14 +60,6 @@
 </main>
 <script src="{{ asset('ksy/js/admin.js'); }}"></script>
 <script>
-    $("#delete_button").click(function () {
-        let form = document.delete_form;
-        let result = confirm('정말로 삭제하시겠습니까?');
-        if (result) {
-            form.submit();
-        }
-    });
-    
     change_star({{ $review->star }});
 </script>
 @endsection

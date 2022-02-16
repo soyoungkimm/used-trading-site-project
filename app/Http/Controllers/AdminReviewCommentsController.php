@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Review;
+use App\Models\ReviewComment;
 
-class AdminReviewsController extends Controller
+class AdminReviewCommentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,17 +15,17 @@ class AdminReviewsController extends Controller
      */
     public function index()
     {
-        // reviews 리스트 가져오기
-        $reviews = DB::table('reviews')
-            ->join('users', 'reviews.user_id', '=', 'users.id')
-            ->join('goods', 'reviews.goods_id', '=', 'goods.id')
-            ->select('reviews.*', 'goods.title as good_title', 'users.name as user_name')
-            ->orderBy('reviews.id')
+        // review_comments 리스트 가져오기
+        $review_comments = DB::table('review_comments')
+            ->join('users', 'review_comments.user_id', '=', 'users.id')
+            ->join('reviews', 'review_comments.review_id', '=', 'reviews.id')
+            ->select('review_comments.*', 'reviews.content as review_content', 'users.name as user_name')
+            ->orderBy('review_comments.id')
             ->get();
 
         
         // 페이지 이동
-        return view('admins.reviews.index', ['reviews' => $reviews]); 
+        return view('admins.reviewComments.index', ['review_comments' => $review_comments]); 
     }
 
     /**
@@ -36,14 +36,14 @@ class AdminReviewsController extends Controller
     public function create()
     {
         // 데이터 가져오기
-        $goods = DB::table('goods')->select('id', 'title')->get();
+        $reviews = DB::table('reviews')->select('id', 'content')->get();
         $users = DB::table('users')->select('id', 'name')->get();
 
         
         // 페이지 이동 
-        return view('admins.reviews.create', [ 
-            'users' => $users,
-            'goods' => $goods
+        return view('admins.reviewComments.create', [ 
+            'reviews' => $reviews,
+            'users' => $users
         ]); 
     }
 
@@ -56,21 +56,20 @@ class AdminReviewsController extends Controller
     public function store(Request $request)
     {
         // 유효성 검사
-        AdminReviewsController::review_validate();
+        AdminReviewCommentsController::review_comment_validate();
 
 
         // 데이터 저장
-        $review = Review::create([
+        $review_comment = ReviewComment::create([
             'user_id'=>request('user_id'),
-            'goods_id'=>request('goods_id'),
-            'star'=>request('star'),
+            'review_id'=>request('review_id'),
             'content'=>request('content'),
             'writeday'=>request('writeday')
         ]);
 
 
         // 페이지 이동
-        return redirect('/admin/reviews/'.$review->id);
+        return redirect('/admin/review_comments/'.$review_comment->id);
     }
 
     /**
@@ -82,17 +81,17 @@ class AdminReviewsController extends Controller
     public function show($id)
     {
         // reviews 데이터 가져오기
-        $review = DB::table('reviews')
-            ->join('users', 'reviews.user_id', '=', 'users.id')
-            ->join('goods', 'reviews.goods_id', '=', 'goods.id')
-            ->select('reviews.*', 'goods.title as good_title', 'users.name as user_name')
-            ->where('reviews.id', $id)
+        $review_comment = DB::table('review_comments')
+            ->join('users', 'review_comments.user_id', '=', 'users.id')
+            ->join('reviews', 'review_comments.review_id', '=', 'reviews.id')
+            ->select('review_comments.*', 'reviews.content as review_content', 'users.name as user_name')
+            ->where('review_comments.id', $id)
             ->first();
 
         
         // 페이지 이동
-        return view('admins.reviews.show',[
-            'review' => $review
+        return view('admins.reviewComments.show',[
+            'review_comment' => $review_comment
         ]);
     }
 
@@ -102,16 +101,16 @@ class AdminReviewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Review $review)
+    public function edit(ReviewComment $review_comment)
     {
         // 데이터 가져오기
-        $goods = DB::table('goods')->select('id', 'title')->get();
+        $reviews = DB::table('reviews')->select('id', 'content')->get();
         $users = DB::table('users')->select('id', 'name')->get();
 
         // 페이지 이동
-        return view('admins.reviews.edit', [
-            'review' => $review,
-            'goods' => $goods, 
+        return view('admins.reviewComments.edit', [
+            'review_comment' => $review_comment,
+            'reviews' => $reviews,
             'users' => $users
         ]);
     }
@@ -123,24 +122,23 @@ class AdminReviewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Review $review)
+    public function update(Request $request, ReviewComment $review_comment)
     {
         // 유효성 검사
-        AdminReviewsController::review_validate();
+        AdminReviewCommentsController::review_comment_validate();
 
     
         // 내용 업데이트
-        $review->update([
+        $review_comment->update([
             'user_id'=>request('user_id'),
-            'goods_id'=>request('goods_id'),
-            'star'=>request('star'),
+            'review_id'=>request('review_id'),
             'content'=>request('content'),
             'writeday'=>request('writeday')
         ]);
 
 
         //페이지 이동
-        return redirect('/admin/reviews/'.$review->id);
+        return redirect('/admin/review_comments/'.$review_comment->id);
     }
 
     /**
@@ -149,27 +147,23 @@ class AdminReviewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Review $review)
+    public function destroy(ReviewComment $review_comment)
     {
-        // review를 참조하는 review_comment 삭제
-        DB::table('review_comments')->where('review_id', $review->id)->delete();
-        
-        //review 삭제
-        $review->delete();
+        // review_comments 삭제
+        // $review_comment->delete();
 
-        //페이지 이동
-        return redirect('/admin/reviews');
+        // // 페이지 이동
+        // return redirect('/admin/review_comments');
     }
 
 
     // 유효성 검사 함수
-    private function review_validate() {
+    private function review_comment_validate() {
         request()->validate([   
             'user_id'=>'integer|min:1',
-            'goods_id'=>'integer|min:1',
-            'star'=>'required',
+            'review_id'=>'integer|min:1',
             'content'=>'required',
-            'writeday'=>'required'
+            'writeday'=>'required|date'
         ]);
     }
 }

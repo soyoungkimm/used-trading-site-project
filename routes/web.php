@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminGoodsController;
 use App\Http\Controllers\AdminReviewsController;
+use App\Http\Controllers\AdminReviewCommentsController;
 use App\Http\Controllers\AdminUsersController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +31,6 @@ Route::resource('admin/goods', AdminGoodsController::class);
 
 // admin reviews
 Route::resource('admin/reviews', AdminReviewsController::class);
+
+// admin review_comments
+Route::resource('admin/review_comments', AdminReviewCommentsController::class);
