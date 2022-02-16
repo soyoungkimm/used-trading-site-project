@@ -76,7 +76,7 @@ class AdminUsersController extends Controller
         if($request ->hasFile('image')){
             $user = User::find($id);
             $fileName=time().'_'.$request -> file('image')-> getClientOriginalName();
-            $path = $request -> file('image') -> storeAs('public/images/user', $fileName);
+            $path = $request -> file('image') -> storeAs('images/user', $fileName);
             $user->update([
                 'image' => $fileName
             ]);

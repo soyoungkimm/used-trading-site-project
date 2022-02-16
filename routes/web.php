@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminGoodsController;
 use App\Http\Controllers\AdminReviewsController;
 use App\Http\Controllers\AdminUsersController;
+use App\Http\Controllers\AdminADsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +31,6 @@ Route::resource('admin/goods', AdminGoodsController::class);
 
 // admin reviews
 Route::resource('admin/reviews', AdminReviewsController::class);
+
+// admin advertise
+Route::resource('admin/advertise', AdminADsController::class);
