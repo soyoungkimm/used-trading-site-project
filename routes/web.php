@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminGoodsController;
 use App\Http\Controllers\AdminReviewsController;
 use App\Http\Controllers\AdminUsersController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,7 +24,6 @@ Route::get('/', function () {
 // admin users
 Route::resource('admin/users', AdminUsersController::class);
 Route::post('admin/users/checkUid', 'App\Http\Controllers\AdminUsersController@checkUid')->name('users.checkUid');
-
 // admin goods
 Route::resource('admin/goods', AdminGoodsController::class);
 
