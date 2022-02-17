@@ -111,6 +111,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-ad"></i></div>
                                 AD
                             </a>
+                            <a class="nav-link" href="/admin/notice">
+                                <div class="sb-nav-link-icon"><i class="fas fa-bullhorn"></i></div>
+                                Notice
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">

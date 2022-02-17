@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminGoodsController;
 use App\Http\Controllers\AdminReviewsController;
+use App\Http\Controllers\AdminReviewCommentsController;
 use App\Http\Controllers\AdminUsersController;
-use App\Http\Controllers\AdminADsController;
+use App\Http\Controllers\AdminAdsController;
+use App\Http\Controllers\AdminNoticesController;
 
 
 /*
@@ -32,5 +34,11 @@ Route::resource('admin/goods', AdminGoodsController::class);
 // admin reviews
 Route::resource('admin/reviews', AdminReviewsController::class);
 
+// admin review_comments
+Route::resource('admin/review_comments', AdminReviewCommentsController::class);
+
 // admin advertise
-Route::resource('admin/advertise', AdminADsController::class);
+Route::resource('admin/advertise', AdminAdsController::class);
+
+// admin notice
+Route::resource('admin/notice', AdminNoticesController::class);

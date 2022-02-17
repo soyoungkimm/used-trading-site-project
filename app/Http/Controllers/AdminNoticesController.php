@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use App\Models\Advertisement;
+use App\Models\Notice;
 use File;
 
-class AdminADsController extends Controller
+class AdminNoticesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class AdminADsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){ //기본테이블 출력
-        $Ads = Advertisement::orderBy('id')->get();
-        return view('admins.advertisement.index',['Ads' => $Ads]);
+        $notices = Notice::orderBy('id')->get();
+        return view('admins.notice.index',['notices' => $notices]);
     } 
 
     /**
@@ -26,7 +26,7 @@ class AdminADsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){//회원추가 페이지 반환
-        return view('admins.advertisement.create');
+        return view('admins.notice.create');
     }
 
     /**
@@ -38,27 +38,31 @@ class AdminADsController extends Controller
     public function store(Request $request){  //DB회원정보 추가
         $validated = $request->validate([ 
             'title'   => 'bail|required',
+            'content'   => 'required',
+            'writeday'   => 'required',
             'image'   => 'required'
         ]);
 
         
         //DB추가
-        $id=Advertisement::create([ //레코드생성과 동시에 id저장
+        $id=Notice::create([ //레코드생성과 동시에 id저장
             'title'   => $request->title,
+            'content'   => $request->content,
+            'writeday'   => $request->writeday,
             'image'   => 'temp'
         ])->id;
 
         
         if($request ->hasFile('image')){
-            $ad = Advertisement::find($id);
+            $notice = Notice::find($id);
             $fileName=time().'_'.$request -> file('image')-> getClientOriginalName();
-            $path = $request -> file('image') -> storeAs('images/Ad', $fileName);
-            $ad->update([
+            $path = $request -> file('image') -> storeAs('images/notice', $fileName);
+            $notice->update([
                 'image' => $fileName
             ]);
         }
         
-        return redirect('/admin/advertise');
+        return redirect('/admin/notice');
     }
 
     /**
@@ -68,8 +72,8 @@ class AdminADsController extends Controller
      * @return \Illuminate\Http\Response 
      */
     public function show($id){ //회원 상세보기
-        $Ad = Advertisement::where('id',$id)->first();
-        return view('admins.advertisement.show',['ad' => $Ad]);
+        $notice = Notice::where('id',$id)->first();
+        return view('admins.notice.show',['notice' => $notice]);
     }
  
     /**
@@ -79,8 +83,8 @@ class AdminADsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id){  //회원수정 페이지
-        $Ad = Advertisement::where('id',$id)->first();
-        return view('admins.advertisement.edit',['ad' => $Ad]);
+        $notice = Notice::where('id',$id)->first();
+        return view('admins.notice.edit',['notice' => $notice]);
     }
 
     /**
@@ -92,29 +96,32 @@ class AdminADsController extends Controller
      */
     public function update(Request $request){ //DB회원정보 수정
         //id와 일치하는 레코드 저장
-        $Ad = Advertisement::find($request->id);
+        $notice = Notice::find($request->id);
         
         //요청값 유효성 검사
         $validated = $request->validate([ 
             'title'   => 'bail|required',
+            'content'   => 'required',
+            'writeday'   => 'required'
+        ]);
+
+        //테이블 업데이트
+        $notice->update([
+            'title'   => $request->title,
         ]);
 
         //이미지 업로드
         if (request('image') != null) {
             $fileName=time().'_'.$request -> file('image')-> getClientOriginalName();
-            $Ad->update([
+            $notice->update([
                 'image' => $fileName
             ]);
-            $path = $request -> file('image') -> storeAs('images/Ad', $fileName);
-            
+            $path = $request -> file('image') -> storeAs('images/notice', $fileName);
         }
 
-        //테이블 업데이트
-        $Ad->update([
-            'title'   => $request->title,
-        ]);
         
-        return redirect('/admin/advertise');
+        
+        return redirect('/admin/notice');
     }
 
     /**
@@ -125,9 +132,9 @@ class AdminADsController extends Controller
      */
     public function destroy(Request $reqeust){  
 
-        foreach($reqeust->adIdArr as $ad){
-            $ads = Advertisement::find($ad);
-            $ads->delete();
+        foreach($reqeust->adIdArr as $notice){
+            $notices = Notice::find($notice);
+            $notices->delete();
         }
         return $reqeust->adIdArr;
     }

@@ -3,6 +3,14 @@ $(function() {
     $( "#datepicker" ).datepicker(); 
 });
 
+// 삭제 버튼 클릭시
+$("#delete_button").click(function () {
+    let form = document.delete_form;
+    let result = confirm('정말로 삭제하시겠습니까?');
+    if (result) {
+        form.submit();
+    }
+});
 
 /* admin reviews 별점 js 코드 시작 */
 function change_star(star) {
