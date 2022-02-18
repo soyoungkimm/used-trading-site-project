@@ -38,15 +38,14 @@
                         <div class="col-md-6">
                             <div class="form-floating mb-3">
                                 <input class="form-control" id="inputTitle" name="title" type="text" placeholder="제목" value="" />
-                                <label for="inputFollower">Title</label>
+                                <label for="inputTitle">Title</label>
                             </div>
                             <label >광고 사진</label>
                             <div class="mb-3">
                                 <div style="width: 100%;">
                                     <div class="form-control" style="width:100%;height:200px;object-fit:scale-down;"></div>
                                 </div>
-                                <input class="form-control" id="inputImg" type="file" name="image" placeholder="pwd" value=""/>
-                                <label for="inputImg" ></label>
+                                <input class="form-control" id="inputImg" type="file" name="image" value=""/>
                             </div>
                         </div>
                     </div>

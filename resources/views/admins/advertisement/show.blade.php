@@ -22,20 +22,22 @@
                         <div class="col-md-6">
                             
                             <div class="form-floating mb-3">
-                                <div class="form-control" id="inputUid">{{ $ad -> title }}</div>
-                                <label for="inputTel">Title</label>
+                                <div class="form-control" id="inputTitle">{{ $ad -> title }}</div>
+                                <label for="inputTitle">제목</label>
                             </div>
-                            <label >상점 사진</label>
-                            <div class="mb-3">
-                                <div style="width: 100%;">
-                                    <div class = "form-control" style="width:100%;height:200px;">
-                                    @if( !empty($ad->image) )
-                                    <img src="/storage/ad/{{ $ad->image }}" style="width:100%;height:100%;object-fit:scale-down;"/>
-                                    @endif
+                            <div class="col-md-6">
+                                <label >상점 사진</label>
+                                <div class="mb-3">
+                                    <div style="width: 100%;">
+                                        <div class = "form-control" style="width:100%;height:200px;">
+                                        @if( !empty($ad->image) )
+                                        <img src="/storage/ad/{{ $ad->image }}" style="width:100%;height:100%;object-fit:scale-down;"/>
+                                        @endif
+                                        </div>
                                     </div>
-                                </div>
-                                <label for="inputImg" >{{ $ad->image }}</label>
-                            </div>  
+                                    <label for="inputImg" >{{ $ad->image }}</label>
+                                </div>  
+                            </div>
                         </div>
                     </div>
                 </div>  

@@ -9,7 +9,7 @@ use App\Http\Controllers\AdminAdsController;
 use App\Http\Controllers\AdminNoticesController;
 use App\Http\Controllers\AdminQuestionsController;
 use App\Http\Controllers\AdminQuestionCommentsController;
-
+use App\Http\Controllers\AdminHeartGoodsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,3 +51,6 @@ Route::resource('admin/questions', AdminQuestionsController::class);
 
 // admin question_comments
 Route::resource('admin/question_comments', AdminQuestionCommentsController::class);
+
+// admin heart_goods
+Route::resource('admin/heart-goods', AdminHeartGoodsController::class);

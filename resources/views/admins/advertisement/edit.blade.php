@@ -8,7 +8,7 @@
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
     });
-
+//@@@@@@@@@폼확인 되는건지 다시 확인@
     function submitForm(){
         if(form1.title.length != 0 && form1.image.length != 0){
             form1.submit();
@@ -39,20 +39,22 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="inputTel" type="text" name="title" placeholder="Title" value="{{ $ad -> title }}"/>
-                                <label for="inputTel">전화번호</label>
+                                <input class="form-control" id="inputTitle" type="text" name="title" placeholder="Title" value="{{ $ad -> title }}"/>
+                                <label for="inputTitle">제목</label>
                             </div>
-                            <label >상점 사진</label>
-                            <div class="mb-3">
-                                <div style="width: 100%;">
-                                    <div class = "form-control" style="width:100%;height:200px;">
-                                    @if( !empty($ad->image) )
-                                    <img src="/storage/images/ad/{{ $ad->image }}" style="width:100%;height:100%;object-fit:scale-down;"/>
-                                    @endif
+                            <div class="col-md-6">
+                                <label >상점 사진</label>
+                                <div class="mb-3">
+                                    <div style="width: 100%;">
+                                        <div class = "form-control" style="width:100%;height:200px;">
+                                        @if( !empty($ad->image) )
+                                        <img src="/storage/images/ad/{{ $ad->image }}" style="width:100%;height:100%;object-fit:scale-down;"/>
+                                        @endif
+                                        </div>
                                     </div>
+                                    <input class="form-control" id="inputImg" type="file" name="image" />
+                                    <label for="inputImg" >{{ $ad->image }}</label>
                                 </div>
-                                <input class="form-control" id="inputImg" type="file" name="image" />
-                                <label for="inputImg" >{{ $ad->image }}</label>
                             </div>
                         </div>
                     </div>
