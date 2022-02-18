@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminReviewCommentsController;
 use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\AdminAdsController;
 use App\Http\Controllers\AdminNoticesController;
+use App\Http\Controllers\AdminQuestionsController;
 
 
 /*
@@ -28,6 +29,7 @@ Route::get('/', function () {
 // admin users
 Route::resource('admin/users', AdminUsersController::class);
 Route::post('admin/users/checkUid', 'App\Http\Controllers\AdminUsersController@checkUid')->name('users.checkUid');
+
 // admin goods
 Route::resource('admin/goods', AdminGoodsController::class);
 
@@ -42,3 +44,6 @@ Route::resource('admin/advertise', AdminAdsController::class);
 
 // admin notice
 Route::resource('admin/notice', AdminNoticesController::class);
+
+// admin question
+Route::resource('admin/questions', AdminQuestionsController::class);
