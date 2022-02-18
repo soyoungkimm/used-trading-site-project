@@ -119,6 +119,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-heart"></i></div>
                                 찜한상품
                             </a>
+                            <a class="nav-link" href="/admin/tags">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tag"></i></div>
+                                Tags
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
