@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\AdminAdsController;
 use App\Http\Controllers\AdminNoticesController;
 use App\Http\Controllers\AdminQuestionsController;
+use App\Http\Controllers\AdminQuestionCommentsController;
 
 
 /*
@@ -45,5 +46,8 @@ Route::resource('admin/advertise', AdminAdsController::class);
 // admin notice
 Route::resource('admin/notice', AdminNoticesController::class);
 
-// admin question
+// admin questions
 Route::resource('admin/questions', AdminQuestionsController::class);
+
+// admin question_comments
+Route::resource('admin/question_comments', AdminQuestionCommentsController::class);

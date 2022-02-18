@@ -80,7 +80,7 @@ class AdminQuestionsController extends Controller
      */
     public function show($id)
     {
-        // reviews 데이터 가져오기
+        // questions 데이터 가져오기
         $question = DB::table('questions')
             ->join('users', 'questions.user_id', '=', 'users.id')
             ->join('goods', 'questions.goods_id', '=', 'goods.id')
@@ -150,7 +150,7 @@ class AdminQuestionsController extends Controller
     public function destroy(Question $question)
     {
         // question를 참조하는 question_comment 삭제
-        //DB::table('question_comments')->where('question_id', $question->id)->delete();
+        DB::table('question_comments')->where('question_id', $question->id)->delete();
         
         //question 삭제
         $question->delete();
