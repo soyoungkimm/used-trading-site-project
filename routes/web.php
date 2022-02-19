@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminQuestionsController;
 use App\Http\Controllers\AdminQuestionCommentsController;
 use App\Http\Controllers\AdminHeartGoodsController;
 use App\Http\Controllers\AdminTagsController;
+use App\Http\Controllers\AdminAlarmsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,3 +59,6 @@ Route::resource('admin/heart-goods', AdminHeartGoodsController::class);
 
 // admin tags
 Route::resource('admin/tags', AdminTagsController::class);
+
+// admin tags
+Route::resource('admin/alarm', AdminAlarmsController::class);

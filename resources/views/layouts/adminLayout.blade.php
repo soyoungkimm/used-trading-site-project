@@ -123,6 +123,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tag"></i></div>
                                 Tags
                             </a>
+                            <a class="nav-link" href="/admin/alarm">
+                                <div class="sb-nav-link-icon"><i class="fas fa-bell"></i></div>
+                                Alarm
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
