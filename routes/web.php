@@ -9,6 +9,8 @@ use App\Http\Controllers\AdminAdsController;
 use App\Http\Controllers\AdminNoticesController;
 use App\Http\Controllers\AdminQuestionsController;
 use App\Http\Controllers\AdminQuestionCommentsController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminToDoListsController;
 
 
 /*
@@ -25,7 +27,6 @@ use App\Http\Controllers\AdminQuestionCommentsController;
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 // admin users
 Route::resource('admin/users', AdminUsersController::class);
@@ -51,3 +52,7 @@ Route::resource('admin/questions', AdminQuestionsController::class);
 
 // admin question_comments
 Route::resource('admin/question_comments', AdminQuestionCommentsController::class);
+
+// admin dashboard
+Route::get('admin', AdminDashboardController::class);
+Route::resource('admin/todo_lists', AdminToDoListsController::class);
