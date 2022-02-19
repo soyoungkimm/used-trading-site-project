@@ -12,6 +12,8 @@ use App\Http\Controllers\AdminQuestionCommentsController;
 use App\Http\Controllers\AdminHeartGoodsController;
 use App\Http\Controllers\AdminTagsController;
 use App\Http\Controllers\AdminAlarmsController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminToDoListsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +29,6 @@ use App\Http\Controllers\AdminAlarmsController;
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 // admin users
 Route::resource('admin/users', AdminUsersController::class);
@@ -62,3 +63,7 @@ Route::resource('admin/tags', AdminTagsController::class);
 
 // admin tags
 Route::resource('admin/alarm', AdminAlarmsController::class);
+
+// admin dashboard
+Route::get('admin', AdminDashboardController::class);
+Route::resource('admin/todo_lists', AdminToDoListsController::class);

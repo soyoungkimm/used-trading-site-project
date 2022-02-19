@@ -1,3 +1,20 @@
+a {
+    text-decoration-line: none;
+    color: inherit;
+}
+/* #delete_button {
+    width : 60px;
+} */
+.store_button {
+    width : 60px; 
+    float:right;
+}
+
+.all_delete_button {
+    float : right; 
+    margin-top : 5px;
+}
+
 /* admin goods 시작 */
 th, .card-header {
     vertical-align: middle;
@@ -13,6 +30,7 @@ th, .card-header {
 .admin_button {
     margin-right : 10px; 
     float : right;
+    width : 60px;
 }
 /* admin goods 끝 */
 
@@ -21,3 +39,162 @@ th, .card-header {
     color : rgb(248, 223, 0);
 } 
 /* admin review 끝*/
+
+
+/*admin dashboard to-do-list 시작 */
+#td_ul {
+    margin: 0;
+    padding: 0;
+    list-style:none;
+}
+
+
+#td_ul li {
+    cursor: pointer;
+    position: relative;
+    padding: 12px 8px 12px 40px;
+    background: #eee;
+    font-size: 18px;
+    transition: 0.2s;
+    border : solid 0.1px;
+    border-color : rgb(238, 238, 238);
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+#td_ul li:nth-child(odd) {
+    background: #f9f9f9;
+}
+
+
+#td_ul li:hover {
+    background: #ddd;
+}
+
+
+#td_ul li.checked {
+    background: #888;
+    color: #fff;
+    text-decoration: line-through;
+}
+
+
+#td_ul li.checked::before {
+    content: '';
+    position: absolute;
+    border-color: rgb(221, 17, 17);
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    top: 10px;
+    left: 16px;
+    transform: rotate(45deg);
+    height: 15px;
+    width: 7px;
+    margin-top: 7px;
+}
+
+
+.close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 12px 16px 12px 16px;
+}
+
+.close:hover {
+    background-color: #c5c5c5;
+    color: white;
+}
+
+
+.td_header {
+    background-color: #e2e2e2;
+    padding: 15px 15px;
+    color: #000;
+    text-align: left;
+}
+
+
+.td_header:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+input {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    width: 50%;
+    padding: 10px;
+    float: left;
+    font-size: 16px;
+}
+
+
+.addBtn {
+    padding: 10px;
+    width: 70px;
+    background: #d1d1d1;
+    color: #555;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 0;
+    }
+
+.addBtn:hover {
+    background-color: #bbb;
+}
+
+/*admin dashboard to-do-list 끝 */
+
+
+
+/*admin 날씨 api 시작*/
+.seoul_weather {
+    background-color : rgb(101, 178, 255); 
+    padding : 40px;
+    color : #fff; 
+    height : 220px;
+}
+.gyeonggi_weather{
+    background-color : rgb(148, 192, 118); 
+    padding : 40px;
+    color : #fff; 
+    height : 220px;
+}
+.weather_detail {
+    float : right; 
+    margin : -5px 0px 0px 60px; 
+    font-size : 11pt
+}
+.weather_temp {
+    float : right; 
+    margin-top : -45px;
+}
+.real_weather_icon {
+    height : 150px; 
+    width : 150px !important; 
+    float : left;
+}
+.weather_icon, .g_weather_icon {
+    float : left;
+}
+.current_temp, .g_current_temp {
+    font-size : 50pt;
+}
+.weather_description, .g_weather_description {
+    font-size : 20pt;
+}
+.g_city, .city {
+    font-size : 13pt;
+}
+/*admin 날씨 api 끝*/
