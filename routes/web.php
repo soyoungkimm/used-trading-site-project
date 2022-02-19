@@ -14,7 +14,7 @@ use App\Http\Controllers\AdminTagsController;
 use App\Http\Controllers\AdminAlarmsController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminCategoryDeController;
-
+use App\Http\Controllers\AdminCategoryDeDeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,5 +68,8 @@ Route::resource('admin/alarm', AdminAlarmsController::class);
 // admin categorys
 Route::resource('admin/category', AdminCategoryController::class);
 
-// admin categorys
+// admin categoryDe
 Route::resource('admin/category-de', AdminCategoryDeController::class);
+
+// admin categoryDeDe
+Route::resource('admin/category-de-de', AdminCategoryDeDeController::class);
