@@ -35,7 +35,7 @@
                     <tbody>
                         @foreach($reviews as $review)
                             <tr>
-                                <td><a href="/admin/reviews/{{ $review->id }}">{{ $review->id }}</a></td>
+                                <td><a class="admin_id" href="/admin/reviews/{{ $review->id }}">{{ $review->id }}</a></td>
                                 <td>[{{ $review->user_id }}] {{ $review->user_name }}</td>
                                 <td>[{{ $review->goods_id }}] {{ $review->good_title }}</td>
                                 <td>

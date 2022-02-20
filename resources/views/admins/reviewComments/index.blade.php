@@ -33,7 +33,7 @@
                     <tbody>
                         @foreach($review_comments as $review_comment)
                             <tr>
-                                <td><a href="/admin/review_comments/{{ $review_comment->id }}">{{ $review_comment->id }}</a></td>
+                                <td><a class="admin_id" href="/admin/review_comments/{{ $review_comment->id }}">{{ $review_comment->id }}</a></td>
                                 <td>[{{ $review_comment->user_id }}] {{ $review_comment->user_name }}</td>
                                 <td>[{{ $review_comment->review_id }}] {{ $review_comment->review_content }}</td>
                                 <td>{{ $review_comment->writeday }}</td>

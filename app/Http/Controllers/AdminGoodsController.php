@@ -67,10 +67,6 @@ class AdminGoodsController extends Controller
         AdminGoodsController::goods_validate();
 
 
-        // 카테고리_상세, 카테고리_상세_상세 값 세팅
-        $category_arr = AdminGoodsController::set_category();
-
-
         // 파일 업로드
         $image = AdminGoodsController::file_upload($request);
         
@@ -80,8 +76,8 @@ class AdminGoodsController extends Controller
             'title'=>request('title'),
             'image'=>$image,
             'category_id'=>request('category_id'),
-            'category_de_id'=>$category_arr['category_de_id'],
-            'category_de_de_id'=>$category_arr['category_de_de_id'],
+            'category_de_id'=>request('category_de_id'),
+            'category_de_de_id'=>request('category_de_de_id'),
             'area'=>request('area'),
             'state'=>request('state'),
             'exchange'=>request('exchange'),
@@ -184,10 +180,6 @@ class AdminGoodsController extends Controller
         // 유효성 검사
         AdminGoodsController::goods_validate('update');
 
-        
-        // 카테고리_상세, 카테고리_상세_상세 값 세팅
-        $category_arr = AdminGoodsController::set_category('update');
-
 
         // 이미지 변경여부
         $isImageUpdate = true;
@@ -208,8 +200,8 @@ class AdminGoodsController extends Controller
         $good->update([
             'title'=>request('title'),
             'category_id'=>request('category_id'),
-            'category_de_id'=>$category_arr['category_de_id'],
-            'category_de_de_id'=>$category_arr['category_de_de_id'],
+            'category_de_id'=>request('category_de_id'),
+            'category_de_de_id'=>request('category_de_de_id'),
             'area'=>request('area'),
             'state'=>request('state'),
             'exchange'=>request('exchange'),
@@ -266,8 +258,6 @@ class AdminGoodsController extends Controller
         request()->validate([   
             'title'=>'required',
             'category_id'=>'integer|min:1',
-            'category_de_id'=>'integer',
-            'category_de_de_id'=>'integer',
             'area'=>'required',   
             'state'=>'required|integer|max:1',  
             'exchange'=>'required|integer|max:1', 
@@ -284,23 +274,13 @@ class AdminGoodsController extends Controller
         
         if ($type == 'store') {
             request()->validate(['image'=>'required']);
+        }  
+        if (request()->has('category_de_id')) {
+            request()->validate(['category_de_id'=>'integer|min:1']);
         }
-        
-    }
-
-
-    // 카테고리 세팅 함수
-    private function set_category() {
-
-        // 카테고리_상세, 카테고리_상세_상세에 값이 없으면(=기본 값인 0이 있으면) null을 넣어줌
-        if (request('category_de_id') == '0') $category_de_id = null;
-        else $category_de_id = request('category_de_id');
-        if (request('category_de_de_id') == '0') $category_de_de_id = null;
-        else $category_de_de_id = request('category_de_de_id');
-
-        $category_arr = ['category_de_id'=>$category_de_id, 'category_de_de_id'=>$category_de_de_id];
-
-        return $category_arr;
+        if (request()->has('category_de_de_id')) {
+            request()->validate(['category_de_de_id'=>'integer|min:1']);
+        }
     }
 
 
@@ -309,6 +289,7 @@ class AdminGoodsController extends Controller
         $upload_path = 'public/images/goods';
         $image = '';
         if ($files = $request->file('image')) {
+            
             foreach ($files as $key=>$file) {
                 // 파일 이름 = '현재시간_파일명'
                 $file_name = time().'_'.$file->getClientOriginalName();

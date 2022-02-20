@@ -37,7 +37,7 @@
                     <tbody>
                         @foreach($goods as $good)
                             <tr>
-                                <td><a href="/admin/goods/{{ $good->id }}">{{ $good->id }}</a></td>
+                                <td><a class="admin_id" href="/admin/goods/{{ $good->id }}">{{ $good->id }}</a></td>
                                 <td>{{ $good->title }}</td>
                                 <td>{{ $good->category_name }} {{ $good->category_de_name ? ' > '.$good->category_de_name : ''}} 
                                     {{ $good->category_de_de_name ? ' > '.$good->category_de_de_name : '' }}</td>

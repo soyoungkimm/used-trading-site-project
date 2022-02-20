@@ -56,14 +56,18 @@
                 @method('PUT')
                 <div class="card-header">
                     <i class="fas fa-table me-1"></i>
-                    goods table 
-                    <div style="text-align:right;" >
-                        <input type="submit" class="btn btn-success" value="저장" />
-                    </div>
+                    goods table
+                    <input type="submit" class="btn btn-success store_button" value="저장" />
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <tbody>
+                            @error('category_de_id')
+                                <div style="margin-top : 5px!important; color : #dc3545;">카테고리 상세를 고르세요</div>
+                            @enderror
+                            @error('category_de_de_id')
+                                <div style="margin-top : 5px!important; color : #dc3545;">카테고리 상세 상세를 고르세요</div>
+                            @enderror
                             <tr>
                                 <th width="30%">id</th>
                                 <td width="70%"><input class="form-control" type="text" value="{{ $good->id }}" readonly></td>
@@ -97,7 +101,7 @@
                             <tr>
                                 <th width="30%">category_id <span style="color : red;">*</span></th>
                                 <td width="70%">
-                                    <select class="form-select @error('category_id') is-invalid @enderror" aria-label="Default select example" name="category_id" onchange="selectCategory();" id="category_select" required>
+                                    <select class="form-select @error('category_id') is-invalid @enderror" aria-label="Default select example" name="category_id" id="category_select" required>
                                         <option value="0" selected>카테고리를 고르세요</option>
                                         {{-- 유효성 검사 걸린 경우 --}}
                                         @if (old('category_id') != '') 
@@ -128,37 +132,18 @@
                                 <th width="30%">category_de_id</th>
                                 <td width="70%" id="category_de_select_area">
                                     @if (isset($good->category_de_id))
-                                        <select class="form-select @error('category_de_id') is-invalid @enderror" aria-label="Default select example" name="category_de_id" onchange="selectCategoryDe();" id="category_de_select" required>
+                                        <select class="form-select @error('category_de_id') is-invalid @enderror" aria-label="Default select example" name="category_de_id" id="category_de_select" required>
                                             <option value="0" selected>카테고리 상세를 고르세요</option>
-                                            {{-- 유효성 검사 걸린 경우 --}}
-                                            @if (old('category_de_id') != '') 
-                                                @foreach ($category_des as $category_de)
-                                                    @if ($category_de->category_id == $good->category_id) 
-                                                        @if (old('category_de_id') == $category_de->id) 
-                                                            <option value="{{ $category_de->id }}" selected>[{{ $category_de->id }}] {{ $category_de->name }}</option>
-                                                        @else  
-                                                            <option value="{{ $category_de->id }}">[{{ $category_de->id }}] {{ $category_de->name }}</option> 
-                                                        @endif
+                                            @foreach ($category_des as $category_de)
+                                                @if ($category_de->category_id == $good->category_id)
+                                                    @if ($good->category_de_id == $category_de->id) 
+                                                        <option value="{{ $category_de->id }}" selected>[{{ $category_de->id }}] {{ $category_de->name }}</option>
+                                                    @else  
+                                                        <option value="{{ $category_de->id }}">[{{ $category_de->id }}] {{ $category_de->name }}</option> 
                                                     @endif
-                                                @endforeach
-                                            {{-- 아닌 경우 --}}
-                                            @else
-                                                @foreach ($category_des as $category_de)
-                                                    @if ($category_de->category_id == $good->category_id)
-                                                        @if ($good->category_de_id == $category_de->id) 
-                                                            <option value="{{ $category_de->id }}" selected>[{{ $category_de->id }}] {{ $category_de->name }}</option>
-                                                        @else  
-                                                            <option value="{{ $category_de->id }}">[{{ $category_de->id }}] {{ $category_de->name }}</option> 
-                                                        @endif
-                                                    @endif
-                                                @endforeach
-                                            @endif
+                                                @endif
+                                            @endforeach
                                         </select>
-                                        @error('category_de_id')
-                                            <div style="margin-top : 5px!important; color : #dc3545;">카테고리 상세를 고르세요</div>
-                                        @enderror
-                                    @else
-                                        <input type="hidden" name="category_de_id" value="0" />
                                     @endif
                                 </td>
                             </tr>
@@ -168,35 +153,16 @@
                                     @if (isset($good->category_de_de_id))
                                         <select class="form-select @error('category_de_de_id') is-invalid @enderror" aria-label="Default select example" name="category_de_de_id" id="category_de_de_select" required>
                                             <option value="0" selected>카테고리 상세 상세를 고르세요</option>
-                                            {{-- 유효성 검사 걸린 경우 --}}
-                                            @if (old('category_de_de_id') != '') 
-                                                @foreach ($category_de_des as $category_de_de) 
-                                                    @if ($category_de_de->category_de_id == $good->category_de_id) 
-                                                        @if (old('category_de_de_id') == $category_de_de->id) 
-                                                            <option value="{{ $category_de_de->id }}" selected>[{{ $category_de_de->id }}] {{ $category_de_de->name }}</option>
-                                                        @else  
-                                                            <option value="{{ $category_de_de->id }}">[{{ $category_de_de->id }}] {{ $category_de_de->name }}</option> 
-                                                        @endif
+                                            @foreach ($category_de_des as $category_de_de)
+                                                @if ($category_de_de->category_de_id == $good->category_de_id) 
+                                                    @if ($good->category_de_de_id == $category_de_de->id) 
+                                                        <option value="{{ $category_de_de->id }}" selected>[{{ $category_de_de->id }}] {{ $category_de_de->name }}</option>
+                                                    @else  
+                                                        <option value="{{ $category_de_de->id }}">[{{ $category_de_de->id }}] {{ $category_de_de->name }}</option> 
                                                     @endif
-                                                @endforeach
-                                            {{-- 아닌 경우 --}}
-                                            @else
-                                                @foreach ($category_de_des as $category_de_de)
-                                                    @if ($category_de_de->category_de_id == $good->category_de_id) 
-                                                        @if ($good->category_de_de_id == $category_de_de->id) 
-                                                            <option value="{{ $category_de_de->id }}" selected>[{{ $category_de_de->id }}] {{ $category_de_de->name }}</option>
-                                                        @else  
-                                                            <option value="{{ $category_de_de->id }}">[{{ $category_de_de->id }}] {{ $category_de_de->name }}</option> 
-                                                        @endif
-                                                    @endif
-                                                @endforeach
-                                            @endif
+                                                @endif
+                                            @endforeach
                                         </select>
-                                    @error('category_de_de_id')
-                                        <div style="margin-top : 5px!important; color : #dc3545;">카테고리 상세 상세를 고르세요</div>
-                                    @enderror
-                                    @else
-                                        <input type="hidden" name="category_de_de_id" value="0" />
                                     @endif
                                 </td>
                             </tr>
@@ -320,9 +286,6 @@
                                     <label for="sale_state1"><input type="radio" name="sale_state" id="sale_state1" value="0" {{ $sale_state_checked1 }}/>&nbsp;판매중&nbsp;&nbsp;&nbsp;</label>
                                     <label for="sale_state2"><input type="radio" name="sale_state" id="sale_state2" value="1" {{ $sale_state_checked2 }}/>&nbsp;판매완료&nbsp;&nbsp;&nbsp;</label>
                                     <label for="sale_state3"><input type="radio" name="sale_state" id="sale_state3" value="2" {{ $sale_state_checked3 }}/>&nbsp;예약중</label>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
                                 </td>
                             </tr>
                         </tbody>
@@ -332,139 +295,31 @@
         </div>
     </div>
 </main>
+<script src="{{ asset('ksy/js/admin.js'); }}"></script>
 <script>
+    // 값 세팅
+    var category_des = <?php echo json_encode($category_des)?>;
+    var category_de_des = <?php echo json_encode($category_de_des)?>;
+    var old_category_id = '{{ old("category_id") }}';
+    var old_category_de_id = '{{ old("category_de_id") }}';
+    var old_category_de_de_id = '{{ old("category_de_de_id") }}';
+
     $(function() {
-        $( "#datepicker" ).datepicker();
-
-
-        $category_id_validation_value = '{{ old("category_id") }}';
-        if ($category_id_validation_value != '' && $category_id_validation_value != 0) {
-            selectCategory();
+        // 유효성 검사 걸리면 실행
+        if (old_category_id != '' && old_category_id != 0) {
+            selectCategory(category_des, old_category_de_id);
         }
-
-
-        $category_de_id_validation_value = '{{ old("category_de_id") }}';
-        if ($category_de_id_validation_value != '' && $category_de_id_validation_value != 0) {
-            selectCategoryDe();
+        if (old_category_de_id != '' && old_category_de_id != 0) {
+            selectCategoryDe(category_de_des, old_category_de_de_id);
         }
-
-
-        $('#category_select').change(function(){
-            selectCategory();
-        });
     });
 
-
-    function selectCategory() {
-
-        let isNothing = true;
-        let category_select = document.getElementById("category_select"); 
-        let select_value = category_select.options[category_select.selectedIndex].value;
-        
-        let str = '<select class="form-select @error("category_de_id") is-invalid @enderror" aria-label="Default select example" name="category_de_id" onchange="selectCategoryDe();" id="category_de_select">\n' + 
-                    '<option value="0" selected>카테고리_상세를 고르세요</option>\n';
-        
-        let category_des = <?php echo json_encode($category_des)?>;
-        if (select_value != 0) {
-            category_des.forEach((element, index, array) => {
-                if (select_value == element.category_id) {
-                    isNothing = false;
-                    if (element.category_id == '{{ $good->category_id }}') {
-                        if('{{ old("category_de_id") }}' != '' && '{{ old("category_de_id") }}' == element.id) {
-                            str += '<option value="' + element.id + '" selected>[' + element.id + ']' + element.name + '</option>\n';
-                        }
-                        else {
-                            str += '<option value="' + element.id + '">[' + element.id + ']' + element.name + '</option>\n';
-                        }
-                    }
-                }
-            });
-        }
-        str += '</select>\n' +
-                '@error("category_de_id")\n' + 
-                    '<div style="margin-top : 5px!important; color : #dc3545;">카테고리 상세를 고르세요</div>\n' +
-                '@enderror\n';;
-
-        $("#category_de_select_area").empty();
-        $("#category_de_de_select_area").empty();
-        if(!isNothing) $("#category_de_select_area").html(str);
-        
-    }
-
-    
-    function selectCategoryDe() {
-        let isNothing = true;
-        let category_de_select = document.getElementById("category_de_select"); 
-        let select_value = category_de_select.options[category_de_select.selectedIndex].value;
-        
-        let str = '<select class="form-select @error("category_de_de_id") is-invalid @enderror" aria-label="Default select example" name="category_de_de_id" id="category_de_de_select">\n' + 
-                    '<option value="0" selected>카테고리_상세_상세를 고르세요</option>\n';
-        
-        let category_de_des = <?php echo json_encode($category_de_des)?>;
-        if (select_value != 0) {
-            category_de_des.forEach((element, index, array) => {
-                if (select_value == element.category_de_id) {
-                    isNothing = false;
-                    if (element.category_de_id == '{{ $good->category_de_id }}') {
-                        if('{{ old("category_de_de_id") }}' != '' && '{{ old("category_de_de_id") }}' == element.id) {
-                            str += '<option value="' + element.id + '" selected>[' + element.id + ']' + element.name + '</option>\n';
-                        }
-                        else {
-                            str += '<option value="' + element.id + '">[' + element.id + ']' + element.name + '</option>\n';
-                        }
-                    }
-                }
-            });
-        }
-        str += '</select>\n' +
-                '@error("category_de_de_id")\n' + 
-                    '<div style="margin-top : 5px!important; color : #dc3545;">카테고리 상세 상세를 고르세요</div>\n' +
-                '@enderror\n';
-
-        $("#category_de_de_select_area").empty();
-        if(!isNothing) $("#category_de_de_select_area").html(str);
-        
-    }
-
-    
-    function readFiles(e) {
-        
-        // file 미리보기 지우기
-        $('#file_name_alert_area').empty();
-
-        // file 미리보기 새로 만들기
-        for(i = 0; i < e.target.files.length; i++){
-            var str = "";
-            var file_name = e.target.files[i].name;
-
-            // file 명이 20자 이상이면 '... .확장자'로 대체
-            if(file_name.length > 20){
-                var _dot_index = e.target.files[i].name.lastIndexOf('.');
-                var _extension = file_name.substring(_dot_index, e.target.files[i].name.length).toLowerCase();
-                file_name = file_name.substring(0, 17)+"... " + _extension;
-            }
-
-            str += '<br><img style="width: 200px;" id="preview_image' + i + '" src="" />\n' + 
-                    '<span class="file_name_span">' + file_name + '</span><br>';
-            $("#file_name_alert_area").append(str);
-
-            var tmp = e.target.files[i];
-            var src = URL.createObjectURL(tmp);
-            $("#preview_image" + i).attr("src", src);
-        }
-    }
-    
-        
-    $('#picture').change(function(e){
-
-        if(e.target.files.length > 6) {
-            console.log(e.target.files.length);
-            alert('파일의 최대 개수는 6개 입니다.');
-            $('#picture').val('');
-            return;
-        }
-
-        readFiles(e);
+    // 카테고리 부분 클릭시 실행
+    $(document).on("change", "#category_select", function(){
+        selectCategory(category_des, old_category_de_id);
+    });
+    $(document).on("change", "#category_de_select", function(){
+        selectCategoryDe(category_de_des, old_category_de_de_id);
     });
 </script>
 @endsection

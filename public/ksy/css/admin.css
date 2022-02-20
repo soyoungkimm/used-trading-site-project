@@ -2,17 +2,17 @@ a {
     text-decoration-line: none;
     color: inherit;
 }
-/* #delete_button {
-    width : 60px;
-} */
 .store_button {
     width : 60px; 
     float:right;
 }
-
 .all_delete_button {
     float : right; 
     margin-top : 5px;
+}
+.admin_id{
+    color : blue; 
+    text-decoration : underline;
 }
 
 /* admin goods 시작 */
@@ -126,7 +126,7 @@ th, .card-header {
 }
 
 
-input {
+#td_Input {
     margin: 0;
     border: none;
     border-radius: 0;
