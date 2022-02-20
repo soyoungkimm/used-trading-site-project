@@ -149,11 +149,11 @@ class AdminReviewCommentsController extends Controller
      */
     public function destroy(ReviewComment $review_comment)
     {
-        // review_comments 삭제
-        // $review_comment->delete();
+        //review_comments 삭제
+        $review_comment->delete();
 
-        // // 페이지 이동
-        // return redirect('/admin/review_comments');
+        // 페이지 이동
+        return redirect('/admin/review_comments');
     }
 
 

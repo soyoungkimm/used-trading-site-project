@@ -15,6 +15,9 @@ use App\Http\Controllers\AdminAlarmsController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminCategoryDeController;
 use App\Http\Controllers\AdminCategoryDeDeController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminToDoListsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,7 +32,6 @@ use App\Http\Controllers\AdminCategoryDeDeController;
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 // admin users
 Route::resource('admin/users', AdminUsersController::class);
@@ -73,3 +75,7 @@ Route::resource('admin/category-de', AdminCategoryDeController::class);
 
 // admin categoryDeDe
 Route::resource('admin/category-de-de', AdminCategoryDeDeController::class);
+
+// admin dashboard
+Route::get('admin', AdminDashboardController::class);
+Route::resource('admin/todo_lists', AdminToDoListsController::class);
