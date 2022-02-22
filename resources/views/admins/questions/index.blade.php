@@ -33,7 +33,7 @@
                     <tbody>
                         @foreach($questions as $question)
                             <tr>
-                                <td><a href="/admin/questions/{{ $question->id }}">{{ $question->id }}</a></td>
+                                <td><a class="admin_id" href="/admin/questions/{{ $question->id }}">{{ $question->id }}</a></td>
                                 <td>[{{ $question->user_id }}] {{ $question->user_name }}</td>
                                 <td>[{{ $question->goods_id }}] {{ $question->good_title }}</td>
                                 <td>{{ $question->writeday }}</td>

@@ -11,9 +11,7 @@
                 @csrf
                 <div class="card-header">
                     <i class="fas fa-table me-1"></i> review_comments table 
-                    <div style="text-align:right" >
-                        <input type="submit" class="btn btn-success" value="저장" />
-                    </div>
+                    <input type="submit" class="btn btn-success store_button" value="저장" />
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">

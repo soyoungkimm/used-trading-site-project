@@ -29,10 +29,6 @@ use App\Http\Controllers\AdminLoginController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // admin users
 Route::resource('admin/users', AdminUsersController::class);
 Route::post('admin/users/checkUid', 'App\Http\Controllers\AdminUsersController@checkUid')->name('users.checkUid');
@@ -83,3 +79,7 @@ Route::resource('admin/category-de-de', AdminCategoryDeDeController::class);
 Route::get('admin', AdminDashboardController::class);
 Route::resource('admin/todo_lists', AdminToDoListsController::class);
 
+// used trading site main
+Route::get('/', function () {
+    return view('sites.main');
+});

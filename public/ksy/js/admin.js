@@ -465,3 +465,110 @@ function make_chart(labels, chart_vals, categorys) {
     // dashboard 카테고리 비율 차트 끝
 }
 /*admin dashboard chart 코드 끝*/
+
+
+
+/* admin goods 카테고리 부분 시작 */
+function selectCategory(category_des, old_category_de_id) {
+
+    let isNothing = true;
+    let category_select = document.getElementById("category_select"); 
+    let select_value = category_select.options[category_select.selectedIndex].value;
+    
+    let str = '<select class="form-select @error("category_de_id") is-invalid @enderror" aria-label="Default select example" name="category_de_id" id="category_de_select">\n' + 
+                '<option value="0" selected>카테고리_상세를 고르세요</option>\n';
+    
+    
+    if (select_value != 0) {
+        category_des.forEach((element, index, array) => {
+            if (select_value == element.category_id) {
+                isNothing = false;
+                if(old_category_de_id != '' && old_category_de_id == element.id) {
+                    str += '<option value="' + element.id + '" selected>[' + element.id + '] ' + element.name + '</option>\n';
+                }
+                else {
+                    str += '<option value="' + element.id + '">[' + element.id + '] ' + element.name + '</option>\n';
+                }
+            }
+        });
+    }
+    str += '</select>\n';
+
+    $("#category_de_select_area").empty();
+    $("#category_de_de_select_area").empty();
+    if(!isNothing) $("#category_de_select_area").html(str);
+    
+}
+
+
+function selectCategoryDe(category_de_des, old_category_de_de_id) {
+
+    let isNothing = true;
+    let category_de_select = document.getElementById("category_de_select"); 
+    let select_value = category_de_select.options[category_de_select.selectedIndex].value;
+    
+    let str = '<select class="form-select @error("category_de_de_id") is-invalid @enderror" aria-label="Default select example" name="category_de_de_id" id="category_de_de_select">\n' + 
+                '<option value="0" selected>카테고리_상세_상세를 고르세요</option>\n';
+    
+    
+    if (select_value != 0) {
+        category_de_des.forEach((element, index, array) => {
+            if (select_value == element.category_de_id) {
+                isNothing = false;
+                if(old_category_de_de_id != '' && old_category_de_de_id == element.id) {
+                    str += '<option value="' + element.id + '" selected>[' + element.id + '] ' + element.name + '</option>\n';
+                }
+                else {
+                    str += '<option value="' + element.id + '">[' + element.id + '] ' + element.name + '</option>\n';
+                }
+            }
+        });
+    }
+    str += '</select>\n';
+
+    $("#category_de_de_select_area").empty();
+    if(!isNothing) $("#category_de_de_select_area").html(str);
+    
+}
+
+
+function readFiles(e) {
+    
+    // file 미리보기 지우기
+    $('#file_name_alert_area').empty();
+
+    // file 미리보기 새로 만들기
+    for(i = 0; i < e.target.files.length; i++){
+        var str = "";
+        var file_name = e.target.files[i].name;
+
+        // file 명이 20자 이상이면 '... .확장자'로 대체
+        if(file_name.length > 20){
+            var _dot_index = e.target.files[i].name.lastIndexOf('.');
+            var _extension = file_name.substring(_dot_index, e.target.files[i].name.length).toLowerCase();
+            file_name = file_name.substring(0, 17)+"... " + _extension;
+        }
+
+        str += '<br><img style="width: 200px;" id="preview_image' + i + '" src="" />\n' + 
+                '<span class="file_name_span">' + file_name + '</span><br>';
+        $("#file_name_alert_area").append(str);
+
+        var tmp = e.target.files[i];
+        var src = URL.createObjectURL(tmp);
+        $("#preview_image" + i).attr("src", src);
+    }
+}
+
+    
+$('#picture').change(function(e){
+
+    if(e.target.files.length > 6) {
+        console.log(e.target.files.length);
+        alert('파일의 최대 개수는 6개 입니다.');
+        $('#picture').val('');
+        return;
+    }
+
+    readFiles(e);
+});
+/* admin goods 카테고리 부분 끝 */
