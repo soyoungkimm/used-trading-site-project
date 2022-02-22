@@ -117,7 +117,7 @@
                                 </div>  
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputPwd" type="text" name="pwd" placeholder="pwd" value="{{ $user -> pwd }}" />
+                                        <input class="form-control" id="inputPwd" type="text" name="pwd" placeholder="pwd" value="" />
                                         <label for="inputPwd">PW</label>
                                         <div id="pwMemo"><p style='color:red'></p></div>
                                     </div>
@@ -169,6 +169,15 @@
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="inputDelivery" type="text" name="sale_num" placeholder="상품판매" value="{{ $user -> sale_num }}"/>
                                         <label for="inputDelivery">상품판매횟수</label>
+                                    </div>
+                                </div> 
+                                <div class="col-md-3">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-control" id="inputRank" type="text" name="rank" >
+                                                <option value="{{ $user->rank }}" value="0" {{ ($user->rank == 0 ? "selected":"") }}>일반회원</option>
+                                                <option value="{{ $user->rank }}" value="1" {{ ($user->rank == 1 ? "selected":"") }}>관리자</option> 
+                                        </select>
+                                        <label for="inputDelivery">관리자여부</label>
                                     </div>
                                 </div> 
                             </div>

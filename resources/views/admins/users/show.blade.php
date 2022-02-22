@@ -30,7 +30,7 @@
                                 </div>  
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                    <div class="form-control" id="inputUid">{{ $user -> pwd }}</div>
+                                    <div class="form-control" id="inputUid"></div>
                                         <label for="inputPwd">PW</label>
                                     </div>
                                 </div>    
@@ -81,6 +81,12 @@
                                     <div class="form-floating mb-3">
                                         <div class="form-control" id="inputUid">{{ $user -> sale_num }}</div>
                                         <label for="inputDelivery">상품판매횟수</label>
+                                    </div>
+                                </div> 
+                                <div class="col-md-3">
+                                    <div class="form-floating mb-3">
+                                        <div class="form-control" id="inputUid">{{ $user->rank == 0 ? '일반회원' : '관리자' }}</div>
+                                        <label for="inputDelivery">관리자여부</label>
                                     </div>
                                 </div> 
                             </div>

@@ -14,12 +14,19 @@ class User extends Authenticatable
     //protected $connection = 'junggo'; 
     protected $table = 'users'; 
     public $timestamps = false;
+
+    public function getAuthPassword()
+    {
+        //dd("$this->pwd");
+        return $this->pwd;
+    }
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        'rank',
         'uid',
         'pwd',
         'name',

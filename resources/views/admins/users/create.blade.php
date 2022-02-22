@@ -173,6 +173,15 @@
                                         <label for="inputDelivery">상품판매횟수</label>
                                     </div>
                                 </div> 
+                                <div class="col-md-3">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-control" id="inputRank" type="text" name="rank" >
+                                            <option value="0">일반회원</option>
+                                            <option value="1">관리자</option>
+                                        </select>
+                                        <label for="inputDelivery">관리자여부</label>
+                                    </div>
+                                </div> 
                             </div>
                             <div class="row">
                                 <div class="col-md-3">

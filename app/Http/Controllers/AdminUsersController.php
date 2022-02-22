@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\User;
 use File;
 
@@ -37,7 +40,8 @@ class AdminUsersController extends Controller
      */
     public function store(Request $request){  //DB회원정보 추가
         $validated = $request->validate([ 
-            'uid'   => 'bail|required',
+            'rank'  => 'required',
+            'uid'   => 'required',
             'pwd'   => 'required',
             'name'  => 'required',
             'birth' => 'required',
@@ -56,8 +60,9 @@ class AdminUsersController extends Controller
         
         //DB추가
         $id=User::create([ //레코드생성과 동시에 id저장
+            'rank'  => $request->rank,
             'uid'   => $request->uid,
-            'pwd'   => $request->pwd,
+            'pwd'   => Hash::make($request->pwd),
             'name'  => $request->name,
             'birth' => $request->birth,
             'tel'   => $request->tel,
@@ -120,7 +125,8 @@ class AdminUsersController extends Controller
         
         //요청값 유효성 검사
         $validated = $request->validate([ 
-            'uid'   => 'bail|required',
+            'rank'  => 'required',
+            'uid'   => 'required',
             'pwd'   => 'required',
             'name'  => 'required',
             'birth' => 'required',
@@ -146,8 +152,9 @@ class AdminUsersController extends Controller
 
         //테이블 업데이트
         $user->update([
+            'rank'  => $request->rank,
             'uid'   => $request->uid,
-            'pwd'   => $request->pwd,
+            'pwd'   => Hash::make($request->pwd),
             'name'  => $request->name,
             'birth' => $request->birth,
             'tel'   => $request->tel,
@@ -188,6 +195,34 @@ class AdminUsersController extends Controller
         }else{                  //중복된 id가 존재하는 경우
             return $checkResult;
         }
+    }
+
+    public function loginForm(){ //로그인페이지
+        return view('admins.login');
+    } 
+
+    public function login(Request $request){
+        $validation = $request -> validate([
+            'uid' => 'required',
+            'pwd' => 'required',
+        ]);
+
+        $user = [
+            'uid' => $request->uid,
+            'password' => $request->pwd,
+        ];
+
+        if(Auth::attempt($user) && Auth::user()->rank == '1'){
+            return redirect('/admin/users');
+        }
+
+        return redirect('/admin/login');
+       
+    }
+
+    public function logout(){
+        Auth::logout();
+        return redirect('/admin/login');
     }
 
 }
