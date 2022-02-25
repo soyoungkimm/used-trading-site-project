@@ -211,11 +211,12 @@ class AdminUsersController extends Controller
             'uid' => $request->uid,
             'password' => $request->pwd,
         ];
-
-        if(Auth::attempt($user) && Auth::user()->rank == '1'){
-            return redirect('/admin/users');
+        //dd($user);
+        //dd(Auth::user());
+        if(Auth::attempt($user)){
+             return redirect('/admin/users');
         }
-
+        //dd(Auth::user());
         return redirect('/admin/login');
        
     }
