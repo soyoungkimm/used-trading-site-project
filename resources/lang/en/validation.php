@@ -144,6 +144,14 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'goods_title' => [
+            'required' => '제목을 입력하세요',
+            'max:50'=>'제목은 50자 이상 작성할 수 없습니다'
+        ],
+        'goods_content'=>[
+            'required' => '상품 설명을 입력하세요',
+            'max:3000'=>'상품 설명은 3000자 이상 작성할 수 없습니다'
+        ]
     ],
 
     /*

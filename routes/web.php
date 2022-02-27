@@ -18,6 +18,9 @@ use App\Http\Controllers\AdminCategoryDeDeController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminToDoListsController;
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\GoodsController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,60 +31,49 @@ use App\Http\Controllers\AdminLoginController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware' => 'adminCheck'], function(){
-    // admin users
-    Route::resource('admin/users', AdminUsersController::class);
-    Route::post('admin/users/checkUid', 'App\Http\Controllers\AdminUsersController@checkUid')->name('users.checkUid');
-    
-    // admin goods
-    Route::resource('admin/goods', AdminGoodsController::class);
 
-    // admin reviews
-    Route::resource('admin/reviews', AdminReviewsController::class);
 
-    // admin review_comments
-    Route::resource('admin/review_comments', AdminReviewCommentsController::class);
+// admin 
+Route::prefix('admin')->group(function () {
+    Route::group(['middleware' => 'adminCheck'], function(){
+        Route::resources([
+            'users' => AdminUsersController::class,
+            'goods' => AdminGoodsController::class,
+            'reviews' => AdminReviewsController::class,
+            'review_comments' => AdminReviewCommentsController::class,
+            'advertise' => AdminAdsController::class,
+            'notice' => AdminNoticesController::class,
+            'questions' => AdminQuestionsController::class,
+            'question_comments' => AdminQuestionCommentsController::class,
+            'heart-goods' => AdminHeartGoodsController::class,
+            'tags' => AdminTagsController::class,
+            'alarm' => AdminAlarmsController::class,
+            'category' => AdminCategoryController::class,
+            'category-de' => AdminCategoryDeController::class,
+            'category-de-de' => AdminCategoryDeDeController::class,
+            'todo_lists' => AdminToDoListsController::class,
+        ]);
+        Route::post('users/checkUid', 'App\Http\Controllers\AdminUsersController@checkUid')->name('users.checkUid'); // users check uid 
+        Route::get('/', AdminDashboardController::class); // dashboard
+    });
 
-    // admin advertise
-    Route::resource('admin/advertise', AdminAdsController::class);
-
-    // admin notice
-    Route::resource('admin/notice', AdminNoticesController::class);
-
-    // admin questions
-    Route::resource('admin/questions', AdminQuestionsController::class);
-
-    // admin question_comments
-    Route::resource('admin/question_comments', AdminQuestionCommentsController::class);
-
-    // admin heart_goods
-    Route::resource('admin/heart-goods', AdminHeartGoodsController::class);
-
-    // admin tags
-    Route::resource('admin/tags', AdminTagsController::class);
-
-    // admin tags
-    Route::resource('admin/alarm', AdminAlarmsController::class);
-
-    // admin categorys
-    Route::resource('admin/category', AdminCategoryController::class);
-
-    // admin categoryDe
-    Route::resource('admin/category-de', AdminCategoryDeController::class);
-
-    // admin categoryDeDe
-    Route::resource('admin/category-de-de', AdminCategoryDeDeController::class);
-
-    // admin dashboard
-    Route::get('admin', AdminDashboardController::class);
-    Route::resource('admin/todo_lists', AdminToDoListsController::class);
-
+    // users login, logout
+    Route::POST('loginCheck', 'App\Http\Controllers\AdminUsersController@login')->name('admin.loginCheck');
+    Route::get('login', 'App\Http\Controllers\AdminUsersController@loginForm')->name('admin.loginForm');
+    Route::get('logout', 'App\Http\Controllers\AdminUsersController@logout')->name('admin.logout');
 });
-Route::POST('admin/loginCheck', 'App\Http\Controllers\AdminUsersController@login')->name('admin.loginCheck');
-Route::get('admin/login', 'App\Http\Controllers\AdminUsersController@loginForm')->name('admin.loginForm');
-Route::get('admin/logout', 'App\Http\Controllers\AdminUsersController@logout')->name('admin.logout');
 
-// used trading site main
+
+
+// site main
 Route::get('/', function () {
     return view('sites.main');
+});
+
+// site goods 
+Route::prefix('goods')->group(function () {
+    Route::resource('/', GoodsController::class);
+    Route::post('upload', [GoodsController::class, 'ajax_upload_image'])->name('upload_image');
+    Route::post('delete_image', [GoodsController::class, 'ajax_delete_image'])->name('delete_image');
+    Route::post('find_adress', [GoodsController::class, 'ajax_find_adress'])->name('find_adress');
 });
