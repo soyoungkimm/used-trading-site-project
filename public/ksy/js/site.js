@@ -23,7 +23,7 @@ function make_preview_image(old_order, image_src) {
                         '<input type="hidden" class="file_name" value="' + image + '">\n' + 
                     '</li>\n';
     }
-    $("#preview").append(str);
+    $("#preview").html(str);
 
 
     // 이미지 개수 세팅
@@ -36,6 +36,7 @@ function make_tag(tags) {
 
     let tag_arr = tags.split(" ");
 
+    $("#tag_span").empty();
     for (tag of tag_arr) {
         // tag 화면에 만들기
         let str = '<span id="tag_content">' + tag + '<i id="tag_icon" class="fa fa-times-circle-o fa-lg"></i></span>';
@@ -106,10 +107,16 @@ function selectCategoryDe(category_de_des, old_category_de_de_id, category_de_id
     if(!isNothing) $("#category_de_de_select_area").html(str);
 }
 
-
+function remove_invalid_class() {
+    $("#category_select_area").removeClass('is-invalid');
+    $("#category_de_select_area").removeClass('is-invalid');
+    $("#category_de_de_select_area").removeClass('is-invalid');
+}
 
  // 카테고리 부분 클릭시 실행
 $(document).on("click", ".category_select", function(e){
+
+    remove_invalid_class();
 
     // 값 변경
     $("#category_id").val(e.target.value);
@@ -131,7 +138,7 @@ $(document).on("click", ".category_select", function(e){
         $('#category_de_id').val('');
     }
     $('#category_de_de_id').val('');
-    
+
 
     // 배경 색 변경
     $('.category_select').removeClass("selected");
@@ -140,6 +147,8 @@ $(document).on("click", ".category_select", function(e){
     selectCategory(category_des, old_category_de_id, e.target.value);
 });
 $(document).on("click", ".category_de_select", function(e){
+
+    remove_invalid_class();
 
     // 값 변경
     $('#category_de_id').val(e.target.value);
@@ -169,6 +178,9 @@ $(document).on("click", ".category_de_select", function(e){
     selectCategoryDe(category_de_des, old_category_de_de_id, e.target.value);
 });
 $(document).on("click", ".category_de_de_select", function(e){
+
+    remove_invalid_class();
+
     // 값 변경
     $('#category_de_de_id').val(e.target.value);
 
@@ -360,6 +372,28 @@ $(document).on("click", "#tag_icon", function(e){
 
     // tag 화면에서 삭제
     $(e.target).parent().remove();
+
+    // tag 데이터 db에 있으면 삭제    <-- edit.php
+    if (tag_goods_id != '') {
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "/goods/delete_tag",
+            type: "POST",
+            dataType: 'text',
+            data: {
+                tag_name : tag_val,
+                goods_id : tag_goods_id
+            },
+            success : function(data) {
+
+            },
+            error: function(request,status,error){ 
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+            }
+        });
+    }
+    
 });
 
 
@@ -543,7 +577,7 @@ $(".submit_btn").click (function(e) {
     // 가격에 있는 콤마 없애기
     let price_val = $('#price').val().replace(/,/g, "");
     $('#price').val(price_val);
-
+    
     // form submit
     $("form").submit();
 });
@@ -687,3 +721,557 @@ function readFiles(e) {
     let image_num = parseInt(document.getElementById("image_num").innerHTML);
     $("#image_num").html(image_num + 1);
 }
+
+
+
+
+
+
+/*goods show 부분 시작 */
+function list_set_star(star, tag_id) {
+    
+    let arr = set_star(star);
+    let str =  '<i class="' + arr['star1'] + '" id="star1"></i>\n' + 
+            '<i class="' + arr['star2'] + '" id="star2"></i>\n' +
+            '<i class="' + arr['star3'] + '" id="star3"></i>\n' +
+            '<i class="' + arr['star4'] + '" id="star4"></i>\n' +
+            '<i class="' + arr['star5'] + '" id="star5"></i>\n' +
+            '&nbsp;&nbsp;<span id="star_num">(' + (star / 2) + ')</span>\n';
+
+    $('#' + tag_id).html(str);
+}
+
+function set_star(val) {
+
+    let arr = new Array();
+    let empty_star = 'fa fa-star-o fa-lg';
+    let half_star = 'fa fa-star-half-o fa-lg';
+    let full_star = 'fa fa-star fa-lg';
+    
+    if (val == 0) {
+        arr['star1'] = empty_star;
+        arr['star2'] = empty_star;
+        arr['star3'] = empty_star;
+        arr['star4'] = empty_star;
+        arr['star5'] = empty_star;
+    } 
+    else if (val == 1) {
+        arr['star1'] = half_star;
+        arr['star2'] = empty_star;
+        arr['star3'] = empty_star;
+        arr['star4'] = empty_star;
+        arr['star5'] = empty_star;
+    } 
+    else if (val == 2) {
+        arr['star1'] = full_star;
+        arr['star2'] = empty_star;
+        arr['star3'] = empty_star;
+        arr['star4'] = empty_star;
+        arr['star5'] = empty_star;
+    } 
+    else if (val == 3) {
+        arr['star1'] = full_star;
+        arr['star2'] = half_star;
+        arr['star3'] = empty_star;
+        arr['star4'] = empty_star;
+        arr['star5'] = empty_star;
+    } 
+    else if (val == 4) {
+        arr['star1'] = full_star;
+        arr['star2'] = full_star;
+        arr['star3'] = empty_star;
+        arr['star4'] = empty_star;
+        arr['star5'] = empty_star;
+    } 
+    else if (val == 5) {
+        arr['star1'] = full_star;
+        arr['star2'] = full_star;
+        arr['star3'] = half_star;
+        arr['star4'] = empty_star;
+        arr['star5'] = empty_star;
+    } 
+    else if (val == 6) {
+        arr['star1'] = full_star;
+        arr['star2'] = full_star;
+        arr['star3'] = full_star;
+        arr['star4'] = empty_star;
+        arr['star5'] = empty_star;
+    } 
+    else if (val == 7) {
+        arr['star1'] = full_star;
+        arr['star2'] = full_star;
+        arr['star3'] = full_star;
+        arr['star4'] = half_star;
+        arr['star5'] = empty_star;
+    } 
+    else if (val == 8) {
+        arr['star1'] = full_star;
+        arr['star2'] = full_star;
+        arr['star3'] = full_star;
+        arr['star4'] = full_star;
+        arr['star5'] = empty_star;
+    } 
+    else if (val == 9) {
+        arr['star1'] = full_star;
+        arr['star2'] = full_star;
+        arr['star3'] = full_star;
+        arr['star4'] = full_star;
+        arr['star5'] = half_star;
+    }
+    else if (val == 10) {
+        arr['star1'] = full_star;
+        arr['star2'] = full_star;
+        arr['star3'] = full_star;
+        arr['star4'] = full_star;
+        arr['star5'] = full_star;
+    }
+
+    return arr;
+}
+
+function heart_pop_func(me) {
+    $(me).find('a').attr('id');
+
+    // 이미 찜했을 때(찜 해제)
+    if ($(me).find('input').val() == 0) {
+
+        // 찜 버튼 디자인 변경
+        $("#heart-del-layer").fadeIn(500).delay(500).fadeOut(500);
+        $(me).find('a').removeClass('rel_heart_t');
+        $(me).find('input').val('1');
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/hearts/delete',
+            type: "DELETE",
+            dataType: 'text',
+            data: {
+                goods_id : $(me).find('input').attr('name')
+            },
+            success : function() {
+            },
+            error: function(request,status,error){ 
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+            }
+        });
+    }
+    // 찜 안했을 때(찜)
+    else {
+        // 찜 버튼 디자인 변경
+        $("#heart-layer").fadeIn(500).delay(500).fadeOut(500);
+        $(me).find('a').addClass('rel_heart_t');
+        $(me).find('input').val('0');
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/hearts',
+            type: "POST",
+            dataType: 'text',
+            data: {
+                goods_id : $(me).find('input').attr('name')
+            },
+            success : function() {
+            },
+            error: function(request,status,error){ 
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+            }
+        });
+    }
+}
+
+
+function click_follow_btn (store_id) {
+    let val = $('#isFollow').val();
+
+    // 이미 팔로우 했을때(팔로잉 해제)
+    if (val == 0) {
+        // 팔로우 버튼 디자인 변경
+        $('#follow_btn').removeClass('follow_btn_t');
+        $('#follow_btn').addClass('follow_btn_f');
+        $('#follow_icon').removeClass('fa-check');
+        $('#follow_icon').addClass('fa-user-plus');
+        $('#follow_val').text('팔로우');
+        $('#isFollow').val('1');
+
+        // 팔로우 개수 - 1
+        let old_follow_num = parseInt($("#follow_num").text());
+        $("#follow_num").text(old_follow_num - 1);
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/follows/delete',
+            type: "DELETE",
+            dataType: 'text',
+            data: {
+                store_id : store_id
+            },
+            success : function() {
+            },
+            error: function(request,status,error){ 
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+            }
+        });
+    }
+    // 팔로우 안했을 때(팔로잉)
+    else {
+        // 팔로우 버튼 디자인 변경
+        $('#follow_btn').removeClass('follow_btn_f');
+        $('#follow_btn').addClass('follow_btn_t');
+        $('#follow_icon').removeClass('fa-user-plus');
+        $('#follow_icon').addClass('fa-check');
+        $('#follow_val').text('팔로잉');
+        $('#isFollow').val('0');
+
+        // 팔로우 개수 + 1
+        let old_follow_num = parseInt($("#follow_num").text());
+        $("#follow_num").text(old_follow_num + 1);
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/follows',
+            type: "POST",
+            dataType: 'text',
+            data: {
+                store_id : store_id
+            },
+            success : function() {
+            },
+            error: function(request,status,error){ 
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+            }
+        });
+       
+    }
+}
+
+
+$("#heart_btn").click (function () {
+    let val = $('#isHeart').val();
+    
+    // 이미 찜했을 때(찜 해제)
+    if (val == 0) {
+        // 찜 버튼 디자인 변경
+        $("#heart-del-layer").fadeIn(500).delay(500).fadeOut(500);
+        $('#heart_btn').removeClass('heart_btn_t');
+        $('#heart_btn').addClass('heart_btn_f');
+        $('#isHeart').val('1');
+
+        // 찜 개수 - 1
+        let old_heart_num = parseInt($("#heart_num").text());
+        $("#heart_num").text(old_heart_num - 1);
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/hearts/delete',
+            type: "DELETE",
+            dataType: 'text',
+            data: {
+                goods_id : goods_id
+            },
+            success : function() {
+            },
+            error: function(request,status,error){ 
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+            }
+        });
+    }
+    // 찜 안했을 때(찜)
+    else {
+        // 찜 버튼 디자인 변경
+        $("#heart-layer").fadeIn(500).delay(500).fadeOut(500);
+        $('#heart_btn').removeClass('heart_btn_f');
+        $('#heart_btn').addClass('heart_btn_t');
+        $('#isHeart').val('0');
+
+        // 찜 개수 + 1
+        let old_heart_num = parseInt($("#heart_num").text());
+        $("#heart_num").text(old_heart_num + 1);
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/hearts',
+            type: "POST",
+            dataType: 'text',
+            data: {
+                goods_id : goods_id
+            },
+            success : function() {
+                
+            },
+            error: function(request,status,error){ 
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+            }
+        });
+       
+    }
+});
+
+
+var image_src = "{{ asset('storage/images/goods/') }}";
+$("#question").keyup (function (e) {
+    question_check_num(e);
+});
+$("#question").keydown (function (e) {
+    question_check_num(e);
+});
+function question_check_num(e) {
+    if (e.target.value.length > 200) {
+        alert('상품문의는 200자를 넘길 수 없습니다.');
+        let str = e.target.value.substr(0, 200);
+        $(e.target).val(str);
+        $("#question_num").html('200');
+        return;
+    }
+    $("#question_num").html(e.target.value.length);
+}
+
+
+$(document).on("keyup", "#question_comment", function (e) {
+    question_comment_check_num(e);
+});
+$(document).on("keydown", "#question_comment", function (e) {
+    question_comment_check_num(e);
+});
+function question_comment_check_num(e) {
+    if (e.target.value.length > 200) {
+        alert('상품문의 댓글은 200자를 넘길 수 없습니다.');
+        let str = e.target.value.substr(0, 200);
+        $(e.target).val(str);
+        $("#question_comment_num").html('200');
+        return;
+    }
+    $("#question_comment_num").html(e.target.value.length);
+}
+
+
+
+function delete_question(question_id) {
+
+    if (!confirm('정말로 삭제하시겠습니까? 댓글이 있을시 댓글도 같이 삭제됩니다.')) return;
+    
+    let url = "/questions/" + question_id;
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: url,
+        type: "DELETE",
+        dataType: 'text',
+        data: {
+            question_id : question_id
+        },
+        success : function(data) {
+
+            $('#question_'+question_id).parent().remove();
+
+            // 상품문의 총 개수 - (상품문의 + 댓글)
+            let old_que_num = parseInt($('#que_num').text());
+            let delete_question_comment_num = parseInt(data);
+            $('#que_num').empty();
+            $('#que_num').text(old_que_num - (delete_question_comment_num + 1));
+        },
+        error: function(request,status,error){ 
+            alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+            console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+        }
+    });
+
+}
+
+
+function delete_question_comment(question_comment_id) {
+
+    if (!confirm('정말로 삭제하시겠습니까?')) return;
+
+    let url = "/question_comments/" + question_comment_id;
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: url,
+        type: "DELETE",
+        dataType: 'text',
+        data: {
+            question_comment_id : question_comment_id
+        },
+        success : function() {
+
+            $('.q_comment_'+question_comment_id).remove();
+
+            // 상품문의 총 개수 - 1 
+            let old_que_num = parseInt($('#que_num').text());
+            $('#que_num').empty();
+            $('#que_num').text(old_que_num - 1);
+        },
+        error: function(request,status,error){ 
+            alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+            console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+        }
+    });
+
+}
+
+
+function create_question(goods_id) {
+
+    let content = $("#question").val();
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: "/questions",
+        type: "POST",
+        dataType: 'text',
+        data: {
+            goods_id : goods_id,
+            content : content
+        },
+        success : function(data) {
+
+            data = JSON.parse(data);
+
+            let str =   '<div class="que_block">\n' + 
+                        '<div class="row que" id="question_' + data.question_id + '">\n' + 
+                            '<div class="col-1">\n' +
+                                '<div class="img_box">\n';
+                            if(data.user_image == null) {
+                                str += '<img src="' + image_src + '" alt="img"/>\n'; //  <-- 임시
+                            }   
+                            else {
+                                str += '<img src="' + image_src + '" alt="img"/>\n';//  <-- 임시
+                            }
+                        str += '</div>\n' +
+                            '</div>\n' +
+                            '<div class="col-10 com_a">\n' +
+                                '<div class="margin-b">' + data.user_name + '<span class="c_time">' + data.question_writeday + '</span></div>\n' +
+                                '<div><pre>' + content + '</pre></div>\n' +
+                                '<div class="com_btn">\n' +
+                                    '<span class="com_btn_span" onclick="create_comment(' + data.question_id + ')"><i class="fa fa-comment-o" aria-hidden="true"></i>댓글달기</span>\n' +
+                                    '<span class="com_btn_span" onclick="delete_question(' + data.question_id + ')"><i class="fa fa-trash-o" aria-hidden="true"></i>삭제하기</span>\n' +
+                                '</div>\n' +
+                                '<hr>\n' +
+                            '</div>\n' +
+                        '</div>\n' + 
+                        '</div>\n';
+
+            $('.que_area').append(str);
+
+            $("#question").val('');
+
+            // 상품문의 총 개수 + 1 
+            let old_que_num = parseInt($('#que_num').text());
+            $('#que_num').empty();
+            $('#que_num').text(old_que_num + 1);
+        },
+        error: function(request,status,error){ 
+            alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+            console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+        }
+    });
+}
+
+function add_comment(question_id) {
+
+    let content = $("#question_comment").val();
+    //content = content.replace(/(?:\r\n|\r|\n)/g, '<br>');
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: "/question_comments",
+        type: "POST",
+        dataType: 'text',
+        data: {
+            question_id : question_id,
+            content : content
+        },
+        success : function(data) {
+
+            data = JSON.parse(data);
+
+            let str =   '<div class="row q_comment_' + data.question_comment_id + '" id="q_comment">\n' + 
+                            '<div class="col-1" id="comment_arrow">\n' + 
+                                '<div id="arrow-right"></div>\n' + 
+                            '</div>\n' + 
+                            '<div class="col-1">\n' +
+                                '<div class="img_box">\n';
+                        if(data.user_image == null) {
+                            str += '<img src="' + image_src + '" alt="img"/>\n'; //  <-- 임시
+                        }   
+                        else {
+                            str += '<img src="' + image_src + '" alt="img"/>\n';//  <-- 임시
+                        }
+                        str += '</div>\n' +
+                            '</div>\n' +
+                            '<div class="col-9 com_a">\n' +
+                                '<div class="margin-b">' + data.user_name + '<span class="c_time">' + data.question_comment_writeday + '</span></div>\n' +
+                                '<div><pre>' + content + '</pre></div>\n' +
+                                '<div class="com_btn">\n' +
+                                    '<span class="com_btn_span" onclick="delete_question_comment(' + data.question_comment_id + ')"><i class="fa fa-trash-o" aria-hidden="true"></i>삭제하기</span>\n' +
+                                '</div>\n' +
+                                '<hr>\n' +
+                            '</div>\n' +
+                        '</div>\n';
+            
+            $('#question_'+question_id).parent().children().last().after(str);
+
+            // 상품문의 총 개수 + 1 
+            let old_que_num = parseInt($('#que_num').text());
+            $('#que_num').empty();
+            $('#que_num').text(old_que_num + 1);
+        },
+        error: function(request,status,error){
+            alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+            console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+        }
+    });
+
+    $('#new_comment').remove();
+}
+
+function create_comment(question_id) {
+
+    // 해당 노드가 있는지 확인
+    if(document.getElementById('new_comment')) 
+        $('#new_comment').remove();
+    
+    let str =   '<div class="row" class="margin-b" id="new_comment">\n' +
+                    '<div class="col-1">\n' +
+                    '</div>\n' +
+                    '<div class="col-10">\n' +
+                        '<textarea name="question_comment" id="question_comment" placeholder="상품문의 댓글을 입력하세요" rows="3"></textarea>\n' +
+                    '</div>\n' +
+                    '<div class="col-1 que_btn_area">\n' +
+                        '<div id="num_count">(<span id="question_comment_num">0</span>/200)</div>\n' +
+                        '<button type="button" id="question_btn" onclick="add_comment(' + question_id + ')">저장</button>\n' +
+                    '</div>\n' +
+                '</div>\n';
+
+    $('#question_'+question_id).parent().children().last().after(str);
+}
+
+
+$("#big_img, #origin_img_area").hover(function () {
+    $('#origin_img_area').css('display', 'block');
+}, function() {
+    $('#origin_img_area').css('display', 'none');
+});
+
+
+
+// 이미지 클릭시 - 원본 이미지 확인
+$(document).on("click", "#origin_img_area", function(e){
+    
+    let modal = document.getElementById("goodsModal");
+    let modalImg = document.getElementById("original_img");
+    modal.style.display = "block";
+    modalImg.src = $('#big_img').attr("src");
+    let span = document.getElementsByClassName("close_modal")[0];
+
+    span.onclick = function() { 
+        bye_modal(modal);
+    }
+});
+/*goods show 부분 끝 */

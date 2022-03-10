@@ -19,7 +19,10 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminToDoListsController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\GoodsController;
-
+use App\Http\Controllers\QuestionsController;
+use App\Http\Controllers\QuestionCommentsController;
+use App\Http\Controllers\HeartGoodsController;
+use App\Http\Controllers\FollowsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,16 +67,34 @@ Route::prefix('admin')->group(function () {
 });
 
 
-
 // site main
 Route::get('/', function () {
     return view('sites.main');
 });
 
+// site resource
+Route::resources([
+    'goods' => GoodsController::class,
+    'questions' => QuestionsController::class,
+    'question_comments' => QuestionCommentsController::class,
+]);
+
 // site goods 
 Route::prefix('goods')->group(function () {
-    Route::resource('/', GoodsController::class);
     Route::post('upload', [GoodsController::class, 'ajax_upload_image'])->name('upload_image');
     Route::post('delete_image', [GoodsController::class, 'ajax_delete_image'])->name('delete_image');
     Route::post('find_adress', [GoodsController::class, 'ajax_find_adress'])->name('find_adress');
+    Route::post('delete_tag', [GoodsController::class, 'ajax_delete_tag'])->name('delete_tag');
+});
+
+// site heart_goods
+Route::prefix('hearts')->group(function () {
+    Route::post('/', [HeartGoodsController::class, 'store']);
+    Route::delete('delete', [HeartGoodsController::class, 'destroy']);
+});
+
+// site follows
+Route::prefix('follows')->group(function () {
+    Route::post('/', [FollowsController::class, 'store']);
+    Route::delete('delete', [FollowsController::class, 'destroy']);
 });

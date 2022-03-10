@@ -175,8 +175,20 @@ input[name=image] {
     height: 150px;
 }
 
+/*goods 상세보기 원본 이미지 modal caption*/
+#origin_img_caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 70px 0;
+    height: 150px;
+}
+
 /* modal창 열릴 때 애니메이션 */
-.modal-content, #caption {  
+.modal-content, #caption, #origin_img_caption {  
     -webkit-animation-name: zoom;
     -webkit-animation-duration: 0.6s;
     animation-name: zoom;
@@ -367,7 +379,7 @@ small {
 #adress_result ul li:hover{
     background :rgb(240, 240, 240);
 }
-#create_form {
+#create_form, #edit_form, #show_area {
     width : 90%; align : center;margin: 0 auto;
 }
 #form_title {
@@ -396,3 +408,512 @@ small {
     margin-top : 10px;
 }
 /*---------------------   goods create 부분 끝  -----------------------------*/
+
+
+/*---------------------   goods show 부분 시작  -----------------------------*/
+.product__details__tab .nav-tabs:before, .product__details__tab .nav-tabs:after {
+    top : 55px;
+    width: 213px;
+    background : #000;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    border: #000 solid 1px;
+    border-bottom  :none;
+    background : #fff;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active:hover {
+    border-bottom  :none;
+}
+
+.product__details__tab .nav-tabs li a:hover {
+    border-bottom: #000 solid 1px;
+}
+
+.product__details__tab .nav-tabs li a {
+    border: #dee2e6 solid 1px;
+    padding: 15px 40px 15px 40px;
+    width : 190px;
+    text-align: center;
+    border-bottom: #000 solid 1px;
+    background : #f5f5f5;
+}
+
+.product__details__tab .nav-tabs li {
+    margin-bottom: 0px;
+    margin-right: 0px;
+}
+
+#comment_arrow::after {
+    margin-top : -20px;
+    position: absolute;
+    left: 25px; 
+    top: 10px;
+    content: '';
+    width: 30px; /* 사이즈 */
+    height: 30px; /* 사이즈 */
+    border-top: 3px solid rgb(196, 196, 196); /* 선 두께 */
+    border-right: 3px solid rgb(196, 196, 196); /* 선 두께 */
+    transform: rotate(180deg); 
+}
+
+#arrow-right {
+    margin-left: 40px;
+    margin-top: 8px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid rgb(196, 196, 196);/* 화살표 */
+}
+
+.margin-b {
+    margin-bottom : 10px;
+}
+
+.com_btn {
+    margin-top : 20px; 
+    color : rgb(170, 170, 170);
+}
+
+.com_btn_span {
+    margin-right : 15px; 
+    cursor:pointer;
+}
+
+.fa-comment-o, .fa-trash-o {
+    margin-right : 5px;
+}
+
+.img_box {
+    width : 50px; 
+    height : 50px;  
+    border-radius: 70%;
+    overflow: hidden;
+}
+
+.user_img_box {
+    width : 100px; 
+    height : 100px;  
+    border-radius: 70%;
+    overflow: hidden;
+    display: inline-block;
+}
+
+
+.img_box img, .user_img_box img, .review_img_box img{
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
+}
+
+.c_time {
+    float : right; 
+    color : rgb(170, 170, 170);
+}
+
+.com_a {
+    margin-left : -11px;
+}
+
+#question, #question_comment {
+    padding : 20px; 
+    width : 98%; 
+    border : 1px solid rgb(204, 204, 204); 
+    resize: none;
+}
+
+.que_btn_area {
+    margin-top : 45px; 
+    margin-left : -30px;
+}
+
+#question_btn {
+    background :rgb(255, 209, 209); 
+    border : 1px solid rgb(255, 187, 187); 
+    width : 80px;
+    margin-top : 10px; 
+    padding : 5px;
+}
+
+.que, #q_comment, #store_f {
+    margin-top : 20px;
+}
+
+#area_icon, #category_icon, #ttag_icon {
+    margin-right : 10px;
+}
+
+.g_s_table td {
+    padding : 5px;
+}
+
+.g_s_table_title {
+    color : rgb(173, 173, 173);
+}
+
+#tag_td {
+    word-wrap: break-word;
+    color: #71aae5;
+}
+
+pre {
+    font-size: 100%;
+    font-family: sans-serif;
+}
+
+.user_goods_a, .more_a {
+    color: inherit;
+    text-decoration: none;
+}
+.user_goods_a:visited, .more_a:visited { color: inherit;text-decoration: none; }
+.user_goods_a:hover, .more_a:hover { color: inherit;text-decoration: none; }
+.user_goods_a:focus, .more_a:focus { color: inherit;text-decoration: none; }
+.user_goods_a:active, .more_a:active { color: inherit;text-decoration: none; }
+
+.review_img_box {
+    width : 40px; 
+    height : 40px;  
+    border-radius: 70%;
+    overflow: hidden;
+}
+
+.u_review_con {
+    /* 한 줄 자르기 */ 
+    display: inline-block; 
+    width: 100%; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+
+    /* 여러 줄 자르기 추가 스타일 */ 
+    white-space: normal; 
+    line-height: 1.2; 
+    height: 2.5em; 
+    text-align: left; 
+    word-wrap: break-word; 
+    display: -webkit-box; 
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+
+    font-size : 11pt; 
+    margin-top : 5px; 
+}
+
+#star_num {
+    color : rgb(53, 53, 53);
+}
+
+#star1, #star2, #star3, #star4, #star5 {
+    color : rgb(255, 208, 0);
+}
+
+
+.product__details__text ul {
+    padding-top: 20px;
+    margin-top: 25px;
+}
+
+#heart-layer {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 9999;
+    width: 130px;
+    height: 130px;
+
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    /*deco*/
+    background: #ffbab9;
+    border-radius: 70%;
+    opacity: 0.9;
+}
+#heart-content {
+    color : #fff;
+    padding: 1.5rem;
+    text-align : center;
+}
+#h_span {
+    font-size: 1.5rem;
+}
+#heart_icon {
+    margin-bottom : 3px
+}
+
+#heart-del-layer {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 9999;
+    width: 130px;
+    height: 130px;
+
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    /*deco*/
+    background: #c7c7c7;
+    border-radius: 70%;
+    opacity: 0.9;
+}
+
+.heart_btn_f {
+    color : #7FAD39; 
+    background : #fff;
+    border : 1px solid #7FAD39; 
+    width : 12%; 
+}
+
+.heart_btn_t {
+    color : #fff; 
+    background : #7FAD39;
+    border : 1px solid #7FAD39; 
+    width : 12%; 
+}
+
+#heart_btn {
+    padding-left : 17px; 
+    text-align : center;
+}
+
+#call_btn {
+    border : 1px solid #7FAD39; 
+    background : #fff; 
+    color : #7FAD39;
+    width : 41%; 
+    text-align : center;
+}
+
+#now_buy_btn {
+    width : 41%; 
+    text-align : center;
+    border : 1px solid #7FAD39;
+}
+
+#follow_btn {
+    width : 100%; 
+    background : #fff;
+    padding : 7px;
+}
+.follow_btn_f {
+    border : 1px solid rgb(204, 204, 204); 
+    color : #000;
+}
+.follow_btn_t {
+    border : 1px solid rgb(72, 158, 255); 
+    color : rgb(72, 158, 255);
+}
+
+
+#my_store_btn {
+    border : 1px solid rgb(226, 226, 226); 
+    color : rgb(138, 138, 138);
+    width : 100%; 
+    background : rgb(243, 243, 243);
+    padding : 7px;
+}
+
+#my_store_button {
+    border : 1px solid rgb(255, 184, 103); 
+    color : rgb(255, 255, 255);
+    width : 100%; 
+    background : rgb(253, 191, 109);
+    padding : 10px;
+    font-size : 15pt;
+}
+
+.rel_heart_t:hover {
+    background : rgb(255, 163, 163) !important;
+    border : 1px solid rgb(255, 163, 163) !important; 
+    color : #fff !important;
+}
+
+#s_section {
+    margin-top : -70px;
+}
+
+#big_img {
+    width : 450px; 
+    height : 483px;
+    object-fit: cover;
+    border : 1px solid rgb(236, 236, 236);
+}
+
+#small_img {
+    width : 105px; 
+    height : 105px;
+    object-fit: cover; 
+    border : 1px solid rgb(236, 236, 236);
+}
+
+#goods_cate {
+    margin-bottom : 20px;
+    color: #78a534;
+}
+
+#goods_ti {
+    font-weight : bold;
+    margin-bottom : 0px;
+}
+
+#goods_pri_d {
+    margin-bottom : 10px;
+}
+
+#goods_pri {
+    font-size : 40pt;
+    font-weight : bold; 
+    margin-right : 10px
+}
+
+#goods_won {
+    font-size : 25pt;
+    font-weight : bold;
+}
+
+#goods_det_area {
+    color :rgb(163, 163, 163);
+}
+
+#goods_det {
+    margin-right : 20px;
+}
+
+#mar_t {
+    margin-top : 6px;
+}
+
+#mar_b {
+    margin-bottom : 40px;
+}
+
+#goods_info {
+    border : 1px solid rgb(223, 223, 223); 
+    margin : 20px 20px 20px 60px; 
+    padding : 20px; 
+    background :rgb(246, 246, 246);
+}
+
+#store_info_u {
+    border : 1px solid rgb(204, 204, 204); 
+    padding : 20px; 
+    text-align : center;
+}
+
+#v_bar {
+    margin : 0px 10px 0px 10px;
+}
+
+#u_goods {
+    padding : 20px 0px 0px 20px; 
+    height : 290px;
+}
+
+#f_r {
+    float : right;
+}
+
+#u_goods_a {
+    width : 100%; 
+    margin-bottom : 20px; 
+    border : 1px solid rgb(194, 194, 194);
+    height : 90px;
+}
+
+#u_goods_img_box {
+    width : 90px; 
+    margin-bottom : 10px;
+    height : 90px; 
+    float : left; 
+    overflow: hidden;
+}
+
+#u_goods_img {
+    object-fit: cover; 
+    width: 100%; 
+    height: 100%;
+}
+
+#u_goods_t_won {
+    float : left; 
+    padding : 10px; 
+    margin-top : 5px; 
+    height : 90px;
+}
+
+#u_goods_title {
+    margin-bottom : 5px; 
+    text-overflow: ellipsis; 
+    width : 180px;
+    white-space: nowrap; 
+    overflow: hidden;
+}
+
+#p_none {
+    font-size : 11pt; 
+    text-align : center; 
+    margin-top: 100px;
+}
+
+#hr_mar {
+    margin : 0px;
+}
+
+#rev_r {
+    height : 95px; 
+    margin-top : 15px;
+}
+
+#rev_area {
+    padding : 20px 0px 0px 20px;
+}
+
+#rev_store_name {
+    text-overflow: ellipsis; 
+    width : 150px; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    float : left;
+}
+
+#rev_star {
+    font-size : 8pt;
+}
+
+#rel_goods_b_title {
+    font-size : 20pt;
+}
+
+#origin_img_area {
+    display : none;
+    cursor : pointer;
+    opacity : 0.8;
+}
+
+#origin {
+    position:absolute;
+    color : #fff; 
+    padding: 3px 15px 3px 35px; 
+    background : rgb(61, 61, 61);
+    border-radius: 1em; 
+    top: 440px; 
+    right: 30px;
+}
+
+#origin_search_icon {
+    position:absolute;
+    top: 387px;
+    right: 85px; 
+    color:#fff;
+}
+/*---------------------   goods show 부분 끝  -----------------------------*/
