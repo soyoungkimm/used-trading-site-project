@@ -232,7 +232,7 @@
                 </div> 
                 <div class="col-lg-2">
                     <div class="header__logo" style="padding:0px 0px">
-                        <a href="./index.html"><img src="{{ asset('template/ogani-master/img/logo.png'); }}" alt=""></a>
+                        <a href="/"><img src="{{ asset('template/ogani-master/img/logo.png'); }}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-9">
@@ -247,14 +247,16 @@
                                 <button type="submit" class="site-btn">SEARCH</button>
                             </form>
                         </div>
-                        <div class="hero__search__phone">
-                            <div class="hero__search__phone__icon">
-                                <i class="fa fa-won"></i>
+                        <a href="/goods/create">
+                            <div class="hero__search__phone">
+                                <div class="hero__search__phone__icon" style="margin-right : 8px;">
+                                    <i class="fa fa-won"></i>
+                                </div>
+                                <div class="hero__search__phone__text" style="padding-top : 15px;">
+                                    <h5>판매하기</h5>
+                                </div>
                             </div>
-                            <div class="hero__search__phone__text" style="padding-top : 15px;">
-                                <h5>판매하기</h5>
-                            </div>
-                        </div>
+                        </a>
                         <!--<div class="hero__search__phone">
                             <div class="hero__search__phone__icon">
                                 <i class="fa fa-phone"></i>

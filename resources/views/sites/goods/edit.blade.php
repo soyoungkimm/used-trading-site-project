@@ -1,6 +1,6 @@
 @php
     // check 값 세팅 함수
-    function check_setting_func($name, &$checked1, &$checked2) {
+    function check_setting_func($name, &$checked1, &$checked2, $good_colum) {
 
         $checked1 = '';
         $checked2 = '';
@@ -11,13 +11,16 @@
             else $checked2 = 'checked';   
         }
         // 안걸렸을 경우
-        else $checked1 = 'checked';
+        else {
+            if ($good_colum == 0) $checked1 = 'checked';
+            else $checked2 = 'checked';
+        }
     }
 
     // check 값 세팅
-    check_setting_func('state', $state_checked1, $state_checked2);
-    check_setting_func('exchange', $exchange_checked1, $exchange_checked2);
-    check_setting_func('delivery_fee', $delivery_fee_checked1, $delivery_fee_checked2);
+    check_setting_func('state', $state_checked1, $state_checked2, $good->state);
+    check_setting_func('exchange', $exchange_checked1, $exchange_checked2, $good->exchange);
+    check_setting_func('delivery_fee', $delivery_fee_checked1, $delivery_fee_checked2, $good->delivery_fee);
     $delivery_fee_checked = ($delivery_fee_checked1 == 'checked') ? '' : 'checked';
 @endphp
 
@@ -29,23 +32,24 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <form id="create_form" action="/goods" method="POST">
+                <form id="edit_form" action="/goods/{{ $good->id }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <h3 id="form_title">상품 등록</h3>
                     <br><br>
                     <table class="table table-striped">
                         <tbody>
                           <tr>
-                            <th scope="row" class="form_label colored top_line">제목 <span class="requ">*</span><br><span id="num_count">(<span id="title_num">0</span>/50)</span></th>
+                            <th scope="row" class="form_label colored top_line">제목 <span class="requ">*</span><br><span id="num_count">(<span id="title_num">{{ old('goods_title') ? mb_strlen(old('goods_title')) : mb_strlen($good->title) }}</span>/50)</span></th>
                             <td class="colored top_line">
-                                <input type="text" id="title" name="goods_title" placeholder="제목을 입력하세요" class="@error('goods_title') is-invalid @enderror" value="{{ old('goods_title') ? old('goods_title') : '' }}" />
+                                <input type="text" id="title" name="goods_title" placeholder="제목을 입력하세요" class="@error('goods_title') is-invalid @enderror" value="{{ old('goods_title') ? old('goods_title') : $good->title }}" />
                                 @error('goods_title')
                                     <div class="error_message">{{ $message }}</div>
                                 @enderror
                             </td>
                           </tr>
                           <tr>
-                            <th scope="row" class="form_label">상품 이미지 <span class="requ">*</span><br><span id="num_count">(<span id="image_num">0</span>/6)</span></th>
+                            <th scope="row" class="form_label">상품 이미지 <span class="requ">*</span><br><span id="num_count">(<span id="image_num">{{ count($images) }}</span>/6)</span></th>
                             <td>
                                 <div class="@error('order') is-invalid @enderror" id="content_box">
                                     <div class="content">
@@ -57,7 +61,7 @@
                                 @enderror
                                 <div class="form-group">
                                     <input type="file" class="form-control" id="image" name="image" accept="image/jpg, image/jpeg, image/png" multiple/>
-                                    <input type="hidden" name="order" id="order" value="{{ old('order') ? old('order') : '' }}" />
+                                    <input type="hidden" name="order" id="order" value="{{ old('order') ? old('order') : $order }}" />
                                 </div>
                                 <small class="form-text text-muted">
                                     <ul>
@@ -68,6 +72,13 @@
                                     </ul>
                                 </small>
                                 <ul id="preview" class="sortable">
+                                    @foreach ($images as $index=>$image)
+                                        <li class="li">
+                                            <img class="li_image" src="{{ asset('storage/images/goods/'.$image->name) }}" alt="{{ $image_names[$index] }}"/>
+                                            <span class="close_btn"><i class="fa fa-times-circle-o fa-2x" aria-hidden="true"></i></span>
+                                            <input type="hidden" class="file_name" value="{{ $image->name }}">
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </td>
                           </tr>
@@ -88,20 +99,50 @@
                                         {{-- 아닌 경우 --}}
                                         @else
                                             @foreach ($categorys as $category)
-                                                <li><button type="button" value="{{ $category->id }}" class="category_select">{{ $category->name }}</button></li>
+                                                @if ($good->category_id == $category->id) 
+                                                    <li><button type="button" value="{{ $category->id }}" class="category_select selected">{{ $category->name }}</button></li>
+                                                @else
+                                                    <li><button type="button" value="{{ $category->id }}" class="category_select">{{ $category->name }}</button></li>
+                                                @endif
                                             @endforeach
                                         @endif
                                     </ul>
                                 </div>
-                                <input type="hidden" name="category_id" id="category_id" value="{{ old('category_id') ? old('category_id') : '0' }}"/>
+                                <input type="hidden" name="category_id" id="category_id" value="{{ old('category_id') ? old('category_id') : $good->category_id  }}"/>
                             
                                 <div id="category_de_select_area" class="@error('category_de_id') is-invalid @enderror">
+                                    @if (isset($good->category_de_id))
+                                        <ul class="category_ul">
+                                            @foreach ($category_des as $category_de)
+                                                @if ($category_de->category_id == $good->category_id)
+                                                    @if ($good->category_de_id == $category_de->id) 
+                                                        <li><button type="button" value="{{ $category_de->id }}" class="category_de_select selected">{{ $category_de->name }}</button></li>
+                                                    @else   
+                                                        <li><button type="button" value="{{ $category_de->id }}" class="category_de_select">{{ $category_de->name }}</button></li> 
+                                                    @endif
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </div>
-                                <input type="hidden" name="category_de_id" id="category_de_id" value="{{ old('category_de_id') ? old('category_de_id') : '' }}"/>
+                                <input type="hidden" name="category_de_id" id="category_de_id" value="{{ old('category_de_id') ? old('category_de_id') : $good->category_de_id }}"/>
                                 
                                 <div id="category_de_de_select_area" class="@error('category_de_de_id') is-invalid @enderror">
+                                    @if (isset($good->category_de_de_id))
+                                        <ul class="category_ul">
+                                            @foreach ($category_de_des as $category_de_de)
+                                                @if ($category_de_de->category_de_id == $good->category_de_id)
+                                                    @if ($good->category_de_de_id == $category_de_de->id) 
+                                                        <li><button type="button" value="{{ $category_de_de->id }}" class="category_de_de_select selected">{{ $category_de_de->name }}</button></li>
+                                                    @else   
+                                                        <li><button type="button" value="{{ $category_de_de->id }}" class="category_de_de_select">{{ $category_de_de->name }}</button></li> 
+                                                    @endif
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </div>
-                                <input type="hidden" name="category_de_de_id" id="category_de_de_id" value="{{ old('category_de_de_id') ? old('category_de_de_id') : '' }}"/>
+                                <input type="hidden" name="category_de_de_id" id="category_de_de_id" value="{{ old('category_de_de_id') ? old('category_de_de_id') : $good->category_de_de_id }}"/>
 
                                 
                                 @error('category_id')
@@ -142,10 +183,10 @@
                           <tr>
                             <th scope="row" class="form_label">가격 <span class="requ">*</span></th>
                             <td>
-                                <input class="@error('price') is-invalid @enderror" type="text" id="price" name="price" placeholder="숫자만 입력하세요" value="{{ old('price') ? number_format(old('price')) : '100' }}"/><span class="input_left">원</span>
+                                <input class="@error('price') is-invalid @enderror" type="text" id="price" name="price" placeholder="숫자만 입력하세요" value="{{ old('price') ? number_format(old('price')) : number_format($good->price) }}"/><span class="input_left">원</span>
                                 <br><br>
-                                <input type="checkbox" name="delivery_fee" id="delivery_fee" value="1" />
-                                <label for="delivery_fee" {{ $delivery_fee_checked }}>&nbsp;배송비 포함</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" name="delivery_fee" id="delivery_fee" value="1" {{ $delivery_fee_checked }}/>
+                                <label for="delivery_fee">&nbsp;배송비 포함</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 @error('delivery_fee')
                                     <div class="error_message">{{ $message }}</div>
                                 @enderror
@@ -157,16 +198,16 @@
                           <tr>
                             <th scope="row" class="form_label colored">수량 <span class="requ">*</span></th>
                             <td class="colored">
-                                <input class="@error('number') is-invalid @enderror" type="text" id="number" name="number" placeholder="숫자만 입력하세요" value="{{ old('number') ? old('number') : '1' }}"/><span class="input_left">개</span>
+                                <input class="@error('number') is-invalid @enderror" type="text" id="number" name="number" placeholder="숫자만 입력하세요" value="{{ old('number') ? old('number') : $good->number }}"/><span class="input_left">개</span>
                                 @error('number')
                                     <div class="error_message">{{ $message }}</div>
                                 @enderror
                             </td>
                           </tr>
                           <tr>
-                            <th scope="row" class="form_label">설명 <span class="requ">*</span><br><span id="num_count">(<span id="content_num">0</span>/3000)</span></th>
+                            <th scope="row" class="form_label">설명 <span class="requ">*</span><br><span id="num_count">(<span id="content_num">{{ old('goods_content') ? mb_strlen(old('goods_content')) : mb_strlen($good->content) }}</span>/3000)</span></th>
                             <td>
-                                <textarea class="@error('goods_content') is-invalid @enderror" placeholder="상품 설명을 입력하세요" id="content" name="goods_content">{{ old('goods_content') ? old('goods_content') : '' }}</textarea>
+                                <textarea class="@error('goods_content') is-invalid @enderror" placeholder="상품 설명을 입력하세요" id="content" name="goods_content">{{ old('goods_content') ? old('goods_content') : $good->content }}</textarea>
                                 @error('goods_content')
                                     <div class="error_message">{{ $message }}</div>
                                 @enderror
@@ -177,7 +218,7 @@
                             <td class="colored">
                                 <button type="button" id="all_btn">전국</button>
                                 <button type="button" id="adress_btn">주소찾기</button>
-                                <input class="@error('area') is-invalid @enderror" type="text" id="area" name="area" value="전국" value="{{ old('area') ? old('area') : '' }}" readonly/>
+                                <input class="@error('area') is-invalid @enderror" type="text" id="area" name="area" value="{{ old('area') ? old('area') : $good->area }}" readonly/>
                                 <small class="form-text text-muted">
                                     <ul>
                                         <li>* 버튼을 클릭하여 정보를 수정하세요</li>
@@ -193,10 +234,13 @@
                             <td>
                                 <div id="tag_area">
                                     <span id="tag_span">
+                                        @foreach ($tags as $_tag)
+                                            <span id="tag_content">{{ $_tag->name }}<i id="tag_icon" class="fa fa-times-circle-o fa-lg"></i></span>
+                                        @endforeach
                                     </span>
                                     <input type="text" id="tag_text" name="tag_text" placeholder="연관태그를 입력하세요" >
                                 </div>
-                                <input type="hidden" name="tag" id="tag" value="{{ old('tag') ? old('tag') : '' }}"/>
+                                <input type="hidden" name="tag" id="tag" value="{{ old('tag') ? old('tag') : $tag }}"/>
                                 <small class="form-text text-muted">
                                     <ul>
                                         <li>- 태그는 띄어쓰기로 구분되며 최대 5개까지 입력할 수 있습니다.</li>
@@ -245,7 +289,8 @@
     var old_category_de_de_id = '{{ old("category_de_de_id") }}';
     var old_tag = '{{ old("tag") }}';
     var old_order = '{{ old("order") }}';
-    var tag_goods_id = '';
+    var tag_goods_id = '{{ $good->id }}';
+    
 
     // 유효성 검사 걸리면 실행
     $(function() {
