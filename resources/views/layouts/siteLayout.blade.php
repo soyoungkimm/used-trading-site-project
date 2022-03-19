@@ -301,7 +301,7 @@
                         </div>
                         <input type="hidden" name="h_category_de_de_id" id="h_category_de_de_id" value="0" />
                     </div>
-                </div> 
+                </div>
                 <div class="col-lg-2">
                     <div class="header__logo">
                         <a href="/"><img src="{{ asset('template/ogani-master/img/logo.png'); }}" alt=""></a>
@@ -345,7 +345,7 @@
     <!-- Hero Section End -->
 
     @yield('content')
-    
+
     <!-- Latest Product Section End -->
 
     
@@ -372,7 +372,7 @@
                         <h6>Links</h6>
                         <ul>
                             <li><a href="#">About Us</a></li>
-                            <li><a href="#">공지사항</a></li>
+                            <li><a href="/notices">공지사항</a></li>
                             <li><a href="#">Privacy Policy</a></li>
                             <li><a href="#">Privacy Policy</a></li>
                             <li><a href="#">Privacy Policy</a></li>
