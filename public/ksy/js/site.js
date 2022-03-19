@@ -226,7 +226,7 @@ $(document).on("click", ".juso", function(e){
 });
 
 
-$('.fa-search').click (function() {
+$('.find_adress_icon').click (function() {
     find_adress();
 });
 $('#find_adress_text').keyup (function(e) {
@@ -737,6 +737,17 @@ function list_set_star(star, tag_id) {
             '<i class="' + arr['star4'] + '" id="star4"></i>\n' +
             '<i class="' + arr['star5'] + '" id="star5"></i>\n' +
             '&nbsp;&nbsp;<span id="star_num">(' + (star / 2) + ')</span>\n';
+
+    $('#' + tag_id).html(str);
+}
+
+function list_set_star_not_num(star, tag_id) {
+    let arr = set_star(star);
+    let str =  '<i class="' + arr['star1'] + '" id="star1"></i>\n' + 
+            '<i class="' + arr['star2'] + '" id="star2"></i>\n' +
+            '<i class="' + arr['star3'] + '" id="star3"></i>\n' +
+            '<i class="' + arr['star4'] + '" id="star4"></i>\n' +
+            '<i class="' + arr['star5'] + '" id="star5"></i>\n';
 
     $('#' + tag_id).html(str);
 }
@@ -1275,3 +1286,233 @@ $(document).on("click", "#origin_img_area", function(e){
     }
 });
 /*goods show 부분 끝 */
+
+
+
+/*goods.index 부분 시작 */
+$('#minprice, #maxprice').keyup (function (e) {
+    // NaN 뜰 때
+    let val = e.target.value.replace(/ /g,"");
+    if(val == '' || isNaN(val.replace(/,/g,"")) || val == 'NaN') {
+        e.target.value = '';
+        if (e.target.id == 'maxprice') 
+            $(".goods-price-range").slider("values", [$('#minprice').val().replace(/,/g,""), 0]);
+        else
+            $(".goods-price-range").slider("values", [0, $('#maxprice').val().replace(/,/g,"")]);
+
+        return;
+    }
+    $(e.target).val(numberWithCommas(e.target.value));
+});
+
+$(document).on("mouseover", '.i_category_pick, #i_category_select_area', function(e){
+    $('#i_category_select_area').css('display','inline');
+});
+$(document).on("mouseleave", '.i_category_pick, #i_category_select_area', function(e){
+    $('#i_category_select_area').css('display','none');
+});
+
+
+$(document).on("mouseover", '.i_category_de_pick, #i_category_de_select_area', function(e){
+    $('#i_category_de_select_area').css('display','inline');
+});
+$(document).on("mouseleave", '.i_category_de_pick, #i_category_de_select_area', function(e){
+    $('#i_category_de_select_area').css('display','none');
+});
+
+
+$(document).on("mouseover", '.i_category_de_de_pick, #i_category_de_de_select_area', function(e){
+    $('#i_category_de_de_select_area').css('display','inline');
+});
+$(document).on("mouseleave", '.i_category_de_de_pick, #i_category_de_de_select_area', function(e){
+    $('#i_category_de_de_select_area').css('display','none');
+});
+
+
+$('.i_category_select').click (function (e) {
+    let isNothing = true;
+    let select_value = $(e.target).val();
+
+    $('.i_category_select').removeClass('ca_selected');
+    $(e.target).addClass('ca_selected');
+    $('.i_category_pick button').text($(e.target).text());
+    $('#i_category_select_area').css('display', 'none');
+    $('#category_id').val(select_value);
+    $('#category_de_id').val(0);
+    $('#category_de_de_id').val(0);
+
+    let str =   '<span class="category_between">></span>\n' + 
+                '<div class="i_category_de_pick">\n' +
+                    '<button type="button" value="0">전체</button><i class="fa fa-caret-down arrow" aria-hidden="true"></i>\n' +
+                '</div>\n' +
+                '<div id="i_category_de_select_area">\n' +  
+                    '<ul class="i_category_ul">\n' +
+                        '<li><button type="button" value="0" class="i_category_de_select ca_selected">전체</button></li>';
+
+    if (select_value != 0) {
+        category_des.forEach((element, index, array) => {
+            if (select_value == element.category_id) {
+                isNothing = false;
+                str +=  '<li><button type="button" value="' + element.id + '" class="i_category_de_select">' + element.name + '</button></li>\n';
+            }
+        });
+    }
+    str +=          '</ul>\n' +
+                '</div>\n' +
+                '<input type="hidden" name="category_de_id" id="category_de_id" value="0"/>\n';
+
+    $("#category_de_box").empty();
+    if(!isNothing) {
+        $("#category_de_box").html(str);
+    }
+    make_goods_list(1);
+    $("#category_de_de_box").empty();
+});  
+
+$(document).on("click", '.i_category_de_select', function(e){
+    let isNothing = true;
+    let select_value = $(e.target).val();
+
+    $('.i_category_de_select').removeClass('ca_selected');
+    $(e.target).addClass('ca_selected');
+    $('.i_category_de_pick button').text($(e.target).text());
+    $('#i_category_de_select_area').css('display', 'none');
+    $('#category_de_id').val(select_value);
+    $('#category_de_de_id').val(0);
+
+    let str =   '<span class="category_between">></span>\n' + 
+                '<div class="i_category_de_de_pick">\n' +
+                    '<button type="button" value="0">전체</button><i class="fa fa-caret-down arrow" aria-hidden="true"></i>\n' +
+                '</div>\n' +
+                '<div id="i_category_de_de_select_area">\n' +  
+                    '<ul class="i_category_ul">\n' +
+                        '<li><button type="button" value="0" class="i_category_de_de_select ca_selected">전체</button></li>';
+
+    if (select_value != 0) {
+        category_de_des.forEach((element, index, array) => {
+            if (select_value == element.category_de_id) {
+                isNothing = false;
+                str +=  '<li><button type="button" value="' + element.id + '" class="i_category_de_de_select">' + element.name + '</button></li>\n';
+            }
+        });
+    }
+    str +=          '</ul>\n' +
+                '</div>\n' +
+                '<input type="hidden" name="category_de_de_id" id="category_de_de_id" value="0"/>\n';
+
+    $("#category_de_de_box").empty();
+    if(!isNothing) {
+        $("#category_de_de_box").html(str);
+    }
+    make_goods_list(1);
+});  
+
+$(document).on("click", '.i_category_de_de_select', function(e){
+    let select_value = $(e.target).val();
+    $('.i_category_de_de_select').removeClass('ca_selected');
+    $(e.target).addClass('ca_selected');
+    $('.i_category_de_de_pick button').text($(e.target).text());
+    $('#i_category_de_de_select_area').css('display', 'none');
+    $('#category_de_de_id').val(select_value);
+    make_goods_list(1);
+});
+
+
+$(document).on('click','.pagi',function(event){
+    event.preventDefault();
+    let page = $(this).attr('href').split('page=')[1];
+
+    make_goods_list(page);
+});
+
+function make_goods_list(page) {
+    
+    let search = $("#search_text").val();
+    let selected_num = $("#selected_num").val();
+    let search_area = $("#find_area_text").val();
+    let category_id = $("#category_id").val();
+    let category_de_id = $("#category_de_id").val();
+    let category_de_de_id = $("#category_de_de_id").val();
+    let min_price = $("#minprice").val().replace(/,/g, "");
+    let max_price = $("#maxprice").val().replace(/,/g, "");
+    let state = $('input[name=state]:checked').val();
+    let sale_state = $('input[name=sale_state]:checked').val();
+    let order = $('#order').val();
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: "?page=" + page,
+        type: "get",
+        dataType: 'html',
+        data: {
+            search : search, // 검색창 검색어
+            selected_num : selected_num, // 검색창 필터
+            search_area : search_area,
+            category_id : category_id,
+            category_de_id : category_de_id,
+            category_de_de_id : category_de_de_id,
+            min_price : min_price,
+            max_price : max_price,
+            state : state,
+            sale_state : sale_state,
+            order : order // 정렬
+        },
+        success : function(data) {
+            // 결과 화면에 띄우기
+            $('#goods_area').empty();
+            $('#goods_area').html(data);
+        },
+        error: function(request,status,error){ 
+            alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+            console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+        }
+    });
+}
+
+function text_filter(text) {
+    _text = text.trim(); // 앞 뒤 공백 자르기
+    _text = _text.replace(/\s{2,}/gi, ' '); // 두 칸 이상 공백을 한 칸 공백으로 치환
+    return _text;
+}
+
+function search_area() {
+    let _text = text_filter($('#find_area_text').val());
+    $('#find_area_text').val(_text);
+    make_goods_list(1);
+}
+
+$('#find_goods_area_icon').click (function (e) {
+    search_area();
+});
+$('#find_area_text').keyup (function (e) {
+    if (e.keyCode == 13 || e.which == 13) {
+        search_area();
+    }
+});
+$('.goods_state, .goods_sale_state').change (function (e) {
+    make_goods_list(1);
+});
+
+
+function check_price(price, target) {
+    if(price < 100) {
+        target.value = 100;
+        return;
+    }
+    if(price > 10000000) {
+        target.value = numberWithCommas(String(price).substring(0 , String(10000000).length));
+        return;
+    }
+    $(".goods-price-range").slider("values", [$("#minprice").val().replace(/,/g,""), $("#maxprice").val().replace(/,/g,"")]);
+}
+
+
+$("#minprice, #maxprice").change(function (e) {
+    let price = parseInt(e.target.value.replace(/,/g,""));
+    check_price(price, e.target);
+});
+
+function sel_order() {
+    make_goods_list(1);
+}
+/*goods.index 부분 끝 */

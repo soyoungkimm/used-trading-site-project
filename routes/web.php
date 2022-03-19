@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NoticesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminGoodsController;
 use App\Http\Controllers\AdminReviewsController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\QuestionCommentsController;
 use App\Http\Controllers\HeartGoodsController;
 use App\Http\Controllers\FollowsController;
+use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +38,7 @@ use App\Http\Controllers\FollowsController;
 */
 
 
-// admin 
+// admin
 Route::prefix('admin')->group(function () {
     Route::group(['middleware' => 'adminCheck'], function(){
         Route::resources([
@@ -56,7 +58,7 @@ Route::prefix('admin')->group(function () {
             'category-de-de' => AdminCategoryDeDeController::class,
             'todo_lists' => AdminToDoListsController::class,
         ]);
-        Route::post('users/checkUid', 'App\Http\Controllers\AdminUsersController@checkUid')->name('users.checkUid'); // users check uid 
+        Route::post('users/checkUid', 'App\Http\Controllers\AdminUsersController@checkUid')->name('users.checkUid'); // users check uid
         Route::get('/', AdminDashboardController::class); // dashboard
     });
 
@@ -66,11 +68,8 @@ Route::prefix('admin')->group(function () {
     Route::get('logout', 'App\Http\Controllers\AdminUsersController@logout')->name('admin.logout');
 });
 
-
 // site main
-Route::get('/', function () {
-    return view('sites.main');
-});
+Route::get('/', [MainController::class, 'main']);
 
 // site resource
 Route::resources([
@@ -79,7 +78,7 @@ Route::resources([
     'question_comments' => QuestionCommentsController::class,
 ]);
 
-// site goods 
+// site goods
 Route::prefix('goods')->group(function () {
     Route::post('upload', [GoodsController::class, 'ajax_upload_image'])->name('upload_image');
     Route::post('delete_image', [GoodsController::class, 'ajax_delete_image'])->name('delete_image');
@@ -97,4 +96,10 @@ Route::prefix('hearts')->group(function () {
 Route::prefix('follows')->group(function () {
     Route::post('/', [FollowsController::class, 'store']);
     Route::delete('delete', [FollowsController::class, 'destroy']);
+});
+
+// site notices
+Route::prefix('notices')->group(function () {
+    Route::get('/', [NoticesController::class, 'index']);
+    Route::get('/{notice}', [NoticesController::class, 'show']);
 });

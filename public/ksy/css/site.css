@@ -270,7 +270,7 @@ small {
     /* margin-top : 10px; */
     background: #fff;
     height : 300px;
-    overflow-y:scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 .category_ul li button {
@@ -917,3 +917,233 @@ pre {
     color:#fff;
 }
 /*---------------------   goods show 부분 끝  -----------------------------*/
+
+/*---------------------   main 부분 시작  -----------------------------*/
+#today_goods_title {
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    overflow: hidden;
+}
+
+#today_goods_area {
+    cursor: pointer;
+}
+
+#m_goods_title {
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    overflow: hidden;
+    width : 180px;
+}
+
+#m_goods_writeday {
+    font-size: 9pt; 
+    padding-left:30px; 
+    color : rgb(158, 158, 158);
+}
+
+.lately_goods_writeday {
+    font-size: 12px !important;
+    color :rgb(170, 170, 170) !important;
+    margin: -5px 0px 5px 0px;
+}
+
+.heart_high_goods_h {
+    font-size: 12px !important;
+    color :rgb(255, 149, 149) !important;
+    margin: -5px 0px 5px 0px;
+}
+
+.m_goods_img {
+    width : 110px !important; 
+    height : 110px !important;
+    object-fit: cover;
+}
+
+.star_high_goods_s {
+    font-size: 12px !important;
+    color :rgb(240, 204, 0) !important;
+    margin: -5px 0px 5px 0px;
+}
+/*---------------------   main 부분 끝  -----------------------------*/
+
+
+
+/*---------------------   goods.index 부분 시작  -----------------------------*/
+.price-range-wrap .range-slider .price-input input {
+    max-width: 35%;
+}
+.price-range-wrap .range-slider .price-input:after {
+    width : 0px;
+}
+#find_area_text {
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    border-left: 1px solid #dfdfdf;
+    border-right : none;
+    padding: 10px;
+    width: 85%;
+}
+
+#find_goods_area_icon {
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    border-right: 1px solid #dfdfdf;
+    border-left : none;
+    position: inherit;
+    background: #fff;
+    margin-top: -46px;
+    padding: 14px;
+    color : #ababab;
+}
+
+#i_category_select_area, #i_category_de_select_area, #i_category_de_de_select_area {
+    display : none;
+    height: 302px;
+    width: 181px;
+    margin-top: 35px;
+    z-index: 1;
+    margin-left: -181px;
+    float: left;
+    position : absolute;
+}
+
+#i_category_select_area_top, #i_category_de_select_area_top, #i_category_de_de_select_area_top {
+    float : left;
+    margin-left : 0px;
+    height: 50px;
+    width: 200px;
+}
+
+.i_category_ul {
+    list-style-type: none;
+    border : 1px solid rgb(199, 199, 199);
+    width : 181px;
+    background: #fff;
+    height : 300px;
+    font-size : 11pt;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.i_category_ul li button {
+    width : 170px;
+    border : none;
+    background: #fff;
+    text-align: left;
+    padding : 6px 10px 6px 10px;
+}
+
+.i_category_ul li button:hover {
+    background: rgb(230, 230, 230);
+}
+
+.i_category_pick, .i_category_de_pick, .i_category_de_de_pick {
+    list-style-type: none;
+    border : 1px solid rgb(199, 199, 199);
+    padding : 5px;
+    width : 181px;
+    background: #fff;
+    height : 36px;
+    font-size : 11pt;
+    float: left;
+}
+
+.i_category_pick button, .i_category_de_pick button, .i_category_de_de_pick button  {
+    width : 170px;
+    border : none;
+    /* padding : 8px 0px 6px 10px; */
+    background: #fff;
+    text-align: left;
+}
+
+.i_category_pick .arrow, .i_category_de_pick .arrow, .i_category_de_de_pick .arrow{
+    position: absolute;
+    color : rgb(172, 172, 172);
+    margin-left: 150px;
+    margin-top: -19.5px;
+}
+
+.category_between {
+    float : left;
+    margin: 4px 20px 0px 20px;
+}
+
+.goods_state {
+    width:16px;
+    height:16px;
+    accent-color : rgb(237, 18, 179);
+}
+.goods_sale_state {
+    width:16px;
+    height:16px;
+    accent-color : rgb(167, 0, 255);
+}
+
+.pagination {
+    justify-content : center;
+}
+
+.ca_selected {
+    color : #00b9ff;
+}
+
+.goods_image {
+    height: 270px;
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top center;
+}
+
+.product__pagination .active {
+    background: #7fad39;
+    color : #fff;
+}
+
+.cen {
+    
+}
+
+.price-input, #minprice {
+    text-align: center;
+}
+
+#maxprice {
+    margin-left : 20px; 
+    text-align : center;
+}
+
+.pdt {
+    padding-top: 30px;
+}
+
+.product_pdt {
+    padding-top: 0px;
+}
+
+#sear_area {
+    font-size : 15pt; 
+    margin-bottom: 30px;
+}
+
+#search_result {
+    color : rgb(255, 128, 128);
+}
+
+#goods_count_box {
+    color : rgb(170, 170, 170);
+}
+
+.i_goods_title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 130px;
+}
+
+.my_pagination {
+    text-align: center;
+}
+/*---------------------   goods.index 부분 끝  -----------------------------*/

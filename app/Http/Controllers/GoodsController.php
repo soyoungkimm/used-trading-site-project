@@ -17,9 +17,119 @@ class GoodsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // 현재 로그인한 사용자 id가져오기  <-- 임시
+        $user_id = 2;
+
+        // 한 페이지당 보일 상품 개수
+        $goods_num_per_page = 9;
+
+        // ajax로 접근했을 때(페이지네이션)
+        if ($request->ajax()) {
+
+            $goods = GoodsController::ajax_make_goods_list();
+            $goods = $goods->orderBy('goods.id', 'asc')->paginate($goods_num_per_page);
+
+            // 시간 세팅
+            foreach ($goods as $good)
+                $good->writeday = parent::get_date_diff($good->writeday);
+
+            // 찜한 상품인지 확인    
+            $isHearts = array();
+            foreach ($goods as $good) {
+                if (DB::table('heart_goods')
+                ->where('user_id', $user_id)
+                ->where('goods_id', $good->id)
+                ->exists()) {
+                    array_push($isHearts, 0); // true
+                }
+                else {
+                    array_push($isHearts, 1); // false
+                }
+            }
+            
+            return view('sites.goods.goodsResult', [
+                'goods' => $goods,
+                'isHearts' => $isHearts
+            ]);
+        }
+
+        // goods 데이터 가져오기
+        $goods = DB::table('goods')
+            ->join('goods_images', 'goods_images.goods_id', '=', 'goods.id')
+            ->select('goods.title', 'goods.price', 'goods.id', 'goods_images.name as goods_image', 'goods.writeday')
+            ->where('goods_images.order', 0);
+        if (request('search') != null) {
+            if (request('selected_num') == 0){ // 상품명
+                $goods->where('goods.title', 'like', '%' . request('search') . '%');
+            }   
+            else {  // 상점명
+                $goods->join('users', 'users.id', '=', 'goods.user_id')
+                        ->where('users.store_name', 'like', '%' . request('search') . '%');
+            }
+        }
+        if (request('category') != null) {
+            $goods->where('goods.category_id', request('category'));
+            $sel_category_id_name = DB::table('categorys')->select('name')->where('id', request('category'))->first();
+        }
+        if (request('category_de') != null) {
+            $goods->where('goods.category_de_id', request('category_de'));
+            $sel_category_de_id_name = DB::table('category_des')->select('name')->where('id', request('category_de'))->first();
+        }
+        if (request('category_de_de') != null) {
+            $goods->where('goods.category_de_de_id', request('category_de_de'));
+            $sel_category_de_de_id_name = DB::table('category_de_des')->select('name')->where('id', request('category_de_de'))->first();
+        }
+        $goods = $goods->orderby('writeday', 'desc')
+                        ->orderby('id', 'asc')
+                        ->paginate($goods_num_per_page);
+        
+        // 시간 세팅
+        foreach ($goods as $good)
+            $good->writeday = parent::get_date_diff($good->writeday);
+        
+        // 찜한 상품인지 확인    
+        $isHearts = array();
+        foreach ($goods as $good) {
+            if (DB::table('heart_goods')
+            ->where('user_id', $user_id)
+            ->where('goods_id', $good->id)
+            ->exists()) {
+                array_push($isHearts, 0); // true
+            }
+            else {
+                array_push($isHearts, 1); // false
+            }
+        }
+
+        // 최근에 올라온 상품 가져오기
+        $lately_goods = DB::table('goods')
+            ->join('goods_images', 'goods_images.goods_id', '=', 'goods.id')
+            ->select('goods.title', 'goods.price', 'goods.id', 'goods_images.name as goods_image', 'goods.writeday')
+            ->where('goods_images.order', 0)
+            ->orderby('writeday', 'desc')
+            ->orderby('id', 'asc')
+            ->limit(6)
+            ->get();
+
+        // 시간 세팅
+        foreach ($lately_goods as $lately_good)
+            $lately_good->writeday = parent::get_date_diff($lately_good->writeday);
+
+        return view('sites.goods.index', [
+            'goods' => $goods,
+            'isHearts' => $isHearts,
+            'lately_goods' => $lately_goods,
+            'search' => request('search'),
+            'selected_num' => request('selected_num'),
+            'sel_category_id' => request('category'),
+            'sel_category_id_name' => isset($sel_category_id_name) ? $sel_category_id_name->name : null,
+            'sel_category_de_id' => request('category_de'),
+            'sel_category_de_id_name' => isset($sel_category_de_id_name) ? $sel_category_de_id_name->name : null,
+            'sel_category_de_de_id' => request('category_de_de'),
+            'sel_category_de_de_id_name' => isset($sel_category_de_de_id_name) ? $sel_category_de_de_id_name->name : null
+        ]);
     }
 
     /**
@@ -29,16 +139,7 @@ class GoodsController extends Controller
      */
     public function create()
     {
-        // 데이터 가져오기
-        $categorys = DB::table('categorys')->get();
-        $category_des = DB::table('category_des')->get();
-        $category_de_des = DB::table('category_de_des')->get();
-
-        return view('sites.goods.create', [ 
-            'categorys' => $categorys,
-            'category_des' => $category_des,
-            'category_de_des' => $category_de_des
-        ]);
+        return view('sites.goods.create');
     }
 
     /**
@@ -156,7 +257,7 @@ class GoodsController extends Controller
             ->first();
 
         // 시간 세팅
-        $good->writeday = GoodsController::get_date_diff($good->writeday);
+        $good->writeday = parent::get_date_diff($good->writeday);
 
         // goods 조회수 + 1
         if($good->user_id != $user_id){
@@ -178,7 +279,7 @@ class GoodsController extends Controller
 
         // 시간 세팅
         foreach($questions as $question) {
-            $question->writeday = GoodsController::get_date_diff($question->writeday);
+            $question->writeday = parent::get_date_diff($question->writeday);
         }
 
         // question_comment 데이터 가져오기
@@ -201,7 +302,7 @@ class GoodsController extends Controller
         // 시간 세팅
         foreach ($question_comments as $question_commentv) {
             foreach ($question_commentv as $question_comment) {
-                $question_comment->writeday = GoodsController::get_date_diff($question_comment->writeday);
+                $question_comment->writeday = parent::get_date_diff($question_comment->writeday);
             }
         }
 
@@ -257,7 +358,7 @@ class GoodsController extends Controller
 
         // 시간 세팅
         foreach($user_reviews as $user_review) {
-            $user_review->writeday = GoodsController::get_date_diff($user_review->writeday);
+            $user_review->writeday = parent::get_date_diff($user_review->writeday);
         }
 
         // 찜한 상품인지 확인
@@ -379,12 +480,6 @@ class GoodsController extends Controller
      */
     public function edit(Good $good)
     {
-        // 데이터 가져오기
-        $categorys =  DB::table('categorys')->get();
-        $category_des = DB::table('category_des')->get();
-        $category_de_des = DB::table('category_de_des')->get();
-
-
         // 이미지 정보 가져오기
         $images = DB::table('goods_images')->select('name')->where('goods_id', $good->id)->orderby('order')->get();
         $image_names = array();
@@ -411,9 +506,6 @@ class GoodsController extends Controller
         //페이지 이동
         return view('sites.goods.edit', [
             'good' => $good, 
-            'categorys' => $categorys,
-            'category_des' => $category_des,
-            'category_de_des' => $category_de_des,
             'order' => $order,
             'tag'=>$tag,
             'tags'=>$tags,
@@ -603,8 +695,6 @@ class GoodsController extends Controller
         echo $file_name;
     }
 
-
-
     // 파일 업로드 함수
     private function file_upload($request) {
 
@@ -656,22 +746,51 @@ class GoodsController extends Controller
     }
 
 
-    private function get_date_diff($datetime){
-
-        $time_lag = time() - strtotime($datetime);
-	
-        if($time_lag < 60) {
-            $posting_time = "방금";
-        } elseif($time_lag >= 60 and $time_lag < 3600) {
-            $posting_time = floor($time_lag/60)."분 전";
-        } elseif($time_lag >= 3600 and $time_lag < 86400) {
-            $posting_time = floor($time_lag/3600)."시간 전";
-        } elseif($time_lag >= 86400 and $time_lag < 2419200) {
-            $posting_time = floor($time_lag/86400)."일 전";
-        } else {
-            $posting_time = date("y-m-d", strtotime($datetime));
-        } 
+    function ajax_make_goods_list() {
+        $goods = DB::table('goods')
+                ->join('goods_images', 'goods_images.goods_id', '=', 'goods.id')
+                ->join('users', 'users.id', '=', 'goods.user_id')
+                ->select('goods.title', 'goods.price', 'goods.id', 'goods_images.name as goods_image', 'goods.writeday')
+                ->whereBetween('goods.price', array(request('min_price'), request('max_price')))
+                ->where('goods_images.order', 0);
+        if (request('search') != '') {
+            if (request('selected_num') == 0){ // 상품명
+                $goods->where('goods.title', 'like', '%' . request('search') . '%');
+            }   
+            else {  // 상점명
+                $goods->where('users.store_name', 'like', '%' . request('search') . '%');
+            }
+        }
+        if (request('category_id') != 0) 
+            $goods->where('goods.category_id', request('category_id'));
         
-        return $posting_time;
+        if (request('category_de_id') != 0) 
+            $goods->where('goods.category_de_id', request('category_de_id'));
+        
+        if (request('category_de_de_id') != 0) 
+            $goods->where('goods.category_de_de_id', request('category_de_de_id'));
+        
+        if (request('search_area') != '') 
+            $goods->where('goods.area', 'like', '%' . request('search_area') . '%');
+        
+        if (request('state') != 3) 
+            $goods->where('goods.state', request('state'));
+        
+        if (request('sale_state') != 3) 
+            $goods->where('goods.sale_state', request('sale_state'));
+        
+        if (request('order') == 0)  // 최신순
+            $goods->orderBy('goods.writeday', 'desc');
+        else if (request('order') == 1)  // 저가순
+            $goods->orderBy('goods.price', 'asc');
+        else if (request('order') == 2) // 고가순
+            $goods->orderBy('goods.price', 'desc');
+
+        return $goods;
+    }
+
+    function ajax_get_goods_count() {
+        $goods = GoodsController::ajax_make_goods_list();
+        echo $goods->count();
     }
 }

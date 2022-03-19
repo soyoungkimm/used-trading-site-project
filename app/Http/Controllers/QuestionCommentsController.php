@@ -51,7 +51,7 @@ class QuestionCommentsController extends Controller
         $user = DB::table('users')->select('name', 'image')->where('id', $user_id)->first();
 
         // 값 세팅
-        $data['question_comment_writeday'] = QuestionCommentsController::get_date_diff($question_comment->writeday);
+        $data['question_comment_writeday'] = parent::get_date_diff($question_comment->writeday);
         $data['question_comment_id'] = $question_comment->id;
         $data['user_name'] = $user->name;
         $data['user_image'] = $user->image;
@@ -103,24 +103,5 @@ class QuestionCommentsController extends Controller
     {
         // question comment 삭제
         DB::table('question_comments')->where('id', request('question_comment_id'))->delete();
-    }
-
-    private function get_date_diff($datetime){
-
-        $time_lag = time() - strtotime($datetime);
-	
-        if($time_lag < 60) {
-            $posting_time = "방금";
-        } elseif($time_lag >= 60 and $time_lag < 3600) {
-            $posting_time = floor($time_lag/60)."분 전";
-        } elseif($time_lag >= 3600 and $time_lag < 86400) {
-            $posting_time = floor($time_lag/3600)."시간 전";
-        } elseif($time_lag >= 86400 and $time_lag < 2419200) {
-            $posting_time = floor($time_lag/86400)."일 전";
-        } else {
-            $posting_time = date("y-m-d", strtotime($datetime));
-        } 
-        
-        return $posting_time;
     }
 }
