@@ -23,6 +23,7 @@ use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\QuestionCommentsController;
 use App\Http\Controllers\HeartGoodsController;
 use App\Http\Controllers\FollowsController;
+use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,11 +67,8 @@ Route::prefix('admin')->group(function () {
     Route::get('logout', 'App\Http\Controllers\AdminUsersController@logout')->name('admin.logout');
 });
 
-
 // site main
-Route::get('/', function () {
-    return view('sites.main');
-});
+Route::get('/', [MainController::class, 'main']);
 
 // site resource
 Route::resources([

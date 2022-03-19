@@ -315,7 +315,7 @@
                                 </ul>
                             </div>
                             <div class="product__item__text">
-                                <h6><a href="#">{{ $related_good->title }}</a></h6>
+                                <h6 id="today_goods_title"><a href="#">{{ $related_good->title }}</a></h6>
                                 <h5>{{ number_format($related_good->price) }} 원</h5>
                             </div>
                         </div>

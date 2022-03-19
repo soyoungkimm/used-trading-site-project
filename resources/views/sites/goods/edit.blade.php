@@ -267,7 +267,7 @@
                 <!-- Adress Modal -->
                 <div id="adress_find_modal" class="modal">
                     <div id="adress_area">
-                        <span id="adress_title">주소 검색 <i class="fa fa-search" aria-hidden="true"></i></span>
+                        <span id="adress_title">주소 검색 <i class="fa fa-search find_adress_icon" aria-hidden="true"></i></span>
                         <span class="close_adress_modal">&times;</span>
                         <input type="text" id="find_adress_text" placeholder="주소를 입력하세요" />
                         <div id="adress_result">
@@ -282,8 +282,6 @@
 <script src="{{ asset('ksy/js/site.js'); }}"></script>
 <script>
     // 값 세팅
-    var category_des = <?php echo json_encode($category_des)?>;
-    var category_de_des = <?php echo json_encode($category_de_des)?>;
     var old_category_id = '{{ old("category_id") }}';
     var old_category_de_id = '{{ old("category_de_id") }}';
     var old_category_de_de_id = '{{ old("category_de_de_id") }}';

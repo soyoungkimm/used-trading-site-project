@@ -97,7 +97,23 @@
 
 
     $('.hero__categories__all').on('click', function(){
-        $('.hero__categories ul').slideToggle(400);
+        if ($('#h_category').css('display') == 'none') {
+            $('#h_category').slideToggle(400);
+        }
+        else {
+            $("#h_category_id").val('0');
+            $('#h_category_de_id').val('0');
+            $('#h_category_de_de_id').val('0');
+            $('.h_cate').removeClass("h_selected");
+            
+            $('#h_category').slideToggle(400);
+            $('#h_category_de_de').slideToggle(400);
+            $('#h_category_de').slideToggle(400);
+            setTimeout(function() {
+                $('#h_category_de_area').empty();
+                $('#h_category_de_de_area').empty();
+            }, 400);
+        }
     });
 
     /*--------------------------
@@ -162,23 +178,32 @@
     /*-----------------------
 		Price Range Slider
 	------------------------ */
-    var rangeSlider = $(".price-range"),
-        minamount = $("#minamount"),
-        maxamount = $("#maxamount"),
+    var rangeSlider = $(".goods-price-range"),
+        minamount = $("#minprice"),
+        maxamount = $("#maxprice"),
         minPrice = rangeSlider.data('min'),
         maxPrice = rangeSlider.data('max');
     rangeSlider.slider({
         range: true,
         min: minPrice,
         max: maxPrice,
+        // step:10,
         values: [minPrice, maxPrice],
+        change: function() {
+            if(($('#minprice').val() == '' || isNaN($('#minprice').val().replace(/,/g,""))) || ($('#maxprice').val() == '' || isNaN($('#maxprice').val().replace(/,/g,"")))) return;
+            make_goods_list(1);
+        },
         slide: function (event, ui) {
-            minamount.val('$' + ui.values[0]);
-            maxamount.val('$' + ui.values[1]);
+            minamount.val(numberWithCommas(ui.values[0]));
+            maxamount.val(numberWithCommas(ui.values[1]));
         }
     });
-    minamount.val('$' + rangeSlider.slider("values", 0));
-    maxamount.val('$' + rangeSlider.slider("values", 1));
+    minamount.val(numberWithCommas(rangeSlider.slider("values", 0)));
+    maxamount.val(numberWithCommas(rangeSlider.slider("values", 1)));
+
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
     /*--------------------------
         Select
