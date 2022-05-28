@@ -103,3 +103,14 @@ Route::prefix('notices')->group(function () {
     Route::get('/', [NoticesController::class, 'index']);
     Route::get('/{notice}', [NoticesController::class, 'show']);
 });
+
+
+// broadcast
+Route::get('/event', function() {
+    event(new MessageNotification('this is a first message'));
+});
+
+// broadcast
+Route::get('/listen', function() {
+    return view('sites/chats/listen');
+});
