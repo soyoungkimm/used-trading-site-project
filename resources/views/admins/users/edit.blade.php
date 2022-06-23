@@ -34,24 +34,22 @@
         $("#inputPwd").keyup(function(){
             var userPwd = $("#inputPwd").val();
             
-            var patttern_num=/[0-9]/;
-            var patttern_eng=/[a-zA-Z]/;
-            if(patttern_num.test(userPwd) && patttern_eng.test(userPwd) && userPwd.length>3 && userPwd.length<13){
+            var patttern=/(?=.*\d)(?=.*[a-zA-ZS])(?=.*?[?!@$]).{4,12}/; 
+            if(patttern.test(userPwd)){
                 form1.pwCheck.value = "1";
                 $('#pwMemo').empty();
                 $('#pwMemo').append("<p style='color:blue'>사용가능한 비밀번호입니다</p>");
             }else{
                 form1.pwCheck.value = "0";
                 $('#pwMemo').empty();
-                $('#pwMemo').append("<p style='color:red'>8~12이내 영문, 숫자로 조합해야합니다</p>");
+                $('#pwMemo').append("<p style='color:red'>4~12자리의 영문,숫자,(?!@$)조합만 가능합니다</p>");
             }
         });
 
         $("#id_check").click(function(){
             var userId=$('#inputUid').val();
-            var patttern_num=/[0-9]/;
-            var patttern_eng=/[a-zA-Z]/;
-            if(patttern_num.test(userId) && patttern_eng.test(userId) ){
+            var patttern=/(?=.*\d)(?=.*[a-zA-ZS])(?=.*?[?!@$]).{4,12}/; 
+            if(patttern.test(userId)){
                 $.ajax({
                     method:"POST",
                     url:"/admin/users/checkUid",

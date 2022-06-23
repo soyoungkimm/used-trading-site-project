@@ -37,25 +37,25 @@
         $("#inputPwd").keyup(function(){
             var userPwd = $("#inputPwd").val();
             
-            var patttern_num=/[0-9]/;
-            var patttern_eng=/[a-zA-Z]/;
-            if(patttern_num.test(userPwd) && patttern_eng.test(userPwd) && userPwd.length>3 && userPwd.length<13){
+            var patttern=/(?=.*\d)(?=.*[a-zA-ZS])(?=.*?[?!@$]).{4,12}/; 
+            if(patttern.test(userPwd)){
                 form1.pwCheck.value = "1";
                 $('#pwMemo').empty();
                 $('#pwMemo').append("<p style='color:blue'>사용가능한 비밀번호입니다</p>");
             }else{
                 form1.pwCheck.value = "0";
                 $('#pwMemo').empty();
-                $('#pwMemo').append("<p style='color:red'>4~12이내 영문, 숫자로 조합해야합니다</p>");
+                $('#pwMemo').append("<p style='color:red'>4~12자리의 영문,숫자,(?!@$)조합만 가능합니다</p>");
             }
         });
 
         
+
+        
         $("#id_check").click(function(){
             var userId=$('#inputUid').val();
-            var patttern_num=/[0-9]/;
-            var patttern_eng=/[a-zA-Z]/;
-            if(patttern_num.test(userId) && patttern_eng.test(userId) ){
+            var patttern=/(?=.*\d)(?=.*[a-zA-ZS]).{4,12}/;
+            if(patttern.test(userId)){
                 $.ajax({
                     method:"POST",
                     url:"/admin/users/checkUid",
@@ -65,8 +65,8 @@
                     },
                     dataType:"text",
                     success: function(result){
-                        console.log(JSON.stringify(result));
-                        console.log(result);
+                        //console.log(JSON.stringify(result));
+                        //console.log(result);
                         if(result == 0){
                             form1.idCheck.value="1"
                             alert("사용가능한 ID입니다");
@@ -76,7 +76,7 @@
                             form1.idCheck.value="0"
                             alert("사용 불가능한 ID입니다");
                             $('#idMemo').empty();
-                            $('#idMemo').append("<p style='color:red'>ID 중복확인이 필요합니다</p>");
+                            $('#idMemo').append("<p style='color:red'>이미 사용중인 ID입니다</p>");
                         }
                     }
                 });
@@ -114,7 +114,7 @@
                                             <input class="form-control" id="inputUid" type="text" name="uid" placeholder="ID" value="" style="height: calc(3.5rem + 2px);" />
                                             <a class="btn btn-primary btn-block" id="id_check" style="padding-top:15px;" >중복체크</a>
                                         </div>
-                                        <div id="idMemo"><p style='color:red'>ID 중복확인이 필요합니다</p></div>
+                                        <div id="idMemo"></div>
                                     </div>
                                     
                                 </div>  
@@ -122,7 +122,7 @@
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="inputPwd" type="text" name="pwd" placeholder="pwd" value="" />
                                         <label for="inputPwd">PW</label>
-                                        <div id="pwMemo"><p style='color:red'>4~12이내 영문, 숫자로 조합해야합니다</p></div>
+                                        <div id="pwMemo"></div>
                                     </div>
                                 </div>    
                             </div>
