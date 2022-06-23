@@ -250,19 +250,21 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__right">
-                            
+                        @auth
                             <div class="header__top__right__language">
-                                <div>내 상점</div>
+                                <a href="#" >내 상점</a>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
                                     <li><a href="#">내 상품</a></li>
                                     <li><a href="#">찜한 상품</a></li>
-                                    <li><a href="#">계정 설정</a></li>
+                                    <li><a href="/users/show/{{ session()->get('id') }}">계정 설정</a></li>
                                     <li><a href="#">고객센터</a></li>
                                 </ul>
                             </div>
+                        @endauth
                             <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
+                                @guest<a href="/users/login"><i class="fa fa-user"></i> LogIn</a>@endguest
+                                @auth<a href="/users/logout"><i class="fa fa-user"></i> Logout</a>@endauth
                             </div>
                         </div>
                     </div>

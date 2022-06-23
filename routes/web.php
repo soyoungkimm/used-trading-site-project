@@ -24,6 +24,7 @@ use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\QuestionCommentsController;
 use App\Http\Controllers\HeartGoodsController;
 use App\Http\Controllers\FollowsController;
+use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MainController;
 
 /*
@@ -102,4 +103,18 @@ Route::prefix('follows')->group(function () {
 Route::prefix('notices')->group(function () {
     Route::get('/', [NoticesController::class, 'index']);
     Route::get('/{notice}', [NoticesController::class, 'show']);
+});
+
+// site user
+Route::prefix('users')->group(function () {
+    Route::get('/edit/{user}', [UsersController::class, 'edit']);//회원정보수정 폼
+    Route::put('/{user}', [UsersController::class, 'update']);//회원정보수정 폼
+    Route::get('/show/{user}', [UsersController::class, 'show']);//회원정보조회
+    Route::get('/login', [UsersController::class, 'loginForm']);//로그인 폼
+    Route::POST('/login', [UsersController::class, 'login']);// 로그인
+    Route::get('/logout', [UsersController::class, 'logout']);//로그아웃
+    Route::get('register', [UsersController::class, 'register']);//회원가입 폼
+    Route::POST('/store', [UsersController::class, 'store']);//회원가입
+    Route::DELETE('/delete/{user}', [UsersController::class, 'destroy']);//회원 탈퇴
+    Route::post('checkUid', [UsersController::class, 'checkUid'])->name('users.checkUid'); // users check uid
 });
