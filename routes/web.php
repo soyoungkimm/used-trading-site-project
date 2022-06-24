@@ -25,6 +25,7 @@ use App\Http\Controllers\QuestionCommentsController;
 use App\Http\Controllers\HeartGoodsController;
 use App\Http\Controllers\FollowsController;
 use App\Http\Controllers\MainController;
+use App\Events\MyEvent;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,13 +105,7 @@ Route::prefix('notices')->group(function () {
     Route::get('/{notice}', [NoticesController::class, 'show']);
 });
 
-
-// broadcast
-Route::get('/event', function() {
-    event(new MessageNotification('this is a first message'));
-});
-
-// broadcast
-Route::get('/listen', function() {
-    return view('sites/chats/listen');
+// chatting
+Route::get('/chatting/{chatWith?}', function($chatWith = null) {
+    return view('sites.chats.chatting', ['chatWith' => $chatWith ]);
 });
