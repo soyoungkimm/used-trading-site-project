@@ -339,5 +339,19 @@
         e.stopPropagation();
         heart_pop_func(this);
     });
+
+    $('#call_btn').click(function (e) {
+
+        // 로그인 안돼있으면 alert 보내고 return하기 <-- 임시
+
+        let windowWidth = 500;
+        let windowHeight = 700;
+
+        var aa = (document.body.scrollTop + (window.innerHeight/2)) ;
+        var x = (window.innerWidth - windowWidth) / 2 ;
+        var y = (aa - (windowHeight / 2));
+        let win = window.open('/chatting/' + {{ $good->user_id }}, '',"width=" + windowWidth + ",height=" + windowHeight);
+        win.moveTo(x, y);
+    });
 </script>
 @endsection

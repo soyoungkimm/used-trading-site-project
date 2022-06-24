@@ -26,6 +26,7 @@ use App\Http\Controllers\HeartGoodsController;
 use App\Http\Controllers\FollowsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MainController;
+use App\Events\MyEvent;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,4 +118,9 @@ Route::prefix('users')->group(function () {
     Route::POST('/store', [UsersController::class, 'store']);//회원가입
     Route::DELETE('/delete/{user}', [UsersController::class, 'destroy']);//회원 탈퇴
     Route::post('checkUid', [UsersController::class, 'checkUid'])->name('users.checkUid'); // users check uid
+});
+
+// chatting
+Route::get('/chatting/{chatWith?}', function($chatWith = null) {
+    return view('sites.chats.chatting', ['chatWith' => $chatWith ]);
 });
