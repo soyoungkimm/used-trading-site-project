@@ -198,3 +198,112 @@ th, .card-header {
     font-size : 13pt;
 }
 /*admin 날씨 api 끝*/
+
+
+/* admin goods 시작 */
+#content_box {
+    background :rgb(234, 243, 255);
+    height: 280px;
+    text-align : center; 
+    padding : 20px;
+}
+
+.content{
+    cursor: pointer;
+    display : inline-block;
+    outline: 2px dashed #ffffff;
+    outline-offset:-20px;
+    text-align: center;
+    transition: all .15s ease-in-out;
+    width: 100%;
+    height: 240px;
+    background-color: rgb(175, 212, 255);
+    line-height:250px;
+    color : #fff;
+    font-size: 14pt;
+}
+
+#tag_area {
+    margin-bottom: 15px;
+    width : 100%;
+    border-radius: 0.3em;
+    border : 1px solid rgb(214, 214, 214);
+    padding-left : 15px;
+    word-break: keep-all;
+}
+
+#tag_text {
+    height : 35px;
+    border : 1px solid #fff;
+    padding-left:10px;
+    margin: 10px;
+    margin-left : -10px;
+}
+
+#tag_text:focus {
+    outline: none;
+}
+
+#tag:focus {
+    outline:5px solid rgb(177, 177, 177, 0.3);
+    border : 1px solid rgb(180, 180, 180);
+}
+
+input[name=image] {
+    display: none;
+}
+
+.li_image {
+    width : 220px;
+    height : 220px;
+    object-fit: cover;
+}
+
+.close_btn {
+    float: right;
+    cursor: pointer;
+    display : inline-block;
+    z-index: 1;
+    font-weight: bold; 
+    position: absolute;
+    margin-left: -30px;
+    color : rgb(90, 90, 90);
+    opacity: 60%;
+}
+
+#preview li {
+    list-style-type: none;
+    float : left; 
+    margin-right : 10px;
+    margin-top : 10px;
+    positon :relative;
+    z-index: 0;
+    border : 2px solid rgb(230, 230, 230);
+}
+
+.close_btn {
+    float: right;
+    cursor: pointer;
+    display : inline-block;
+    z-index: 1;
+    font-weight: bold; 
+    position: absolute;
+    margin-left: -30px;
+    color : rgb(90, 90, 90);
+    opacity: 60%;
+}
+
+#tag_content {
+    border-radius: 1.5em;
+    background :rgb(231, 231, 231);
+    padding : 3px;
+    padding-left : 10px;
+    margin-right: 10px;
+}
+
+#tag_icon {
+    margin-top : 20px;
+    margin-left : 10px;
+    color : rgb(100, 100, 100, 0.6);
+}
+/* admin goods 끝 */

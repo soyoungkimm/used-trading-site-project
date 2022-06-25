@@ -619,24 +619,26 @@ class GoodsController extends Controller
         // 가지고 있는 이미지 삭제
         $image_names = GoodsImage::select('name')->where('goods_id', $good->id)->get();
         foreach ($image_names as $image_name) {
-            File::delete(public_path('storage/images/goods/'.$image_name));
+            File::delete(public_path('storage/images/goods/'.$image_name->name));
         }
         DB::table('goods_images')->where('goods_id', $good->id)->delete();
 
         // 가지고 있는 태그 삭제
         DB::table('tags')->where('goods_id', $good->id)->delete();
 
-        // 가지고 있는 question_comment 삭제
-        DB::table('question_comments')->where('goods_id', $good->id)->delete();
+        // 가지고 있는 question, question_comment 삭제
+        $questions = DB::table('questions')->where('goods_id', $good->id)->get();
+        foreach ($questions as $question) {
+            DB::table('question_comments')->where('question_id', $question->id)->delete();
+            DB::table('questions')->where('id', $question->id)->delete();
+        }
 
-        // 가지고 있는 question 삭제
-        DB::table('questions')->where('goods_id', $good->id)->delete();
-
-        // 가지고 있는 review_comment 삭제
-        DB::table('review_comments')->where('goods_id', $good->id)->delete();
-
-        // 가지고 있는 review 삭제
-        DB::table('reviews')->where('goods_id', $good->id)->delete();
+        // 가지고 있는 review, review_comment 삭제
+        $reviews = DB::table('reviews')->where('goods_id', $good->id)->get();
+        foreach ($reviews as $review) {
+            DB::table('review_comments')->where('review_id', $review->id)->delete();
+            DB::table('reviews')->where('id', $review->id)->delete();
+        }
 
         // 찜한 상품 삭제
         DB::table('heart_goods')->where('goods_id', $good->id)->delete();

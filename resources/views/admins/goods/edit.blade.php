@@ -82,20 +82,35 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th width="30%">image(상품 이미지 - 최대 6개) <span style="color : red;">*</span></th>
+                                <th width="30%">image(상품 이미지) <span style="color : red;">*</span><br><span id="num_count">(<span id="image_num">{{ count($images) }}</span>/6)</span></th>
                                 <td width="70%">
-                                    <div class="input-group mb-2">
-                                        <input type="file" accept="image/*" class="form-control @error('image') is-invalid @enderror" name="image[]" id="picture" multiple/>
+                                    <div class="@error('order') is-invalid @enderror" id="content_box">
+                                        <div class="content">
+                                            이미지를 드래그하거나 클릭하세요
+                                        </div>
                                     </div>
-                                    <div id="file_name_alert_area">
-                                        @foreach ($images as $image)
-                                            <br><img style="width: 200px;" id="preview_image" src="{{ asset('storage/images/goods/'.$image) }}" />
-                                            <span class="file_name_span">{{ $image }}</span><br>
-                                        @endforeach
-                                    </div>
-                                    @error('image')
-                                        <div style="margin-top : 5px!important; color : #dc3545;">{{ $message }}</div>
+                                    @error('order')
+                                        <div style="margin-top : 5px!important; color : #dc3545;">이미지를 등록하세요</div>
                                     @enderror
+                                    <div class="form-group">
+                                        <input type="file" class="form-control" id="image" name="image" accept="image/jpg, image/jpeg, image/png" multiple/>
+                                        <input type="hidden" name="order" id="order" value="{{ old('order') ? old('order') : $order }}" />
+                                    </div>
+                                    <small class="form-text text-muted">
+                                        - 등록할 수 있는 이미지의 개수는 <span style="color : red;">최대 6개</span><br>
+                                        - 이미지 이동해서 등록순서 변경 가능<br>
+                                        - 등록된 첫번째 이미지는 상품의 대표 이미지
+                                        </ul>
+                                    </small>
+                                    <ul id="preview" class="sortable">
+                                        @foreach ($images as $index=>$image)
+                                            <li class="li">
+                                                <img class="li_image" src="{{ asset('storage/images/goods/'.$image->name) }}" alt="{{ $image_names[$index] }}"/>
+                                                <span class="close_btn"><i class="far fa-times-circle fa-2x" aria-hidden="true"></i></span>
+                                                <input type="hidden" class="file_name" value="{{ $image->name }}">
+                                            </li>
+                                        @endforeach
+                                    </ul>
                                 </td>
                             </tr>
                             <tr>
@@ -288,6 +303,23 @@
                                     <label for="sale_state3"><input type="radio" name="sale_state" id="sale_state3" value="2" {{ $sale_state_checked3 }}/>&nbsp;예약중</label>
                                 </td>
                             </tr>
+                            <tr>
+                                <th width="30%">tags(연관태그) <span style="color : red;">*</span></th>
+                                <td>
+                                    <div id="tag_area">
+                                        <span id="tag_span">
+                                            @foreach ($tags as $_tag)
+                                                <span id="tag_content">{{ $_tag->name }}<i id="tag_icon" class="far fa-times-circle fa-lg"></i></span>
+                                            @endforeach
+                                        </span>
+                                        <input type="text" id="tag_text" name="tag_text" placeholder="연관태그를 입력하세요" >
+                                    </div>
+                                    <input type="hidden" name="tag" id="tag" value="{{ old('tag') ? old('tag') : $tag }}"/>
+                                    <small class="form-text text-muted">
+                                        - 태그는 띄어쓰기로 구분됨. <span style="color : red;">최대 5개</span>까지 입력.
+                                    </small>
+                                </td>
+                              </tr>
                         </tbody>
                     </table>
                 </div>
@@ -295,6 +327,7 @@
         </div>
     </div>
 </main>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{ asset('ksy/js/admin.js'); }}"></script>
 <script>
     // 값 세팅
@@ -303,6 +336,9 @@
     var old_category_id = '{{ old("category_id") }}';
     var old_category_de_id = '{{ old("category_de_id") }}';
     var old_category_de_de_id = '{{ old("category_de_de_id") }}';
+    var old_tag = '{{ old("tag") }}';
+    var old_order = '{{ old("order") }}';
+    var tag_goods_id = '{{ $good->id }}';
 
     $(function() {
         // 유효성 검사 걸리면 실행
@@ -312,6 +348,14 @@
         if (old_category_de_id != '' && old_category_de_id != 0) {
             selectCategoryDe(category_de_des, old_category_de_de_id);
         }
+
+        if (old_tag != '') {
+            make_tag(old_tag);
+        }
+        if (old_order != '') {
+            let image_src = '{{ asset('storage/images/goods/') }}/';
+            make_preview_image(old_order, image_src);
+        } 
     });
 
     // 카테고리 부분 클릭시 실행
@@ -321,5 +365,9 @@
     $(document).on("change", "#category_de_select", function(){
         selectCategoryDe(category_de_des, old_category_de_de_id);
     });
+
+    // 이미지 정렬 가능하게 함
+    $(".sortable").sortable();
+    $(".sortable").disableSelection();
 </script>
 @endsection

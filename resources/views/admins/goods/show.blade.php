@@ -1,3 +1,10 @@
+@php
+    $tag_names = "";
+    foreach($tags as $tag) {
+        $tag_names .= "#".$tag->name." ";
+    }
+@endphp
+
 @extends('layouts.adminLayout')
 
 @section('content')
@@ -31,8 +38,8 @@
                             <th width="30%">image(상품 이미지)</th>
                             <td width="70%">
                                 @foreach ($images as $image)
-                                    <br><img style="width: 200px;" id="preview_image" src="{{ asset('storage/images/goods/'.$image) }}" />
-                                    <span class="file_name_span"><a href="{{ asset('storage/images/goods/'.$image) }}" download>{{ $image }}</a></span><br>
+                                    <br><img style="width: 200px;" id="preview_image" src="{{ asset('storage/images/goods/'.$image->name) }}" />
+                                    <span class="file_name_span"><a href="{{ asset('storage/images/goods/'.$image->name) }}" download>{{ $image->name }}</a></span><br>
                                 @endforeach
                             </td>
                         </tr>
@@ -97,6 +104,10 @@
                         <tr>
                             <th width="30%">sale_state(판매 상태)</th>
                             <td width="70%"><input class="form-control" type="text" readonly value="{{ $set_good['sale_state'] }}"></td>
+                        </tr>
+                        <tr>
+                            <th width="30%">tags(연관 태그)</th>
+                            <td width="70%"><input style="color : rgb(77, 160, 255)" class="form-control" type="text" readonly value="{{ $tag_names }}"></td>
                         </tr>
                     </tbody>
                 </table>

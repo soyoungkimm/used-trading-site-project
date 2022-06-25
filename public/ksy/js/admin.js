@@ -572,3 +572,368 @@ $('#picture').change(function(e){
     readFiles(e);
 });
 /* admin goods 카테고리 부분 끝 */
+
+
+
+
+
+// admin goods 시작
+function make_tag(tags) {
+
+    let tag_arr = tags.split(" ");
+
+    $("#tag_span").empty();
+    for (tag of tag_arr) {
+        // tag 화면에 만들기
+        let str = '<span id="tag_content">' + tag + '<i id="tag_icon" class="far fa-times-circle fa-lg"></i></span>';
+        $("#tag_span").append(str);
+    }
+
+    // tag 적는 text 비우기
+    $("#tag_text").val('');
+}
+
+function make_preview_image(old_order, image_src) {
+    // |로 나눔
+    let image_arr = old_order.split("|");
+
+    // 이미지 미리보기 생성
+    let str ='';
+    for (image of image_arr) {
+
+        // 이미지 파일 이름 세팅
+        let temp = image.split("_");
+        let image_name = '';
+        for (let i = 0; i < temp.length; i++) {
+            if (i == 0) continue;
+            image_name += temp[i];
+        }
+
+
+        // 이미지 preview 화면에 만들기
+        str += '<li class="li">\n' + 
+                        '<img class="li_image" src="' + image_src + image + '" alt="' + image_name + '"/>\n' +
+                        '<span class="close_btn"><i class="far fa-times-circle fa-2x" aria-hidden="true"></i></span>\n' +  
+                        '<input type="hidden" class="file_name" value="' + image + '">\n' + 
+                    '</li>\n';
+    }
+    $("#preview").html(str);
+
+
+    // 이미지 개수 세팅
+    $("#image_num").html(image_arr.length);
+}
+
+
+$('#tag_text').focus (function () {
+    $('#tag_area')
+    .css('outline', '5px solid rgb(177, 177, 177, 0.3)')
+    .css('border', '1px solid rgb(180, 180, 180)');
+});
+$('#tag_text').blur (function () {
+    $('#tag_area')
+        .css('outline', 'none')
+        .css('border', '1px solid rgb(214, 214, 214)');
+});
+
+
+$('#tag_area').click (function () {
+    $('#tag_text').focus();
+});
+
+
+
+// tag 생성
+$("#tag_text").keyup(function (e) {
+    console.log("태그생성")
+    // 엔터키나 스페이스바 누르면 실행
+    if ((e.keyCode == 13 || e.which == 13) || (e.keyCode == 32 || e.which == 32)) {
+
+        // tag 공백제거
+        let tag_text_value = $('#tag_text').val().replace(/ /g,"");
+    
+        // tag 안에 내용이 없으면 retrun 
+        if (tag_text_value == '') {
+            alert('태그를 입력하세요');
+            $("#tag_text").val('');
+            return;
+        }
+
+        //tag 개수가 5개 넘으면 return
+        let tag_node = document.getElementById("tag");
+        let tag_arr = $(tag_node).val().split(" ");
+        if (tag_arr.length >= 5) {
+            alert('태그는 5개 이상 작성할 수 없습니다.');
+            $("#tag_text").val('');
+            return;
+        }
+
+        // tag 안에 같은 내용있으면 return
+        for (let tag of tag_arr) {
+            if (tag == tag_text_value) {
+                $("#tag_text").val('');
+                return;
+            }
+        }
+
+        // tag 화면에 만들기
+        let str = '<span id="tag_content">' + tag_text_value + '<i id="tag_icon" class="far fa-times-circle fa-lg"></i></span>';
+        $("#tag_span").append(str);
+
+        // tag값 세팅
+        let old_tag_val = $("#tag").val();
+        if (old_tag_val != '') {
+            $("#tag").val(old_tag_val + ' ' + tag_text_value);
+        }
+        else {
+            $("#tag").val(tag_text_value);
+        }
+
+        // tag 적는 text 비우기
+        $("#tag_text").val('');
+    }
+});
+
+// tag 삭제
+$(document).on("click", "#tag_icon", function(e){
+
+    // tag 값 다시 세팅
+    let tag_arr = $('#tag').val().split(" ");
+    let tag_val = $(e.target).parent().text();
+    let tag_str = '';
+    for (let i = 0; i < tag_arr.length; i++) {
+        if (tag_arr[i] == tag_val) continue; 
+        tag_str += tag_arr[i] + ' ';
+    }
+    tag_str = tag_str.trim();
+    $("#tag").val(tag_str);
+
+    // tag 화면에서 삭제
+    $(e.target).parent().remove();
+
+    // tag 데이터 db에 있으면 삭제    <-- edit.php
+    if (tag_goods_id != '') {
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "/goods/delete_tag",
+            type: "POST",
+            dataType: 'text',
+            data: {
+                tag_name : tag_val,
+                goods_id : tag_goods_id
+            },
+            success : function(data) {
+
+            },
+            error: function(request,status,error){ 
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+            }
+        });
+    }
+    
+});
+
+
+// 이미지 오른쪽 상단 x버튼(삭제 버튼) 클릭시
+$(document).on("click", ".close_btn", function(e){
+
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // 이미지 미리보기 삭제
+    $(e.target).parent().parent().remove();
+
+    console.log(e.target);
+    console.log($(e.target).parent().parent());
+
+    // 이미지 삭제
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: "/goods/delete_image",
+        type: "POST",
+        dataType: 'text',
+        data: {
+            file_name : $(e.target).parent().next().val()
+        },
+        success : function(data) {
+
+        },
+        error: function(request,status,error){ 
+            alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+            console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+        }
+    });
+
+
+    // 이미지 개수 -1
+    let image_num = parseInt(document.getElementById("image_num").innerHTML);
+    $("#image_num").html(image_num - 1);
+}); 
+
+
+// form submit
+$(".store_button").click (function(e) {
+    
+    // 이미지 순서값 세팅
+    let _order = '';
+    $(".li").each(function( index, element ) {
+        _order += $(this).children(".file_name").val() + '|';
+    })
+    _order = _order.slice(0, -1);
+    $("#order").val(_order);
+
+    // 가격에 있는 콤마 없애기
+    let price_val = $('#price').val().replace(/,/g, "");
+    $('#price').val(price_val);
+    
+    // form submit
+    $("form").submit();
+});
+
+
+// 이미지 드래그 업로드
+$('.content')
+.on("dragover", dragOver)
+.on("dragleave", dragLeave)
+.on("drop", uploadFiles);
+
+function dragOver(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    $(e.target).css({
+        "background-color": "#fff",
+        "outline-offset": "-30px",
+        "outline": "2px dashed rgb(175, 212, 255)",
+        "color" : "rgb(175, 212, 255)",
+        "font-size" : "30pt"
+    });
+    
+    let str = 'Drop';
+    $(e.target).html(str);
+}
+
+function dragLeave(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    $(e.target).css({
+        "background-color" : "rgb(175, 212, 255)",
+        "outline-offset" : "-20px",
+        "outline" : "2px dashed #fff",
+        "color" : "#fff",
+        "font-size" : "14pt"
+    });
+
+    let str = '이미지를 드래그하거나 클릭하세요';
+    $(e.target).html(str);
+}
+
+function uploadFiles(e) {
+
+    e.stopPropagation();
+    e.preventDefault();
+    dragLeave(e);
+
+    e.dataTransfer = e.originalEvent.dataTransfer; //2
+    let files = e.target.files || e.dataTransfer.files;
+
+    // 파일이 이미지가 아니거나 이름에 | 들어있으면 return
+    for (file of files) {
+        let file_name = file.name; // 파일 이름 구하기
+        let ext = file_name.substring(file_name.lastIndexOf(".")+1); // 확장자 구하기
+        ext = ext.toLowerCase(); // 소문자로 변환하기
+        if (ext != 'jpg' && ext != 'jpeg' && ext != 'png') {
+            alert("이미지만 업로드 가능합니다");
+            return;
+        }
+        if(file_name.indexOf('|') != -1) {
+            alert("파일 이름에 \'|\' 기호가 들어있으면 안됩니다");
+            return;
+        }
+    }
+
+    readFiles(files);
+    return;
+}
+
+$(".content").click(function (e) {
+    $("#image").click();
+});
+
+
+
+$("#image").change(function (e) {
+    
+    var inputFile = $('#image');
+    var files = inputFile[0].files;
+
+    if(e.target.files.length > 6) {
+        alert('파일의 최대 개수는 6개 입니다.');
+        return;
+    }
+
+    uploadFiles(e);
+});
+
+
+
+function readFiles(e) {
+
+    const formData = new FormData();
+
+    if (e.length > 0) {
+        for (var i = 0; i < e.length; i++) {
+            formData.append('image[]', e[i]);
+        }
+    }
+
+    // 이미지 서버에 업로드
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        url: "/goods/upload",
+        type: "POST",
+        data: formData,
+        dataType: 'text',
+        cache:false,
+        contentType: false,
+        processData: false,
+        // 성공
+        success : function(result) {
+
+            // json 파싱
+            result = JSON.parse(result);
+
+            // 이미지 미리보기 생성
+            for(i = 0; i < e.length; i++){
+                var str = "";
+                var tmp = e[i];
+                var src = URL.createObjectURL(tmp);
+                str  += '<li class="li">\n' + 
+                            '<img class="li_image" src="' + src + '" alt="' + tmp.name + '"/>\n' +
+                            '<span class="close_btn"><i class="far fa-times-circle fa-2x" aria-hidden="true"></i></span>\n' +  
+                            '<input type="hidden" class="file_name" value="' + result[i] + '">\n' + 
+                        '</li>\n';
+                $("#preview").append(str);
+            }
+        },
+        // 실패
+        error: function(request,status,error){ 
+            alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+            console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+        }
+    });
+
+
+    // 이미지 개수 + 1
+    let image_num = parseInt(document.getElementById("image_num").innerHTML);
+    $("#image_num").html(image_num + 1);
+}
+
+$('input[type="text"]').keydown(function() {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+    };
+});
+// admin goods 끝

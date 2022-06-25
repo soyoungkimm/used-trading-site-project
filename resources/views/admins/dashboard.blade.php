@@ -153,7 +153,7 @@
 <script>
     var labels = <?php echo json_encode($labels)?>;
     var chart_vals = <?php echo json_encode($chart_vals)?>;
-    var categorys = <?php echo json_encode($categorys)?>;
-    make_chart(labels, chart_vals, categorys);
+    var mm_categorys = <?php echo json_encode($mm_categorys)?>;
+    make_chart(labels, chart_vals, mm_categorys);
 </script>
 @endsection

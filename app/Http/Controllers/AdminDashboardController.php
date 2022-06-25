@@ -43,26 +43,24 @@ class AdminDashboardController extends Controller
             array_push($chart_vals, DB::table('goods')->whereYear('writeday', $year)->whereMonth('writeday', $month)->count());
         }
 
-
         // chart.js 카테고리별 상품 비율 값 가져오기
-        $categorys = DB::table('goods')
+        $mm_categorys = DB::table('goods')
         ->join('categorys', 'goods.category_id', '=', 'categorys.id')
-        ->select(DB::raw('count(*) as goods_count'), 'categorys.name as category_name')
+        ->select(DB::raw('count(*) as goods_count, categorys.name as category_name'))
         ->groupBy('category_name')
         ->orderBy('categorys.id')
         ->get();
 
-
         //페이지 이동 
         return view('admins.dashboard', [ 
+            'mm_categorys' => $mm_categorys,
             'to_do_lists' => $to_do_lists,
             'user_num' => $user_num,
             'total_transaction_num' => $total_transaction_num,
             'total_transaction_price' => $total_transaction_price,
             'total_revenue' => $total_revenue,
             'labels'=>$labels,
-            'chart_vals' => $chart_vals,
-            'categorys' => $categorys
+            'chart_vals' => $chart_vals
         ]); 
     } 
 }

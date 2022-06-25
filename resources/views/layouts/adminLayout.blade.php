@@ -111,7 +111,18 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
                                 Goods
                             </a>
-
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#categoryCollapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-bars"></i></div>
+                                Category
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="categoryCollapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/admin/category">Categorys</a>
+                                    <a class="nav-link" href="/admin/category-de">Category Des</a>
+                                    <a class="nav-link" href="/admin/category-de-de">Category De Des</a>
+                                </nav>
+                            </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#reviewCollapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-pen"></i></div>
                                 Review
@@ -144,7 +155,7 @@
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-
+                    
                 @yield('content')
 
                 <footer class="py-4 bg-light mt-auto">

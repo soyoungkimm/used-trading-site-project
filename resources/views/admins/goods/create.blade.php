@@ -44,7 +44,7 @@
         <h1 class="mt-4"><a href="/admin/goods">Goods</a></h1>
         <br>
         <div class="card mb-4">
-            <form action="/admin/goods" method="POST" enctype="multipart/form-data">
+            <form action="/admin/goods" method="POST">
                 @csrf
                 <div class="card-header">
                     <i class="fas fa-table me-1"></i> goods table 
@@ -69,16 +69,37 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th width="30%">image(상품 이미지 - 최대 6개) <span style="color : red;">*</span></th>
+                                <th width="30%">image(상품 이미지) <span style="color : red;">*</span><br><span id="num_count">(<span id="image_num">0</span>/6)</span></th>
                                 <td width="70%" id="image_area">
-                                    <div class="input-group mb-2">
+                                    {{-- <div class="input-group mb-2">
                                         <input type="file" accept="image/*" class="form-control @error('image') is-invalid @enderror" name="image[]" id="picture" multiple required/>
                                     </div>
                                     <div id="file_name_alert_area">
                                     </div>
                                     @error('image')
                                         <div style="margin-top : 5px!important; color : #dc3545;">{{ $message }}</div>
+                                    @enderror --}}
+
+                                    <div class="@error('order') is-invalid @enderror" id="content_box">
+                                        <div class="content">
+                                            이미지를 드래그하거나 클릭하세요
+                                        </div>
+                                    </div>
+                                    @error('order')
+                                        <div style="margin-top : 5px!important; color : #dc3545;">이미지를 등록하세요</div>
                                     @enderror
+                                    <div class="form-group">
+                                        <input type="file" class="form-control" id="image" name="image" accept="image/jpg, image/jpeg, image/png" multiple/>
+                                        <input type="hidden" name="order" id="order" value="{{ old('order') ? old('order') : '' }}" />
+                                    </div>
+                                    <small class="form-text text-muted">
+                                        - 등록할 수 있는 이미지의 개수는 <span style="color : red;">최대 6개</span><br>
+                                        - 이미지 이동해서 등록순서 변경 가능<br>
+                                        - 등록된 첫번째 이미지는 상품의 대표 이미지
+                                        </ul>
+                                    </small>
+                                    <ul id="preview" class="sortable">
+                                    </ul>
                                 </td>
                                 
                             </tr>    
@@ -147,7 +168,7 @@
                             <tr>
                                 <th width="30%">price(가격) <span style="color : red;">*</span></th>
                                 <td width="70%">
-                                    <input class="form-control @error('price') is-invalid @enderror" type="text" name="price" value="{{ old('price') ? old('price') : '' }}" placeholder="숫자만 입력하세요. ex) 10000" required>
+                                    <input class="form-control @error('price') is-invalid @enderror" type="text" id="price" name="price" value="{{ old('price') ? old('price') : '' }}" placeholder="숫자만 입력하세요. ex) 10000" required>
                                     @error('price')
                                         <div style="margin-top : 5px!important; color : #dc3545;">{{ $message }}</div>
                                     @enderror
@@ -240,6 +261,21 @@
                                     <label for="sale_state3"><input type="radio" name="sale_state" id="sale_state3" value="2" {{ $sale_state_checked3 }}/>&nbsp;예약중</label>
                                 </td>
                             </tr>
+                            <tr>
+                                <th width="30%">tags(연관태그) <span style="color : red;">*</span></th>
+                                <td>
+                                    <div id="tag_area">
+                                        <span id="tag_span">
+                                        </span>
+                                        <input type="text" id="tag_text" name="tag_text" placeholder="연관태그를 입력하세요" >
+                                    </div>
+                                    <input type="hidden" name="tag" id="tag" value="{{ old('tag') ? old('tag') : '' }}"/>
+                                    <small class="form-text text-muted">
+                                        - 태그는 띄어쓰기로 구분됨. <span style="color : red;">최대 5개</span>까지 입력.
+                                        
+                                    </small>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -247,6 +283,7 @@
         </div>
     </div>
 </main>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{ asset('ksy/js/admin.js'); }}"></script>
 <script>
    // 값 세팅
@@ -255,6 +292,9 @@
     var old_category_id = '{{ old("category_id") }}';
     var old_category_de_id = '{{ old("category_de_id") }}';
     var old_category_de_de_id = '{{ old("category_de_de_id") }}';
+    var old_tag = '{{ old("tag") }}';
+    var old_order = '{{ old("order") }}';
+    var tag_goods_id = '';
 
     $(function() {
         // 유효성 검사 걸리면 실행
@@ -264,6 +304,14 @@
         if (old_category_de_id != '' && old_category_de_id != 0) {
             selectCategoryDe(category_de_des, old_category_de_de_id);
         }
+
+        if (old_tag != '') {
+            make_tag(old_tag);
+        }
+        if (old_order != '') {
+            let image_src = '{{ asset('storage/images/goods/') }}/';
+            make_preview_image(old_order, image_src);
+        } 
     });
 
     // 카테고리 부분 클릭시 실행
@@ -273,5 +321,9 @@
     $(document).on("change", "#category_de_select", function(){
         selectCategoryDe(category_de_des, old_category_de_de_id);
     });
+
+    // 이미지 정렬 가능하게 함
+    $(".sortable").sortable();
+    $(".sortable").disableSelection();
 </script>
 @endsection
