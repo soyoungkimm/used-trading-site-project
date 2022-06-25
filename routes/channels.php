@@ -20,8 +20,3 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('my-channel', function () {
     return true;
 });
-
-// 로그인 구현되면 사용
-// Broadcast::channel('my-channel', function ($user, $id) {
-//     return auth()->check(); // 로그인 되면 true, 로그인 안되면 false
-// });

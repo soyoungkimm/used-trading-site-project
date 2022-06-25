@@ -10,13 +10,13 @@ class FollowsController extends Controller
 {
     public function store() {
 
-        // 현재 로그인한 사용자 가져오기  <-- 임시
-        $user_id = 2;
+        // 현재 로그인한 사용자 가져오기  
+        $user_id = auth()->id();
 
         // store id 세팅
         $store_id = request('store_id');
 
-        // 찜한 상품 저장        
+        // 팔로우한 상점 저장        
         Follow::create([
             'user_id'=>$user_id,
             'store_id'=>$store_id
@@ -31,8 +31,8 @@ class FollowsController extends Controller
 
     public function destroy() {
 
-        // 현재 로그인한 사용자 가져오기  <-- 임시
-        $user_id = 2;
+        // 현재 로그인한 사용자 가져오기 
+        $user_id = auth()->id();
 
         // store id 세팅
         $store_id = request('store_id');

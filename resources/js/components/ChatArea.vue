@@ -15,7 +15,7 @@
         </b-row>
         <b-row>
             <div class="aaa">
-                <ChatMessage v-for="message in messages" :key="message.id" :message="message" />
+                <ChatMessage v-for="message in messages" :key="message.id" :message="message" :current-user="currentUser" />
             </div>
         </b-row>
         <br><br><br>
@@ -42,6 +42,10 @@
             messages: {
                 type:Array,
                 required: true
+            },
+            currentUser: {
+                type:Number,
+                required:true
             }
         },
         data() {
@@ -56,7 +60,7 @@
                     axios.post("/api/messages", {
                         content: this.message_content,
                         to_user: this.chatWith,
-                        from_user: 1 // 임시 this.currentUser
+                        from_user: this.currentUser
                     }).then(res => {
                         this.messages.push(res.data.message);
                     });

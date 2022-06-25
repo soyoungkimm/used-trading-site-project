@@ -173,6 +173,10 @@
         .type_selected {
             color :rgb(255, 150, 29);
         }
+
+        #sellBtn {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -326,7 +330,7 @@
                                 <button type="button" class="site-btn search_btn">검&nbsp;색</button>
                             </form>
                         </div>
-                        <a href="/goods/create">
+                        <a onclick="clickSellBtn('{{ auth()->check() }}')" id="sellBtn">
                             <div class="hero__search__phone">
                                 <div class="hero__search__phone__icon">
                                     <i class="fa fa-won"></i>
@@ -593,6 +597,15 @@
 
             location.href="/goods?category=" + $('#h_category_id').val() + "&category_de=" + $('#h_category_de_id').val() + "&category_de_de=" + e.target.value;
         });
+
+        function clickSellBtn(isLogin){
+            if (isLogin == '') {
+                alert("로그인 후 이용 가능합니다.");
+                return;
+            }
+
+            location.href="/goods/create";
+        }
     </script>
 </body>
 </html>

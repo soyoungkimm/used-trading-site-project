@@ -32,11 +32,4 @@ Vue.component('chatting', require('./components/Chat.vue').default);
 
 const app = new Vue({
     el: '#app',
-    
-    // created() {
-    //     Echo.channel('my-channel')
-    //         .listen('MyEvent', (e) => {
-    //             alert('aaaa');
-    //         }); 
-    // }
 });

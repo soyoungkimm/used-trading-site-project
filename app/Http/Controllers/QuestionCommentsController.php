@@ -36,8 +36,8 @@ class QuestionCommentsController extends Controller
      */
     public function store()
     {
-        // 현재 로그인한 사용자 id 가져오기   <-- 임시
-        $user_id = 2;
+        // 현재 로그인한 사용자 id 가져오기  
+        $user_id = auth()->id();
 
         // 데이터 저장
         $question_comment = QuestionComment::create([

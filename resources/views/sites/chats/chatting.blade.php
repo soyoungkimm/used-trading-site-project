@@ -9,8 +9,7 @@
 <body style="background : rgb(204, 231, 204)">
     <input type="hidden" id="b_parrent_chatWith" value="{{ $chatWith }}">
     <div id="app">
-        <chatting></chatting>
-        {{-- :current-user="{{ auth()->id() }}" --}}
+        <chatting :current-user="{{ auth()->id() }}"></chatting>
     </div>
     <script src="{{ asset('js/app.js')}}"></script>
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>

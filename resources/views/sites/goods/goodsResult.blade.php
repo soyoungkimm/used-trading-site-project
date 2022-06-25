@@ -34,6 +34,13 @@
 <script>
     $('.heart_pop').click (function (e) {
         e.stopPropagation();
+        let isLogin = '{{ auth()->check() }}';
+
+        if (isLogin == '') {
+            alert("로그인 후 사용할 수 있습니다.");
+            return;
+        }
+
         heart_pop_func(this);
     });
     $('#goods_count').text('{{ $goods->total() }}');

@@ -1,13 +1,11 @@
 <template>
     <b-container class="bv-example-row">
-        <!-- chatWith 값이 있으면 -->
         <b-row> 
             <div v-if="!chatWith">
-                <ChatUserList @update-chat-view="updateChatView" :chat-with="chatWith"  />
+                <ChatUserList @update-chat-view="updateChatView" :chat-with="chatWith" :current-user="currentUser" />
             </div>
-             <!-- :current-user="currentUser"  -->
             <div v-if="chatWith">
-                <ChatArea v-bind:chatWith="chatWith" @back="back" :messages="messages"/>
+                <ChatArea v-bind:chatWith="chatWith" @back="back" :messages="messages" :current-user="currentUser"/>
             </div>
         </b-row>
     </b-container>
@@ -17,12 +15,12 @@
     import ChatUserList from './ChatUserList';
     import ChatArea from './ChatArea';
     export default {
-        // props: {
-        //     currentUser: {
-        //         type:Number,
-        //         required:true
-        //     }
-        // },
+        props: {
+            currentUser: {
+                type:Number,
+                required:true
+            }
+        },
         data() {
             return {
                 chatWith: null,
@@ -37,21 +35,17 @@
         
         methods: {
             updateChatView(value) {
-                
                 this.chatWith = value;
                 this.getMessages();
-
-
             },
 
             getMessages() {
                 axios.get('/api/messages', {
                     params: {
                         chatWith: this.chatWith,
-                        currentUser: 1 // 임시 //this.currentUser
+                        currentUser: this.currentUser
                     }
                 }).then(res => {
-                    //console.log(res);
                     this.messages = res.data.messages;
                 }).catch(error => { // 예외처리
                     console.log(error);
@@ -65,11 +59,12 @@
 
         created() {
             // 이벤트 듣기
-            window.Echo.channel('my-channel')// Echo.private
+            window.Echo.channel('my-channel')
                 .listen('MyEvent', (e) => {
-                    //console.log(this.chatWith);
-                    //if(e.message.to_user == this.currentUser && e.message.from_user == this.chatWith) 임시 - 나중에 로그인 완성되면 풀기. 현재 채팅하고 있는 상대에게만 메세지 보이게 하기
-                    this.messages.push(e.message);
+                    //현재 채팅하고 있는 상대에게만 메세지 보이게 하기
+                    if(e.message.to_user == this.currentUser && e.message.from_user == this.chatWith) {
+                        this.messages.push(e.message);
+                    } 
                 }); 
         },
 

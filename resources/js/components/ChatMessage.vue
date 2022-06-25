@@ -1,10 +1,9 @@
 <template>
-    <!-- :class="{'my-align' : message.from_user === 1}" -->
     <div>
         <div class="dd">
             <b-badge class="mbadge">{{ getDate }}</b-badge>
         </div>
-        <div v-if="message.from_user === 1"> <!--임시-->
+        <div v-if="message.from_user === currentUser">
             <b-row class="chat-row">
                 <b-col class="align-right">
                     <br>
@@ -15,6 +14,7 @@
         </div>
         <div v-else>
             <b-row class="chat-row">
+                <br><br><br>
                 <b-col cols="2" class="align-right">
                     <b-avatar class="mr-3 chat-avatar" size="3em"></b-avatar>
                 </b-col>
@@ -36,6 +36,10 @@
             message: {
                 type:Object,
                 required: true
+            },
+            currentUser: {
+                type:Number,
+                required:true
             }
         },
         
@@ -61,7 +65,6 @@
             // 중복되는 연월일 삭제
             let arr = document.getElementsByClassName("mbadge");
             for (let i = 0; i < arr.length; i++) {
-                //console.log(arr);
                 if (i != 0) {
                     if (arr[i-1].innerHTML === arr[i].innerHTML) {
                         arr[i].remove();

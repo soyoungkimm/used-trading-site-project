@@ -716,10 +716,10 @@ pre {
 
 
 #my_store_btn {
-    border : 1px solid rgb(226, 226, 226); 
-    color : rgb(138, 138, 138);
+    border : 1px solid rgb(255, 184, 103);
+    color : #fff;
     width : 100%; 
-    background : rgb(243, 243, 243);
+    background : rgb(253, 191, 109);
     padding : 7px;
 }
 

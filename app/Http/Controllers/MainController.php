@@ -10,8 +10,8 @@ class MainController extends Controller
 {
     public function main() {
 
-        // 현재 로그인한 사용자 id가져오기  <-- 임시
-        $user_id = 2;
+        // 현재 로그인한 사용자 id가져오기
+        $user_id = auth()->id();
 
         // 랜덤으로 goods 데이터 가져오기(오늘의 추천 상품)
         $today_goods = DB::table('goods')

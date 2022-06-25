@@ -55,15 +55,14 @@
                             <li><b>배송비</b> <span>{{ $set_good['delivery_fee'] }}</span></li>
                             <li><b>거래지역</b> <span>{{ $good->area }}</span></li>
                         </ul>
-                        {{-- 현재 로그인한 사용자가 본인 글에 들어왔을 경우 (현재 로그인한 사용자 id == good->user_id)--}}
-                        {{-- 임시 --}}
-                        @if (true)
-                            <button type="button" id="call_btn" class="primary-btn">연락하기</button>
+                        {{-- 현재 로그인한 사용자가 본인 글에 들어왔을 경우 --}}
+                        @if (auth()->id() != $good->user_id)
+                            <button type="button" id="call_btn" class="primary-btn">채팅하기</button>
                             <button type="button" id="now_buy_btn" class="primary-btn">바로구매</button>
-                            <button type="button" id="heart_btn" class="primary-btn {{ $isHeart == 0 ? 'heart_btn_t' : 'heart_btn_f' }}"><i class="fa fa-heart fa-lg" aria-hidden="true"></i></button>
+                            <button onclick="clickHeartBtn({{ auth()->check() }})"type="button" id="heart_btn" class="primary-btn {{ $isHeart == 0 ? 'heart_btn_t' : 'heart_btn_f' }}"><i class="fa fa-heart fa-lg" aria-hidden="true"></i></button>
                             <input type="hidden" id="isHeart" value="{{ $isHeart }}" />
                         @else
-                            <button type="button" id="my_store_button" class="primary-btn">내 상점 관리</button>
+                            <button onclick="location.href='{{ $good->id }}/edit'" type="button" id="my_store_button" class="primary-btn">상품 수정하기</button>
                         @endif
                     </div>
                 </div>
@@ -148,7 +147,9 @@
                                                         <div><pre>{{ $question->content }}</pre></div>
                                                         <div class="com_btn">
                                                             <span class="com_btn_span" onclick="create_comment({{ $question->id }})"><i class="fa fa-comment-o" aria-hidden="true"></i>댓글달기</span>
-                                                            <span class="com_btn_span" onclick="delete_question({{ $question->id }})"><i class="fa fa-trash-o" aria-hidden="true"></i>삭제하기</span>   
+                                                            @if ($question->user_id == auth()->id())
+                                                                <span class="com_btn_span" onclick="delete_question({{ $question->id }})"><i class="fa fa-trash-o" aria-hidden="true"></i>삭제하기</span>   
+                                                            @endif
                                                         </div>
                                                         <hr>
                                                     </div>
@@ -171,7 +172,9 @@
                                                                     <div class="margin-b">{{ $question_comment->user_name }}<span class="c_time">{{ $question_comment->writeday }}</span></div>
                                                                     <div><pre>{{ $question_comment->content }}</pre></div>
                                                                     <div class="com_btn">
-                                                                        <span class="com_btn_span" onclick="delete_question_comment({{ $question_comment->id }})"><i class="fa fa-trash-o" aria-hidden="true"></i>삭제하기</span>   
+                                                                        @if ($question_comment->user_id == auth()->id())
+                                                                            <span class="com_btn_span" onclick="delete_question_comment({{ $question_comment->id }})"><i class="fa fa-trash-o" aria-hidden="true"></i>삭제하기</span>   
+                                                                        @endif
                                                                     </div>
                                                                     <hr>
                                                                 </div>
@@ -201,10 +204,10 @@
                                                 <p>상품 {{ $good->goods_num }}<span id="v_bar">|</span>팔로워수 <span id="follow_num">{{ $good->follower }}</span></p>
                                             </div>
                                             <div>
-                                                {{-- 현재 로그인한 사용자가 본인 글에 들어왔을 경우 (현재 로그인한 사용자 id == good->user_id)--}}
-                                                {{-- 임시 --}}
-                                                @if (true)
-                                                    <button type="button" onclick="click_follow_btn({{ $good->user_id }})" id="follow_btn" class="{{ $isFollow == 0 ? 'follow_btn_t' : 'follow_btn_f' }}">
+                                                {{-- 현재 로그인한 사용자가 본인 글에 들어왔을 경우 --}}
+                                                
+                                                @if (auth()->id() != $good->user_id)
+                                                    <button type="button" onclick="click_follow_btn({{ $good->user_id }}, {{ auth()->check() }})" id="follow_btn" class="{{ $isFollow == 0 ? 'follow_btn_t' : 'follow_btn_f' }}">
                                                         <i id="follow_icon" class="fa {{ $isFollow == 0 ? 'fa-check' :'fa-user-plus' }}" aria-hidden="true"></i> <span id="follow_val">{{ $isFollow == 0 ? '팔로잉' : '팔로우' }}</span>
                                                     </button>
                                                 @else
@@ -334,15 +337,29 @@
     </div>
 
 <script>
+    var image_src = "{{ asset('template/ogani-master/pic.png') }}";
     var goods_id = '{{ $good->id }}';
     $('.heart_pop').click (function (e) {
         e.stopPropagation();
+
+        let isLogin = '{{ auth()->check() }}';
+
+        if (isLogin == '') {
+            alert("로그인 후 사용할 수 있습니다.");
+            return;
+        }
+
         heart_pop_func(this);
     });
 
     $('#call_btn').click(function (e) {
 
-        // 로그인 안돼있으면 alert 보내고 return하기 <-- 임시
+        // 로그인 안돼있으면 alert 보내고 return하기
+        let currentUser = '{{ auth()->id() }}';
+        if (currentUser == ''){
+            alert("로그인 후 이용 가능한 서비스입니다.");
+            return;
+        }
 
         let windowWidth = 500;
         let windowHeight = 700;

@@ -7,7 +7,7 @@
         </div>
         <!-- users 지우고 in 옆에다 usersWithoutSelf -->
         <br><br><br>
-        <b-list-group style="max-width: 750px;">
+        <b-list-group v-if="users.length != 0" style="max-width: 750px;">
             <b-list-group-item class="d-flex align-items-center mpointer" v-for="(user, index) in users" :key="user.id" @click="updatedChatView(user.id)">
                 <b-avatar variant="secondary" class="mr-3 my-avatar"></b-avatar>
                 <span class="mr-auto">
@@ -17,27 +17,15 @@
                 </span>
             </b-list-group-item>
         </b-list-group>
+        <div v-else id="dontHave">
+            <br>
+            채팅 상대가 없습니다
+        </div>
     </div>
 </template>
 
 <script>
    export default {
-       // props: {
-        //     currentUser: {
-        //         type:Number,
-        //         required:true
-        //     }
-        // },
-
-
-        // 계산해주는 애
-        // computed: {
-        //     usersWithoutSelf() { // 로그인 한 자신은 유저 리스트에 안뜨게
-        //         return this.users.filter(user => {
-        //             return user.id !== this.currentUser
-        //         });
-        //     }
-        // },
 
         data() {
             return {
@@ -50,6 +38,10 @@
             chatWith: {
                 type:Number,
                 required: false // 필수는 아님 null이 들어갈 수도 있으니까
+            },
+            currentUser: {
+                type:Number,
+                required:true
             }
         },
 
@@ -57,7 +49,7 @@
             // request를 보냄
             axios.get('/api/messages/chatList', {
                 params: {
-                    currentUserId: 1 // 임시 //this.currentUser
+                    currentUserId: this.currentUser
                 }
             }).then(res => { // 받아옴. 받아온 값 res 안에 있음
                 this.users = res.data.data.users;
@@ -108,5 +100,10 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    #dontHave {
+        text-align: center;
+        color : rgb(137, 137, 137);
     }
 </style>

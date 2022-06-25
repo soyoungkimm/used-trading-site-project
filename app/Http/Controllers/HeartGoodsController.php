@@ -10,8 +10,8 @@ class HeartGoodsController extends Controller
 {
     public function store() {
 
-        // 현재 로그인한 사용자 가져오기  <-- 임시
-        $user_id = 2;
+        // 현재 로그인한 사용자 가져오기
+        $user_id = auth()->id();
 
         // goods id 세팅
         $goods_id = request('goods_id');
@@ -28,8 +28,8 @@ class HeartGoodsController extends Controller
 
     public function destroy() {
 
-        // 현재 로그인한 사용자 가져오기  <-- 임시
-        $user_id = 2;
+        // 현재 로그인한 사용자 가져오기
+        $user_id = auth()->id();
 
         // goods id 세팅
         $goods_id = request('goods_id');

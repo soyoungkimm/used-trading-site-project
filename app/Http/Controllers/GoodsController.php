@@ -19,8 +19,8 @@ class GoodsController extends Controller
      */
     public function index(Request $request)
     {
-        // 현재 로그인한 사용자 id가져오기  <-- 임시
-        $user_id = 2;
+        // 현재 로그인한 사용자 id가져오기
+        $user_id = auth()->id();
 
         // 한 페이지당 보일 상품 개수
         $goods_num_per_page = 9;
@@ -153,8 +153,8 @@ class GoodsController extends Controller
         //유효성 검사
         GoodsController::goods_validate();
 
-        // 현재 로그인한 회원 id 가져오기    <-- 임시
-        $user_id = 1;
+        // 현재 로그인한 회원 id 가져오기  
+        $user_id = auth()->id();
 
         // 값 세팅
         request('delivery_fee') == null ? $delivery_fee = 0 : $delivery_fee = request('delivery_fee');
@@ -241,8 +241,8 @@ class GoodsController extends Controller
      */
     public function show($id)
     {
-        // 현재 로그인한 사용자 id가져오기  <-- 임시
-        $user_id = 2;
+        // 현재 로그인한 사용자 id가져오기
+        $user_id = auth()->id();
 
         //goods 데이터 가져오기
         $good = DB::table('goods')

@@ -893,7 +893,13 @@ function heart_pop_func(me) {
 }
 
 
-function click_follow_btn (store_id) {
+function click_follow_btn (store_id, isLogin) {
+
+    if (!isLogin) {
+        alert("로그인 후 이용할 수 있습니다.");
+        return;
+    }
+
     let val = $('#isFollow').val();
 
     // 이미 팔로우 했을때(팔로잉 해제)
@@ -959,8 +965,12 @@ function click_follow_btn (store_id) {
     }
 }
 
+function clickHeartBtn(isLogin) {
+    if (!isLogin) {
+        alert("로그인 후 이용할 수 있습니다.");
+        return;
+    }
 
-$("#heart_btn").click (function () {
     let val = $('#isHeart').val();
     
     // 이미 찜했을 때(찜 해제)
@@ -1021,10 +1031,10 @@ $("#heart_btn").click (function () {
         });
        
     }
-});
+}
 
 
-var image_src = "{{ asset('storage/images/goods/') }}";
+//var image_src = "{{ asset('storage/images/goods/') }}";
 $("#question").keyup (function (e) {
     question_check_num(e);
 });
