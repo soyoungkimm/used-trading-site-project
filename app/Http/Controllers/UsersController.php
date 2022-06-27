@@ -168,4 +168,11 @@ class UsersController extends Controller{
         return redirect('/');
     }
 
+    public function getCurrentUser() {
+        $user = User::find(auth()->id());
+        $userData['name'] = $user->name;
+        $userData['tel'] = $user->tel;
+        
+        return response()->json($userData);
+    }
 }

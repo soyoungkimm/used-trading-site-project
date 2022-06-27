@@ -1143,3 +1143,60 @@ pre {
     text-align: center;
 }
 /*---------------------   goods.index 부분 끝  -----------------------------*/
+
+
+/* ---------- goods show modal 부분 시작 ------------- */
+#pay_area {
+    background : #fff;
+    padding : 40px;
+    display: inline-block;
+    width : 450px;
+
+    /* 화면 중앙에 오게 정렬 */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#pay_title {
+    color :rgb(90, 90, 90);
+    font-size : 18pt;
+}
+
+.close_pay_modal {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    color: #484848;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close_pay_modal:hover, 
+.close_pay_modal:focus {
+    color: rgb(112, 112, 112);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#pay_btn {
+    background : #ffc7c7;
+    border : solid 1px #ff9b9b;
+    width : 200px;
+    height : 50px;
+    text-align : center;
+}
+
+#induk_pay_content {
+    height : 300px; 
+    overflow : scroll; 
+    overflow-x : hidden
+}
+
+/* ---------- goods show modal 부분 끝 ------------- */

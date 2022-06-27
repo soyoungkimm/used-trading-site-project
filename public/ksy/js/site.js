@@ -1526,3 +1526,85 @@ function sel_order() {
     make_goods_list(1);
 }
 /*goods.index 부분 끝 */
+
+
+
+
+
+
+
+// 결제 시스템 js 시작------------------------------
+    // 주소 찾기 modal
+    $('#now_buy_btn').click( function(e){
+
+        // modal 과련 노드들 가져오기
+        let modal = document.getElementById("pay_modal");
+        let adress_area = document.getElementById("pay_area");
+
+        modal.style.display = "block";
+        let span = document.getElementsByClassName("close_pay_modal")[0];
+
+        span.onclick = function() { 
+            bye_modal(modal); // 재사용함
+        }
+    });
+
+    function getCurrentUserInfo() {
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "/users/getCurrentUser",
+            type: "get",
+            async:false, // 동기방식(전역변수에 값 저장하려면 필요)
+            dataType : "json",
+            success : function(data) {
+                buyer_name = data.name;
+                buyer_tel = data.tel;
+            },
+            error: function(request,status,error){ 
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+            }
+        });
+    }
+
+    function getMerchantUid_setPrice() {
+        var result = "";
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "/pay/getMerchantUidAndSetPrice",
+            type: "GET",
+            async:false, // 동기방식(전역변수에 값 저장하려면 필요)
+            dataType: "json",
+            data : {
+                goods_id : goods_id
+            },
+            success : function(data) {
+                result = data;
+            },
+            error: function(request,status,error){ 
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
+                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+                result = "error";
+            }
+        });
+        return result;
+    }
+
+    function removePayAuth(removePayAuthId) {
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "/pay/removePayAuth",
+            method: "POST",
+            dataType : "JSON",
+            data: {
+                removePayAuthId : removePayAuthId
+            },
+            success: function() {
+                
+            },
+            error: function(data) {
+                console.log("error" +data);
+            }
+        });
+    }
+// 결제 시스템 js 끝 ------------------------------

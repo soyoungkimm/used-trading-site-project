@@ -2,6 +2,27 @@
 
 @section('content')
     <link href="{{ asset('ksy/css/site.css'); }}" rel="stylesheet" />
+    <div id="pay_modal" class="modal">
+        <div id="pay_area">
+            <div id="pay_title">인덕 안심페이&nbsp;&nbsp;<i class="fa fa-credit-card fa-lg" aria-hidden="true"></i></div>
+            <br>
+            <div id="induk_pay_content">
+                <img src="{{ asset('img/indukPay.JPG') }}" />
+                <b style="font-size : 15pt">인덕 안심페이</b>&nbsp; 란?<br>
+                인덕 장터 측에 먼저 금액을 입금하여 보관하고, 구매자가 구매 확정 버튼을 눌렀을 때
+                판매자에게 금액이 입금되는 형태의 결제 방법입니다.<br><br>
+                수수료 : 상품 금액의 3.5%<br>
+                결제 방법 : 카카오페이 간편결제<br>
+            </div>
+            <br>
+            <span class="close_pay_modal">&times;</span>
+            <div style="text-align : center">
+            <button id="pay_btn" onclick="requestPay({{ auth()->check() }})">안심페이로 구매하기</button>
+            </div>
+        </div>
+    </div>
+
+    
     <div id="heart-layer">
         <div id="heart-content">
             <i id="heart_icon" class="fa fa-heart fa-3x" aria-hidden="true"></i><br>
@@ -336,9 +357,17 @@
         <img class="modal-content" id="original_img">
     </div>
 
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
     var image_src = "{{ asset('template/ogani-master/pic.png') }}";
     var goods_id = '{{ $good->id }}';
+
+    // 결제 시스템 변수
+    var name = "{{ $good->title }}";
+    var buyer_name = "";
+    var buyer_tel = "";
+
     $('.heart_pop').click (function (e) {
         e.stopPropagation();
 
@@ -370,5 +399,74 @@
         let win = window.open('/chatting/' + {{ $good->user_id }}, '',"width=" + windowWidth + ",height=" + windowHeight);
         win.moveTo(x, y);
     });
+
+
+
+    
+    // 결제 시스템 ---------------------
+    var IMP = window.IMP; 
+    IMP.init("imp40019257"); 
+    function requestPay(isLogin) {
+        
+        if (!isLogin) {
+            alert("로그인 후 이용할 수 있습니다.");
+            return;
+        }
+
+        // 값 세팅
+        getCurrentUserInfo();
+        let temp = getMerchantUid_setPrice();
+        let merchant_uid = temp.merchant_uid;
+        let pay_auth_id = temp.pay_auth_id;
+        let amount = temp.price;
+        
+
+        IMP.request_pay({ // param
+            pg: "kakao",
+            pay_method: "kakaopay",
+            merchant_uid: merchant_uid, //주문번호
+            name: name,  //결제창에서 보여질 이름
+            amount: amount,  //가격 
+            buyer_name: buyer_name,// 구매자 이름
+            buyer_tel: buyer_tel, // 구매자 전화번호
+        }, function (rsp) { 
+            if (rsp.success) { // 결제 성공
+
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    url: "/pay/complete",
+                    method: "POST",
+                    dataType : "JSON",
+                    data: {
+                        imp_uid: rsp.imp_uid,
+                        merchant_uid: rsp.merchant_uid,
+                        pay_auth_id : pay_auth_id,
+                        goods_id : goods_id,
+                    },
+                    success: function(data) {
+                        if(data.result.code!=200){
+                            //결제실패(웹서버측 실패)   
+                            // 환불 코드 
+                            alert("위조된 결제 시도에 의해 결제에 실패했습니다.");  
+                            removePayAuth(pay_auth_id);// pay_auth 값 지우기
+                            //console.log(data.result.message);
+                        }else{
+                            //결제성공(웹서버측 성공)
+                            alert("결제에 성공했습니다.");
+                            bye_modal(document.getElementById("pay_modal"));
+                        }
+                    },
+                    error: function(data) {
+                        console.log("error" +data);
+                    }
+                });
+            } else {
+                removePayAuth(pay_auth_id);// pay_auth 값 지우기
+                alert("결제에 실패했습니다. : " +  rsp.error_msg);
+                //console.log(rsp);
+            }
+        });
+    }
+    // 결제 시스템 끝 -----------------------
 </script>
 @endsection

@@ -27,6 +27,7 @@ use App\Http\Controllers\FollowsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MainController;
 use App\Events\MyEvent;
+use App\Http\Controllers\PayController;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,9 +119,20 @@ Route::prefix('users')->group(function () {
     Route::POST('/store', [UsersController::class, 'store']);//회원가입
     Route::DELETE('/delete/{user}', [UsersController::class, 'destroy']);//회원 탈퇴
     Route::post('checkUid', [UsersController::class, 'checkUid'])->name('users.checkUid'); // users check uid
+    Route::get('/getCurrentUser', [UsersController::class, 'getCurrentUser']);// 현재 로그인한 유저 정보 가져오기
 });
+
 
 // chatting
 Route::get('/chatting/{chatWith?}', function($chatWith = null) {
     return view('sites.chats.chatting', ['chatWith' => $chatWith ]);
+});
+
+
+// pay
+Route::prefix('pay')->group(function () {
+    Route::get('/', function() { return view('sites.pays.pay'); });
+    Route::get('/getMerchantUidAndSetPrice', [PayController::class, 'getMerchantUidAndSetPrice']);
+    Route::post('/complete', [PayController::class, 'complete']);
+    Route::post('/removePayAuth', [PayController::class, 'removePayAuth']);
 });
