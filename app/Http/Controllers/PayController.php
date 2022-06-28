@@ -15,10 +15,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PayController extends Controller
 {
-    public function index($id) {
-        return view('sites.pays.pay');
-    }
-
     public function getMerchantUidAndSetPrice() {
         // 주문번호 규칙 : 연월일(YYMMDD) + 숫자or영어 랜덤 5자리 = 11자리
         $today = date("ymd");
@@ -108,6 +104,9 @@ class PayController extends Controller
 
                 // pay_auth값 삭제
                 DB::table('pay_auths')->where('id', $pay_auth_id)->delete();
+
+                // goods 판매완료로 전환
+                DB::table('goods')->where('id', $goods_id)->update(['sale_state' => 2]);
             }
             else {
                 throw new Exception('위조된 결제를 시도했습니다.', 410);
@@ -131,6 +130,7 @@ class PayController extends Controller
         $removePayAuthId = request('removePayAuthId');
         DB::table('pay_auths')->where('id', $removePayAuthId)->delete(); // pay_auth값 삭제
     }
+
 }
 
 ?>

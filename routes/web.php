@@ -28,7 +28,8 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MainController;
 use App\Events\MyEvent;
 use App\Http\Controllers\PayController;
-
+use App\Http\Controllers\PayHistorysController;
+use App\Http\Controllers\CalculatesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -112,7 +113,7 @@ Route::prefix('users')->group(function () {
     Route::get('/edit/{user}', [UsersController::class, 'edit']);//회원정보수정 폼
     Route::put('/{user}', [UsersController::class, 'update']);//회원정보수정 폼
     Route::get('/show/{user}', [UsersController::class, 'show']);//회원정보조회
-    Route::get('/login', [UsersController::class, 'loginForm']);//로그인 폼
+    Route::get('/login', [UsersController::class, 'loginForm'])->name('login');//로그인 폼
     Route::POST('/login', [UsersController::class, 'login']);// 로그인
     Route::get('/logout', [UsersController::class, 'logout']);//로그아웃
     Route::get('register', [UsersController::class, 'register']);//회원가입 폼
@@ -120,6 +121,15 @@ Route::prefix('users')->group(function () {
     Route::DELETE('/delete/{user}', [UsersController::class, 'destroy']);//회원 탈퇴
     Route::post('checkUid', [UsersController::class, 'checkUid'])->name('users.checkUid'); // users check uid
     Route::get('/getCurrentUser', [UsersController::class, 'getCurrentUser']);// 현재 로그인한 유저 정보 가져오기
+
+    // payHistorys (결제 내역)
+    Route::get('/pay-history', [PayHistorysController::class, 'index'])->middleware('auth');
+    Route::get('/pay-history/{id}', [PayHistorysController::class, 'show'])->middleware('auth');
+    Route::post('/pay-history/update', [PayHistorysController::class, 'updateBuyConfirm'])->middleware('auth');
+
+    // calculate (정산)
+    Route::get('/calculate', [CalculatesController::class, 'index'])->middleware('auth');
+    Route::get('/calculate/{id}', [CalculatesController::class, 'show'])->middleware('auth');
 });
 
 
@@ -131,7 +141,6 @@ Route::get('/chatting/{chatWith?}', function($chatWith = null) {
 
 // pay
 Route::prefix('pay')->group(function () {
-    Route::get('/', function() { return view('sites.pays.pay'); });
     Route::get('/getMerchantUidAndSetPrice', [PayController::class, 'getMerchantUidAndSetPrice']);
     Route::post('/complete', [PayController::class, 'complete']);
     Route::post('/removePayAuth', [PayController::class, 'removePayAuth']);

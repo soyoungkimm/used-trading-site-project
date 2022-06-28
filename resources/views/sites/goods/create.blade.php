@@ -237,6 +237,10 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{ asset('ksy/js/site.js'); }}"></script>
 <script>
+    // 이미지 정렬 가능하게 함
+    $(".sortable").sortable();
+    $(".sortable").disableSelection();
+    
     // 값 세팅
     var old_category_id = '{{ old("category_id") }}';
     var old_category_de_id = '{{ old("category_de_id") }}';

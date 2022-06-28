@@ -177,6 +177,11 @@
         #sellBtn {
             cursor: pointer;
         }
+        #my_store_a,
+        #my_store_a:hover{
+            color : rgb(29, 29, 29);
+            font-size : 11pt;
+        }
     </style>
 </head>
 <body>
@@ -256,13 +261,14 @@
                         <div class="header__top__right">
                         @auth
                             <div class="header__top__right__language">
-                                <a href="#" >내 상점</a>
+                                <a href="#" id="my_store_a">내 상점</a>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
                                     <li><a href="#">내 상품</a></li>
                                     <li><a href="#">찜한 상품</a></li>
                                     <li><a href="/users/show/{{ session()->get('id') }}">계정 설정</a></li>
-                                    <li><a href="#">고객센터</a></li>
+                                    <li><a href="/users/pay-history">결제 내역</a></li>
+                                    <li><a href="/users/calculate">수입</a></li>
                                 </ul>
                             </div>
                         @endauth

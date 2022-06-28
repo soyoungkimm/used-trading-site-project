@@ -557,11 +557,6 @@ $(document).on("click", ".close_btn", function(e){
 }); 
 
 
-// 이미지 정렬 가능하게 함
-$(".sortable").sortable();
-$(".sortable").disableSelection();
-
-
 // form submit
 $(".submit_btn").click (function(e) {
     
