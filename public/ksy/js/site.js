@@ -1595,15 +1595,15 @@ function sel_order() {
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: "/pay/removePayAuth",
             method: "POST",
-            dataType : "JSON",
+            dataType : "text",
             data: {
                 removePayAuthId : removePayAuthId
             },
             success: function() {
                 
             },
-            error: function(data) {
-                console.log("error" +data);
+            error: function(request, status, error) {
+                console.log("status : " + request.status + ", message : " + request.responseText + ", error : " + error);
             }
         });
     }

@@ -42,7 +42,7 @@ class PayController extends Controller
     {
         $result = ["code"=>200, "message"=>"success"];
         $imp_key = "7714768749174916";// REST API 키
-        $imp_secret = "98b62865309a9994cb04f762f9ea8265161ef4ec7ce16fac6cf6573446526ee79992546fea9b817f"; // REST API Secret
+        $imp_secret = "OB1WWo6mnBLajBRh7DUty0o50YIkkmO8YP4UebhBM3M6EEnMhhgQiEViDEDX1r5ZhaUvlb78eTeTxBFP"; // REST API Secret
         $imp_uid = request('imp_uid');// 결제 번호
         $merchant_uid = request("merchant_uid");// 주문 번호
         $pay_auth_id = request("pay_auth_id");// 주문 번호 id
