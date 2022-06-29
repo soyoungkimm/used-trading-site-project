@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Advertisement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,12 +22,12 @@ class MainController extends Controller
             ->inRandomOrder()
             ->limit(16)
             ->get();
-        
+
         // 시간 세팅
         foreach ($today_goods as $today_good)
             $today_good->writeday = parent::get_date_diff($today_good->writeday);
-        
-        // 찜한 상품인지 확인    
+
+        // 찜한 상품인지 확인
         $isHearts = array();
         foreach ($today_goods as $today_good) {
             if (DB::table('heart_goods')
@@ -63,8 +64,8 @@ class MainController extends Controller
             ->orderby('id', 'asc')
             ->limit(6)
             ->get();
-        
-        
+
+
         $has_review_goods = DB::table('reviews')
             ->select('goods_id')
             ->distinct()
@@ -88,12 +89,15 @@ class MainController extends Controller
             ->limit(6)
             ->get();
 
+        $ads = Advertisement::on()->get();
+
         return view('sites.main', [
             'today_goods' => $today_goods,
             'isHearts' => $isHearts,
             'lately_goods' => $lately_goods,
             'heart_high_goods'=>$heart_high_goods,
-            'star_high_goods'=>$star_high_goods
+            'star_high_goods'=>$star_high_goods,
+            'ads' => $ads
         ]);
     }
 }

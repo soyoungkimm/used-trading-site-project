@@ -11,11 +11,12 @@ use Laravel\Sanctum\HasApiTokens;
 class Advertisement extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    //protected $connection = 'junggo'; 
-    protected $table = 'advertisements'; 
+    //protected $connection = 'junggo';
+    protected $table = 'advertisements';
     public $timestamps = false;
     protected $fillable = [
         'title',
-        'image'
+        'image',
+        'link'
     ];
 }
