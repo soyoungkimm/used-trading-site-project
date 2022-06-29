@@ -25,6 +25,10 @@
                                     <div class="form-control" id="inputTitle">{{ $ad -> title }}</div>
                                     <label for="inputTitle">제목</label>
                                 </div>
+                                <div class="form-floating mb-3">
+                                    <div class="form-control" id="inputLink">{{ $ad -> link }}</div>
+                                    <label for="inputLink">링크</label>
+                                </div>
                                 <div class="col-md-6">
                                     <label>상점 사진</label>
                                     <div class="mb-3">

@@ -38,7 +38,12 @@
                                 <div class="form-floating mb-3">
                                     <input class="form-control" id="inputTitle" name="title" type="text"
                                            placeholder="제목" value=""/>
-                                    <label for="inputTitle">Title</label>
+                                    <label for="inputTitle">제목</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="inputLink" name="link" type="text"
+                                           placeholder="링크" value=""/>
+                                    <label for="inputLink">링크</label>
                                 </div>
                                 <label>광고 사진</label>
                                 <div class="mb-3">

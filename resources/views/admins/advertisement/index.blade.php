@@ -54,6 +54,7 @@
                             <th>No</th>
                             <th>제목</th>
                             <th>이미지</th>
+                            <th>링크</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -62,6 +63,7 @@
                             <th>No</th>
                             <th>제목</th>
                             <th>이미지</th>
+                            <th>링크</th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -72,6 +74,7 @@
                                 <td>{{ $Ad->id }}</td>
                                 <td><a href='/admin/advertise/{{ $Ad->id }}'>{{ $Ad->title }} </a></td>
                                 <td>{{ $Ad->image }}</td>
+                                <td>{{ $Ad->link }}</td>
                             </tr>
                         @endforeach
                         </tbody>

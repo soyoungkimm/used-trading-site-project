@@ -24,7 +24,8 @@ class AdminADsController extends Controller
     {
         $request->validate([
             'title' => 'bail|required',
-            'image' => 'required'
+            'image' => 'required',
+            'link' => 'required'
         ]);
 
         if ($request->hasFile('image')) {
@@ -33,7 +34,8 @@ class AdminADsController extends Controller
 
             Advertisement::on()->create([
                 'title' => $request->get('title'),
-                'image' => $fileName
+                'image' => $fileName,
+                'link' => $request->get('link')
             ]);
         }
 
@@ -56,6 +58,7 @@ class AdminADsController extends Controller
     {
         $request->validate([
             'title' => 'bail|required',
+            'link' => 'required'
         ]);
 
         $ad = Advertisement::on()->find($request->get('id'));
@@ -70,6 +73,7 @@ class AdminADsController extends Controller
 
         $ad->update([
             'title' => $request->get('title'),
+            'link' => $request->get('link')
         ]);
 
         return redirect('/admin/advertise');

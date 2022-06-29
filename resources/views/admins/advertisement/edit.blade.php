@@ -43,6 +43,11 @@
                                            placeholder="Title" value="{{ $ad -> title }}"/>
                                     <label for="inputTitle">제목</label>
                                 </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="inputLink" type="text" name="link"
+                                           placeholder="Link" value="{{ $ad -> link }}"/>
+                                    <label for="inputLink">링크</label>
+                                </div>
                                 <div class="col-md-6">
                                     <label>상점 사진</label>
                                     <div class="mb-3">

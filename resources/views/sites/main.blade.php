@@ -18,13 +18,13 @@
 
 <div class="row">
     <div class="col">
-        <div class="hero__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-            <!-- <div class="hero__text">
-                <span>FRUIT FRESH</span>
-                <h2>Vegetable <br />100% Organic</h2>
-                <p>Free Pickup and Delivery Available</p>
-                <a href="#" class="primary-btn">SHOP NOW</a>
-            </div> -->
+        <div class="hero__item set-bg" data-setbg="{{ asset('img/main_ad.jpg') }}">
+            <div class="hero__text">
+                <span>인덕 마켓</span>
+                <h2>Induk <br />Market</h2>
+                <p>지금 바로 중고 거래를 시작해보세요!</p>
+                <a href="goods/create" class="primary-btn" style="background: #FF9900">내 물건 팔기</a>
+            </div>
         </div>
     </div>
 </div>
@@ -36,32 +36,20 @@
     <div class="container">
         <div class="row">
             <div class="categories__slider owl-carousel">
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-                        <!-- <h5><a href="#">Fresh Fruit</a></h5> -->
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-                        <!-- <h5><a href="#">Dried Fruit</a></h5> -->
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-                        <!-- <h5><a href="#">Vegetables</a></h5> -->
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-                        <!-- <h5><a href="#">drink fruits</a></h5> -->
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-                        <!-- <h5><a href="#">drink fruits</a></h5> -->
-                    </div>
-                </div>
-            </div>    
+                @foreach($ads as $ad)
+                        <div class="col-lg-3">
+                            <a href="{{ $ad->link }}">
+                                @if(file_exists(public_path('storage/images/ad/'.$ad->image)))
+                                    <div class="categories__item set-bg" data-setbg="{{ asset('storage/images/ad/'.$ad->image) }}">
+                                    </div>
+                                @else
+                                    <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png') }}">
+                                    </div>
+                                @endif
+                            </a>
+                        </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </section>
@@ -91,7 +79,7 @@
                         </div>
                         <div class="featured__item__text">
                             <h6 id="today_goods_title">{{ $today_good->title }}</h6>
-                            <h5>{{ number_format($today_good->price) }} 원<span id="m_goods_writeday">{{ $today_good->writeday }}</span></h5> 
+                            <h5>{{ number_format($today_good->price) }} 원<span id="m_goods_writeday">{{ $today_good->writeday }}</span></h5>
                         </div>
                     </div>
                 </div>
@@ -197,7 +185,7 @@
                                         <div class="latest-product__item__text">
                                             <h6 id="m_goods_title">{{ $star_high_goods[$i]->title }}</h6>
                                             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-                                            <script src="{{ asset('ksy/js/site.js'); }}"></script>   
+                                            <script src="{{ asset('ksy/js/site.js'); }}"></script>
                                             <div id="review_star_{{ $star_high_goods[$i]->id }}" class="star_high_goods_s">
                                                 <script>
                                                     list_set_star_not_num({{ $star_high_goods[$i]->star }}, 'review_star_{{ $star_high_goods[$i]->id }}');
@@ -235,7 +223,7 @@
         </div>
     </div>
 </section>
-                    
+
 <script>
     $('.heart_pop').click (function (e) {
         e.stopPropagation();
