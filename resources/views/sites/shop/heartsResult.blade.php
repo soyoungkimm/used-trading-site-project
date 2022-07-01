@@ -14,7 +14,7 @@
             <div class="sc-fvLVrH kiTElI">
                 @foreach($hearts as $heart)
                 <div class="heart-block fGcQcm" data-id="{{$heart->goods_id}}">
-                    <a class="heart-item irufUT" href="/products/169319251?ref=%EC%B0%9C">
+                    <a class="heart-item irufUT" href="/goods/{{$heart->goods_id}}">
                         <div class="heart-box eiboyg">
                             <div class="checkBox noCheck"></div>
                         </div>

@@ -108,7 +108,7 @@ class ShopController extends Controller{
         $reviews = Review::where('goods.user_id',$id)
             ->join('goods','goods.id', '=', 'reviews.goods_id')
             ->join('users','users.id', '=', 'reviews.user_id')
-            ->select('goods.id as goods_id', 'goods.content as goods_content', 'goods.*', 'reviews.*', 'users.*')
+            ->select('goods.id as goods_id', 'goods.content as goods_content', 'goods.*', 'reviews.*', 'users.id as user_id' , 'users.*')
             ->get();
 
         //후기 게시시간 계산

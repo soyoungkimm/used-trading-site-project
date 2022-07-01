@@ -1,3 +1,7 @@
+a:hover, a:after, a:before, a:focus{
+    color:#000 !important;
+}
+
 /* 상단 프로필 시작 */
 
 .iFwjPv {

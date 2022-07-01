@@ -531,7 +531,7 @@
                             <div class="sc-bYTsla fLFyAJ">
                                 @foreach($reviews as $review)
                                 <div class="sc-dwztqd bDCRQQ">
-                                    <a class="sc-fgrSAo AXChy" href="/shop/5490878/products">
+                                    <a class="sc-fgrSAo AXChy" href="/shop/main/{{$review->user_id}}">
                                         @if( empty($review->image))
                                             <img src="{{ asset('storage/images/users/noProfile.png') }}" width="60" height="60" alt="리뷰어 이미지">
                                         @else
@@ -540,16 +540,17 @@
                                     </a>
                                     <div class="sc-bOCYYb gFodBE">
                                         <div class="sc-iFUGim hoITQQ">
-                                            <div class="sc-cNQqM eokRlZ"><a class="sc-eqPNPO bQTojy" href="/shop/5490878/products">{{$review->name}}</a>
+                                            <div class="sc-cNQqM eokRlZ"><a class="sc-eqPNPO bQTojy" href="/shop/main/{{$review->user_id}}">{{$review->name}}</a>
                                                 <div class="sc-ileJJU jZmVej">{{$review->writeday}}</div>
-                                            </div><a class="sc-hAnkBK grDwfy" href="/shop/5490878/reviews">
+                                            </div>
+                                            <a class="sc-hAnkBK grDwfy" href="/shop/main/{{$review->user_id}}">
                                                 <div class="sc-hIVACf eHVdaG" id="star-{{$review->name}}">
                                                     <script>
                                                         list_set_star({{ $review->star }}, 'star-{{$review->name}}');
                                                     </script>
                                                 </div>
                                             </a>
-                                        </div><a class="sc-jotlie ccIUoD" href="/products/188883221?ref=상점내후기"><button class="sc-bYnzgO nwMWR">{{$review->title}}<i class="fa-solid fa-chevron-right"></i></button></a>
+                                        </div><a class="sc-jotlie ccIUoD" href="/goods/{{$review->goods_id}}"><button class="sc-bYnzgO nwMWR">{{$review->title}}<i class="fa-solid fa-chevron-right"></i></button></a>
                                         <div class="sc-fdQOMr hsWyMo">{{$review->content}}</div>
                                         <div class="sc-cNnxps amrNP">
 
@@ -576,14 +577,14 @@
                                                 <div class="sc-dHaUqb hGHIcc">
                                                     <a class="sc-LAuEU iitCmj" href="/shop/main/{{$follow->id}}">
                                                         @if( empty($follow->image))
-                                                            <img src="{{ asset('storage/images/users/noProfile.png') }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/78105480/products">{{$follow->store_name}}
+                                                            <img src="{{ asset('storage/images/users/noProfile.png') }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/main/{{$follow->id}}">{{$follow->store_name}}
                                                         @else
-                                                            <img src="{{ asset('storage/images/users/'.$follow->image) }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/78105480/products">{{$follow->store_name}}
+                                                            <img src="{{ asset('storage/images/users/'.$follow->image) }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/main/{{$follow->id}}">{{$follow->store_name}}
                                                         @endif
                                                     </a>
                                                     <div class="sc-ghUbLI ddTIuq">
-                                                        <a class="sc-hrBRpH ekUNbH" href="/shop/78105480/products">상품<b>{{$follow->good_num}}</b></a>
-                                                        <a class="sc-ljUfdc bzESTy" href="/shop/78105480/follow">팔로워<b>{{$follow->follower}}</b></a>
+                                                        <a class="sc-hrBRpH ekUNbH" href="/shop/main/{{$follow->id}}">상품<b>{{$follow->good_num}}</b></a>
+                                                        <a class="sc-ljUfdc bzESTy" href="/shop/main/{{$follow->id}}">팔로워<b>{{$follow->follower}}</b></a>
                                                     </div>
                                                     <div class="fo-box eekpGe">
                                                         <button class="fo-check following" data-storeid="{{$follow->store_id}}">
@@ -611,16 +612,16 @@
                                             @foreach($followers as $follower)
                                             <div class="sc-gUlUPW fisZng">
                                                 <div class="sc-dHaUqb hGHIcc">
-                                                    <a class="sc-LAuEU iitCmj" href="/shop/78105480/products">
+                                                    <a class="sc-LAuEU iitCmj" href="/shop/main/{{$follower->user_id}}">
                                                         @if( empty($followers->image) )
-                                                            <img src="{{ asset('storage/images/users/noProfile.png') }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/78105480/products">{{$follower->store_name}}
+                                                            <img src="{{ asset('storage/images/users/noProfile.png') }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/main/{{$follower->user_id}}">{{$follower->store_name}}
                                                         @else
-                                                            <img src="{{ asset('storage/images/users/'.$followers->image) }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/78105480/products">{{$follower->store_name}}
+                                                            <img src="{{ asset('storage/images/users/'.$followers->image) }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/main/{{$follower->user_id}}">{{$follower->store_name}}
                                                         @endif
                                                     </a>
                                                     <div class="sc-ghUbLI ddTIuq">
-                                                        <a class="sc-hrBRpH ekUNbH" href="/shop/78105480/products">상품<b>{{$follower->good_num}}</b></a>
-                                                        <a class="sc-ljUfdc bzESTy" href="/shop/78105480/followers">팔로워<b>{{$follower->follower}}</b></a>
+                                                        <a class="sc-hrBRpH ekUNbH" href="/shop/main/{{$follower->user_id}}">상품<b>{{$follower->good_num}}</b></a>
+                                                        <a class="sc-ljUfdc bzESTy" href="/shop/main/{{$follower->user_id}}">팔로워<b>{{$follower->follower}}</b></a>
                                                     </div>
                                                     <div class="fwr-box eekpGe">
                                                         @if( $isfollow[$loop->index] == 1)
