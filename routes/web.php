@@ -30,6 +30,8 @@ use App\Events\MyEvent;
 use App\Http\Controllers\PayController;
 use App\Http\Controllers\PayHistorysController;
 use App\Http\Controllers\CalculatesController;
+use App\Http\Controllers\ShopController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -144,4 +146,13 @@ Route::prefix('pay')->group(function () {
     Route::get('/getMerchantUidAndSetPrice', [PayController::class, 'getMerchantUidAndSetPrice']);
     Route::post('/complete', [PayController::class, 'complete']);
     Route::post('/removePayAuth', [PayController::class, 'removePayAuth']);
+});
+
+// site shop
+Route::prefix('shop')->group(function () {
+    Route::GET('/main/{user}', [ShopController::class, 'main']);//메인화면
+    Route::PUT('/update_StoreIntro', [ShopController::class, 'ajax_edit_intro']);//ajax_storeIntro
+    Route::PUT('/update_StoreName', [ShopController::class, 'ajax_edit_storename']);//ajax_storename
+    Route::POST('/ajax_heart', [ShopController::class, 'ajax_hearts']);//찜 탭
+    Route::POST('/ajax_good', [ShopController::class, 'ajax_goods']);//상품 탭
 });
