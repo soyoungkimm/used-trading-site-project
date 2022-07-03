@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Ogani | Template</title>
+    <title>인덕마켓</title>
+
+    <link href="{{ asset('img/title_logo.png'); }}" rel="shortcut icon" type="image/x-icon">
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
@@ -31,7 +33,7 @@
             width: 80px;
         }
         .hero__categories__all, .site-btn{
-            background: red;
+            background: #FF9900;
         }
         .search_btn {
             right: auto !important; 
@@ -46,12 +48,12 @@
             right: 0;
             height: 4px;
             width: 80px;
-            background: red;
+            background: #FF9900;
             content: "";
             margin: 0 auto;
         }
         .fa-won:before {
-            color : red;
+            color : #FF9900;
         }
         .categories__slider.owl-carousel .owl-nav button, .latest-product__slider.owl-carousel .owl-nav button {
             border:none;
@@ -60,22 +62,18 @@
         .latest-product__slider.owl-carousel.owl-loaded.owl-drag .owl-nav .owl-prev {
             display: none;
         }
-
         .sel_li {
             padding : 10px 17px;
         }
         .sel_li:hover {
             background : rgb(238, 238, 238);
         }
-
         .arrow_carrot-up:before {
             content: "\32";
         }
-
         .hero__search__form form input {
             width: 54%;
         }
-
         .h_cate, .h_cate_de, .h_cate_de_de {
             padding : 8px;
             padding-left : 25px;
@@ -85,20 +83,16 @@
             text-align: left;
             background:#fff;
         }
-
         .h_cate:hover, .h_cate_de:hover, .h_cate_de_de:hover {
             background :rgb(243, 243, 243);
         }
-
         .hero__categories ul {
             padding-left: 0px;
         }
-
         .h_selected, .h_selected:hover {
             background :rgb(255, 162, 56);
             color : rgb(255, 255, 255);
         }
-
         #h_category, #h_category_de, #h_category_de_de {
             position:absolute; 
             background : #fff; 
@@ -115,22 +109,18 @@
         #h_category {
             display: none;
         }
-
         #h_category_de {
             margin-left: 249px;
         }
-
         #h_category_de_de {
             margin-left: 498px; 
         }
-
         .hero__categories__all:after {
             display: none;
         }
         .hero__categories__all {
             width: 55px;
         }
-
         #sel_ul {
             position:absolute; 
             z-index: 2; 
@@ -143,15 +133,12 @@
             border : 1px solid rgb(231, 231, 231);
             cursor: pointer;
         }
-
         .header__logo {
             padding:0px 0px;
         }
-
         .hero__search__form {
             position: inherit;
         }
-
         .my_sear_g_a {
             cursor : pointer;
             height: 48px;
@@ -159,7 +146,6 @@
         #selected_search_type {
             right: 116px;
         }
-
         .hero__search__phone__icon {
             margin-right : 8px;
         }
@@ -169,11 +155,9 @@
         #footer_site_info {
             width : 300px;
         }
-
         .type_selected {
             color :rgb(255, 150, 29);
         }
-
         #sellBtn {
             cursor: pointer;
         }
@@ -181,6 +165,27 @@
         #my_store_a:hover{
             color : rgb(29, 29, 29);
             font-size : 11pt;
+        }
+        .featured__item__pic__hover li:hover a {
+            background: #FF9900;
+            border-color: #FF9900;
+        }
+        .header__top__right__social:after {
+            right: -21px;
+        }
+        .header__top__right__social a{
+            font-size : 11pt;
+            cursor : pointer;
+            color : rgb(29, 29, 29);
+        }
+        #logo {
+            height: 40px;
+            width: 160px;
+            margin-top: 3px;
+            margin-left: -5px;
+        }
+        #f_logo {
+            height : 55px;
         }
     </style>
 </head>
@@ -191,7 +196,7 @@
     </div>
 
     <!-- Humberger Begin -->
-    <div class="humberger__menu__overlay"></div>
+    {{-- <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
             <a href="#"><img src="{{ asset('template/ogani-master/img/logo.png'); }}" alt=""></a>
@@ -246,7 +251,7 @@
                 <li>Free Shipping for all Order of $99</li>
             </ul>
         </div>
-    </div>
+    </div> --}}
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
@@ -259,6 +264,9 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__right">
+                            <div class="header__top__right__social">
+                                <a href="/notices">공지사항</a>
+                            </div>
                         @auth
                             <div class="header__top__right__language">
                                 <a href="#" id="my_store_a">내 상점</a>
@@ -316,7 +324,7 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="header__logo">
-                        <a href="/"><img src="{{ asset('template/ogani-master/img/logo.png'); }}" alt=""></a>
+                        <a href="/"><img src="{{ asset('img/logo.PNG') }}" alt="logo" id="logo"></a>
                     </div>
                 </div>
                 <div class="col-lg-9">
@@ -369,34 +377,35 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="{{ asset('template/ogani-master/img/logo.png'); }}" alt=""></a>
+                            <a href="/"><img src="{{ asset('img/logo.PNG') }}" alt="logo" id="f_logo"></a>
                         </div>
                         <ul id="footer_site_info">
                             <li>주소 : 서울특별시 서초구 서초대로38길 12</li>
                             <li>사업자등록번호 : 111-59-45536</li>
                             <li>FAX : 02-598-8241</li>
-                            <li>Email : bungae@usedsite.com</li>
+                            <li>Email : induk@usedsite.com</li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                <div class="col-lg-2 col-md-3 col-sm-3 offset-lg-1">
                     <div class="footer__widget">
-                        <h6>Links</h6>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="/notices">공지사항</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
+                        <h6>안내</h6>
+                        <ul style="width: 100%">
+                            <li><a href="">회사소개</a></li>
+                            <li><a href="">이용약관</a></li>
+                            <li><a href="">운영정책</a></li>
+                            <li><a href="">개인정보처리방침</a></li>
+                            <li><a href="">광고운영정책</a></li>
                         </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="footer__widget">
+                        <h6>개발자</h6>
                         <ul>
-                            <li><a href="#">Who We Are</a></li>
-                            <li><a href="#">Our Services</a></li>
-                            <li><a href="#">Projects</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Innovation</a></li>
-                            <li><a href="#">Testimonials</a></li>
+                            <li><a href="https://github.com/WooSeongg">최우성</a></li>
+                            <li><a href="https://github.com/Jungma1">민병준</a></li>
+                            <li><a href="https://github.com/soyoungkimm">김소영</a></li>
                         </ul>
                     </div>
                 </div>

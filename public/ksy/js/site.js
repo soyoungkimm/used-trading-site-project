@@ -591,8 +591,8 @@ function dragOver(e) {
     $(e.target).css({
         "background-color": "#fff",
         "outline-offset": "-30px",
-        "outline": "2px dashed rgb(175, 212, 255)",
-        "color" : "rgb(175, 212, 255)",
+        "outline": "2px dashed #ffb341",
+        "color" : "#ffb341",
         "font-size" : "30pt"
     });
     
@@ -605,7 +605,7 @@ function dragLeave(e) {
     e.preventDefault();
     
     $(e.target).css({
-        "background-color" : "rgb(175, 212, 255)",
+        "background-color" : "#ffb341",
         "outline-offset" : "-20px",
         "outline" : "2px dashed #fff",
         "color" : "#fff",

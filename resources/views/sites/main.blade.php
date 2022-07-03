@@ -16,15 +16,9 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-top : 10px;">
     <div class="col">
         <div class="hero__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-            <!-- <div class="hero__text">
-                <span>FRUIT FRESH</span>
-                <h2>Vegetable <br />100% Organic</h2>
-                <p>Free Pickup and Delivery Available</p>
-                <a href="#" class="primary-btn">SHOP NOW</a>
-            </div> -->
         </div>
     </div>
 </div>
@@ -38,27 +32,22 @@
             <div class="categories__slider owl-carousel">
                 <div class="col-lg-3">
                     <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-                        <!-- <h5><a href="#">Fresh Fruit</a></h5> -->
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-                        <!-- <h5><a href="#">Dried Fruit</a></h5> -->
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-                        <!-- <h5><a href="#">Vegetables</a></h5> -->
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-                        <!-- <h5><a href="#">drink fruits</a></h5> -->
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="categories__item set-bg" data-setbg="{{ asset('template/ogani-master/pic.png'); }}">
-                        <!-- <h5><a href="#">drink fruits</a></h5> -->
                     </div>
                 </div>
             </div>    
