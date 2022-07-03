@@ -4,12 +4,12 @@
     <link href="{{ asset('ksy/css/site.css'); }}" rel="stylesheet" />
     <div id="pay_modal" class="modal">
         <div id="pay_area">
-            <div id="pay_title">인덕 안심페이&nbsp;&nbsp;<i class="fa fa-credit-card fa-lg" aria-hidden="true"></i></div>
+            <div id="pay_title">인덕안심페이&nbsp;&nbsp;<i class="fa fa-credit-card fa-lg" aria-hidden="true"></i></div>
             <br>
             <div id="induk_pay_content">
                 <img src="{{ asset('img/indukPay.JPG') }}" />
-                <b style="font-size : 15pt">인덕 안심페이</b>&nbsp; 란?<br>
-                인덕 장터 측에 먼저 금액을 입금하여 보관하고, 구매자가 구매 확정 버튼을 눌렀을 때
+                <b style="font-size : 15pt">인덕안심페이</b>&nbsp; 란?<br>
+                인덕마켓 측에 먼저 금액을 입금하여 보관하고, 구매자가 구매 확정 버튼을 눌렀을 때
                 판매자에게 금액이 입금되는 형태의 결제 방법입니다.<br><br>
                 수수료 : 상품 금액의 3.5%<br>
                 결제 방법 : 카카오페이 간편결제<br>

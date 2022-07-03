@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-top : 10px;">
     <div class="col">
         <div class="hero__item set-bg" data-setbg="{{ asset('img/main_ad.jpg') }}">
             <div class="hero__text">
