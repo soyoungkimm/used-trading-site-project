@@ -19,12 +19,6 @@ class ShopController extends Controller{
 
     public function main($id, Request $request){//메인페이지 반환
 
-        if ($request->ajax()) {
-            return view('sites.goods.goodsResult', [
-                'goods' => 1,
-                'isHearts' => 2
-            ]);
-        }
         $user = User::where('id',$id)->first();
 
         //상점오픈일 계산
@@ -240,6 +234,61 @@ class ShopController extends Controller{
         return view('sites.shop.goodsResult', [
             'goods' => $goods,
             'cate_arrs' => $cate_arr
+        ]);
+    }
+
+    public function manage($id){
+
+        $goods = DB::table("goods")
+            ->select('goods.id as good_id', 'goods.*', DB::raw('count(questions.id) as questions_cnt'), "goods_images.name as image")
+            ->leftjoin('questions', 'goods.id', '=',  'questions.goods_id')
+            ->join('goods_images', 'goods.id', '=', 'goods_images.goods_id')
+            ->where('goods_images.order','0')
+            ->where('goods.user_id',$id)
+            ->groupBy('goods.id')
+            ->orderby('goods.sale_state','asc')
+            ->orderby('goods.writeday','desc')
+            ->get();
+
+
+        return view('sites.shop.manage',[
+            'goods' => $goods
+        ]);
+    }
+
+    public function ajax_saleStatus(Request $request){
+        
+        $good = Good::where('goods.id',$request->id);
+
+        $good->update([
+            'sale_state'=> $request->sale_state
+        ]);
+
+        return 1;
+    }
+
+
+    public function ajax_managing(Request $request){
+
+        $goods = DB::table("goods")
+        ->select('goods.id as good_id', 'goods.*', DB::raw('count(questions.id) as questions_cnt'), "goods_images.name as image")
+        ->leftjoin('questions', 'goods.id', '=',  'questions.goods_id')
+        ->join('goods_images', 'goods.id', '=', 'goods_images.goods_id')
+        ->where('goods_images.order','0')
+        ->where('goods.user_id',$request->id)
+        ->groupBy('goods.id')
+        ->orderby('goods.sale_state','asc')
+        ->orderby('goods.writeday','desc');
+
+        $goods->where('goods.title', 'like', '%' . $request->search . '%');
+        if($request->state == 'all'){
+            $goods = $goods->get();
+        }else{
+            $goods = $goods->where('goods.sale_state', '=', $request->state)->get();
+        }
+
+        return view('sites.shop.manageResult',[
+            'goods' => $goods
         ]);
     }
 }
