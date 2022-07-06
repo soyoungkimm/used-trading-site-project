@@ -86,11 +86,10 @@
                         <p>소개글</p>
                         <div class="form-control">{{ $user -> introduction }}</div>
                     </div>
-                    <button class="site-btn text-white" onClick="location.href='/users/edit/{{ $user -> id }}'">정보수정</button>
-                    <form action="/users/delete/{{$user->id}}" method="post" style="display:flex">
+                    <button class="site-btn text-white" onClick="location.href='/users/edit'">정보수정</button>
+                    <form action="/users/delete" method="post" style="display:flex">
                         @method('DELETE')
                         @csrf
-                        <input type="hidden" name="id" value="{{ $user-> id }}"> 
                         <button class="site-btn text-white mt-5" type="delete">회원 탈퇴</a>
                     </form>
 

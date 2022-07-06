@@ -113,19 +113,19 @@ class UsersController extends Controller{
         return view('sites.users.register2'); //가입축하 폼
     }
 
-    public function show($id){ //회원정보 조회
-        $user = User::where('id',$id)->first();
+    public function show(){ //회원정보 조회
+        $user = User::where('id',auth()->id())->first();
         return view('sites.users.show',['user' => $user]);
     }
 
-    public function edit($id){  //회원수정 페이지
-        $user = User::where('id',$id)->first();
+    public function edit(){  //회원수정 페이지
+        $user = User::where('id',auth()->id())->first();
         return view('sites.users.edit',['user' => $user]);
     }
 
     public function update(Request $request){ //DB회원정보 수정
         //id와 일치하는 레코드 저장
-        $user = User::find($request->id);
+        $user = User::find(auth()->id());
         //dump($user);
         //요청값 유효성 검사
         // $validated = $request->validate([ 
@@ -154,17 +154,15 @@ class UsersController extends Controller{
             'store_name'   =>$request->store_name,
             'introduction' =>$request->introduction
         ]);
-
-        $link = '/users/show/'.(string)$user->id;
         
-        return redirect($link);
+        return redirect('/users/show');
     }
 
     public function destroy(Request $reqeust){  
+        $user = User::find(auth()->id());
+        $user->delete();
         Auth::logout();
-        $user = User::find($reqeust->id);
-        $uest->delete();
-
+        
         return redirect('/');
     }
 

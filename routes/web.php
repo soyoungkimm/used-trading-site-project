@@ -112,15 +112,15 @@ Route::prefix('notices')->group(function () {
 
 // site user
 Route::prefix('users')->group(function () {
-    Route::get('/edit/{user}', [UsersController::class, 'edit']);//회원정보수정 폼
-    Route::put('/{user}', [UsersController::class, 'update']);//회원정보수정 폼
-    Route::get('/show/{user}', [UsersController::class, 'show']);//회원정보조회
+    Route::get('/edit', [UsersController::class, 'edit']);//회원정보수정 폼
+    Route::put('/{user}', [UsersController::class, 'update']);//회원정보수정
+    Route::get('/show', [UsersController::class, 'show']);//회원정보조회
     Route::get('/login', [UsersController::class, 'loginForm'])->name('login');//로그인 폼
     Route::POST('/login', [UsersController::class, 'login']);// 로그인
     Route::get('/logout', [UsersController::class, 'logout']);//로그아웃
-    Route::get('register', [UsersController::class, 'register']);//회원가입 폼
+    Route::get('/register', [UsersController::class, 'register']);//회원가입 폼
     Route::POST('/store', [UsersController::class, 'store']);//회원가입
-    Route::DELETE('/delete/{user}', [UsersController::class, 'destroy']);//회원 탈퇴
+    Route::DELETE('/delete', [UsersController::class, 'destroy']);//회원 탈퇴
     Route::post('checkUid', [UsersController::class, 'checkUid'])->name('users.checkUid'); // users check uid
     Route::get('/getCurrentUser', [UsersController::class, 'getCurrentUser']);// 현재 로그인한 유저 정보 가져오기
 
@@ -150,8 +150,8 @@ Route::prefix('pay')->group(function () {
 
 // site shop
 Route::prefix('shop')->group(function () {
-    Route::GET('/main/{user}', [ShopController::class, 'main']);//메인화면
-    Route::GET('/manage/{user}', [ShopController::class, 'manage']);//상품관리
+    Route::GET('/main', [ShopController::class, 'main']);//메인화면
+    Route::GET('/manage', [ShopController::class, 'manage']);//상품관리
     Route::GET('/log/{user}', [ShopController::class, 'log']);//구매/판매 내역
     Route::PUT('/update_StoreIntro', [ShopController::class, 'ajax_edit_intro']);//상점소개 수정
     Route::PUT('/update_StoreName', [ShopController::class, 'ajax_edit_storename']);//상점이름 수정

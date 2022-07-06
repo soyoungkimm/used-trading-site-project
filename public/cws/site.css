@@ -163,10 +163,6 @@ a {
     background-color: transparent;
 }
 
-a:hover {
-    color:black;
-}
-
 .fPlNlP {
     display: flex;
     margin-top: 20px;

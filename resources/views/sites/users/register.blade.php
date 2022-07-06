@@ -17,12 +17,12 @@
             alert("ID중복체크가 필요합니다");
             
         }
-        // else if(form1.pwCheck.value == 0){
-        //     $('#pwMemo').empty();
-        //     $('#pwMemo').append("<p style='color:red'>4~12자리의 영문,숫자,(?!@$)조합만 가능합니다</p>");
-        //     alert("비밀번호를 확인해주세요");
+        else if(form1.pwCheck.value == 0){
+            $('#pwMemo').empty();
+            $('#pwMemo').append("<p style='color:red'>4~12자리의 영문,숫자,(?!@$)조합만 가능합니다</p>");
+            alert("비밀번호를 확인해주세요");
         
-        // }
+        }
         else{
             form1.submit();
         }
@@ -48,16 +48,12 @@
                     },
                     dataType:"text",
                     success: function(result){
-                        //console.log(JSON.stringify(result));
-                        //console.log(result);
                         if(result == 0){
                             form1.idCheck.value="1"
-                            //alert("사용가능한 ID입니다");
                             $('#idMemo').empty();
                             $('#idMemo').append("<p style='color:blue'>사용가능한 ID입니다</p>");
                         }else{
                             form1.idCheck.value="0"
-                            //alert("사용 불가능한 ID입니다");
                             $('#idMemo').empty();
                             $('#idMemo').append("<p style='color:red'>이미 사용중인 ID입니다</p>");
                         }
@@ -68,31 +64,32 @@
         });
         $("#inputPwd").focusout(function(){
             if($('#inputPwd').val() == $('#inputPwd2').val()){
+                form1.pwCheck2.value="1"
                 $('#pwMemo2').empty();
                 $('#pwMemo2').append("<p style='color:blue'>동일한 비밀번호 입니다</p>");
-                return 0;
             }else{
-                form1.idCheck.value="0"
+                form1.pwCheck2.value="0"
                 $('#pwMemo2').empty();
                 $('#pwMemo2').append("<p style='color:red'>비밀번호가 일치하지 않습니다</p>");
             }
-        //     var userPw=$('#inputPwd').val();
-        //     var patttern_num=/(?=.*\d)(?=.*[a-zA-ZS])(?=.*?[?!@$]).{4,12}/; 
-        //     if(!patttern_num.test(userPw)){
-        //         $('#pwMemo ').empty();
-        //         $('#pwMemo ').append("<p style='color:red'>4~12자리의 영문,숫자,(?!@$)조합만 가능합니다</p>");
-        //         return 0;
-        //     }else{
-        //         $('#pwMemo ').empty();
-        //         $('#pwMemo ').append("<p style='color:blue'>사용가능한 형식입니다</p>");
-        //     }
+            var userPw=$('#inputPwd').val();
+            var patttern_num=/(?=.*\d)(?=.*[a-zA-ZS])(?=.*?[?!@$]).{4,12}/; 
+            if(!patttern_num.test(userPw)){
+                form1.pwCheck.value="0"
+                $('#pwMemo ').empty();
+                $('#pwMemo ').append("<p style='color:red'>4~12자리의 영문,숫자,(?!@$)조합만 가능합니다</p>");
+            }else{
+                form1.pwCheck.value="1"
+                $('#pwMemo ').empty();
+                $('#pwMemo ').append("<p style='color:blue'>사용가능한 형식입니다</p>");
+            }
         });
         $("#inputPwd2").focusout(function(){
 
             if($('#inputPwd').val() == $('#inputPwd2').val()){
+                form1.pwCheck2.value="1"
                 $('#pwMemo2').empty();
                 $('#pwMemo2').append("<p style='color:blue'>동일한 비밀번호 입니다</p>");
-                return 0;
             }else{
                 form1.idCheck.value="0"
                 $('#pwMemo2').empty();
@@ -130,14 +127,14 @@
                                     <p>비밀번호<span>*</span></p>
                                     <input type="text" name="pwd" id="inputPwd" placeholder="비밀번호를 입력해 주세요">
                                 </div>
-                                <div class="mb-2" id="pwMemo" class="mb-3">2323</div>
+                                <div class="mb-2" id="pwMemo" class="mb-3">4~12자리의 영문,숫자,(?!@$)로 구성해주세요 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="checkout__input mb-1">
                                     <p>비밀번호확인<span>*</span></p>
                                     <input type="text" name="pwd2" id="inputPwd2" placeholder="비밀번호롤 다시 입력해 주세요">
                                 </div>
-                                <div class="mb-2" id="pwMemo2" class="mb-3">2</div>
+                                <div class="mb-2" id="pwMemo2" class="mb-3"></div>
                             </div>
                         </div>
                         <div class="row">

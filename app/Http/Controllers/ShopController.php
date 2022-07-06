@@ -17,9 +17,9 @@ use DateTime;
 
 class ShopController extends Controller{
 
-    public function main($id, Request $request){//메인페이지 반환
+    public function main(Request $request){//메인페이지 반환
 
-        $user = User::where('id',$id)->first();
+        $user = User::where('id',auth()->id())->first();
 
         //상점오픈일 계산
         $today = new DateTime();
@@ -27,7 +27,7 @@ class ShopController extends Controller{
         $open_day = date_diff($open_date,$today)->d; //day만 저장
 
         //판매상품 정보 가져오기, 이미지는 첫번째만, 카테고리명 추가
-        $goods = Good::where('user_id',$id)
+        $goods = Good::where('user_id',auth()->id())
             ->join('goods_images', 'goods.id', '=', 'goods_images.goods_id')
             ->join('categorys', 'goods.category_id', '=', 'categorys.id')
             ->select('goods.id as goods_id','goods.*', 'goods_images.*', 'categorys.id as categorys_id', 'categorys.name as categorys_name')
@@ -55,7 +55,7 @@ class ShopController extends Controller{
 
 
         //찜한 상품 가져오기
-        $hearts = HeartGood::where('heart_goods.user_id',$id)
+        $hearts = HeartGood::where('heart_goods.user_id',auth()->id())
             ->join('goods', 'heart_goods.goods_id', '=', 'goods.id')
             ->join('goods_images', 'goods.id', '=', 'goods_images.goods_id')
             ->select('goods.id as goods_id', 'goods.*', 'goods_images.*')
@@ -68,16 +68,16 @@ class ShopController extends Controller{
         }
 
         //상점문의 가져오기
-        $questions = Question::where('user_id',$id)->get(); 
+        $questions = Question::where('user_id',auth()->id())->get(); 
         
 
         //팔로잉 목록
-        $follows = Follow::where('user_id',$id)
+        $follows = Follow::where('user_id',auth()->id())
             ->join('users','follows.store_id','=', 'users.id')
             ->get();
 
         //팔로워 목록
-        $followers = Follow::where('store_id',$id)
+        $followers = Follow::where('store_id',auth()->id())
             ->join('users','follows.user_id', '=', 'users.id')
             ->get(); 
 
@@ -85,7 +85,7 @@ class ShopController extends Controller{
         $isfollow = [];
         foreach($followers as $follower){
             if(DB::table('follows')
-                ->where('user_id',$id)
+                ->where('user_id',auth()->id())
                 ->where('store_id',$follower->user_id)
                 ->exists()){
                 array_push($isfollow, 1);//true
@@ -95,11 +95,11 @@ class ShopController extends Controller{
         }
 
         //내상점 평점
-        $stars = Review::where('user_id', $id)->get()->avg('star');
+        $stars = Review::where('user_id', auth()->id())->get()->avg('star');
         if(empty($stars)) $stars=0;
 
         //후기 별점
-        $reviews = Review::where('goods.user_id',$id)
+        $reviews = Review::where('goods.user_id',auth()->id())
             ->join('goods','goods.id', '=', 'reviews.goods_id')
             ->join('users','users.id', '=', 'reviews.user_id')
             ->select('goods.id as goods_id', 'goods.content as goods_content', 'goods.*', 'reviews.*', 'users.id as user_id' , 'users.*')
@@ -237,14 +237,14 @@ class ShopController extends Controller{
         ]);
     }
 
-    public function manage($id){
+    public function manage(){
 
         $goods = DB::table("goods")
             ->select('goods.id as good_id', 'goods.*', DB::raw('count(questions.id) as questions_cnt'), "goods_images.name as image")
             ->leftjoin('questions', 'goods.id', '=',  'questions.goods_id')
             ->join('goods_images', 'goods.id', '=', 'goods_images.goods_id')
             ->where('goods_images.order','0')
-            ->where('goods.user_id',$id)
+            ->where('goods.user_id',auth()->id())
             ->groupBy('goods.id')
             ->orderby('goods.sale_state','asc')
             ->orderby('goods.writeday','desc')
