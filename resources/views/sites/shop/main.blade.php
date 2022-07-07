@@ -19,37 +19,6 @@
         });
     });
 
-
-
-    /* sorting 구현 중
-    function make_goods_list(order) {
-        
-        let category_id = $("#category_id").val();
-        //let order = order;
-
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: "?a=a"
-            type: "get",
-            dataType: 'html',
-            data: {
-                category_id : category_id,
-                order : order // 정렬
-            },
-            success : function(data) {
-                // 결과 화면에 띄우기
-                $('#goodsList').empty();
-                $('#goodsList').html(data);
-            },
-            error: function(request,status,error){ 
-                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); 
-                console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
-            }
-        });
-    }
-    */
-
-
     //select가 클릭되었을 때, 상품 필터링
     $(document).on('click','.nice-select>.list', function(){
         const selector = document.querySelectorAll('.nice-select>.list>.option')
@@ -138,7 +107,6 @@
             },
             success : function(data) {
 
-                //let html ='<div class="sc-BngTV hgrllz">' + data +'<button class="sc-eIHaNI jHdWCJ" id="editStoreName">상점명 수정</button></div>';
                 $('#IntroArea').empty();
                 $('#IntroArea').html(data);
             },
@@ -343,10 +311,33 @@
         return arr;
     }
 
+    $(document).on('click','#call_btn',function (e) {
+        
+        //로그인 안돼있으면 alert 보내고 return하기
+        let currentUser = '{{ auth()->id() }}';
+        if (currentUser == ''){
+            alert("로그인 후 이용 가능한 서비스입니다.");
+            return;
+        }
 
+        let windowWidth = 500;
+        let windowHeight = 700;
+
+        var aa = (document.body.scrollTop + (window.innerHeight/2)) ;
+        var x = (window.innerWidth - windowWidth) / 2 ;
+        var y = (aa - (windowHeight / 2));
+        let win = window.open('/chatting/' + {{ $id }}, '',"width=" + windowWidth + ",height=" + windowHeight);
+        win.moveTo(x, y);
+    });
 
 </script>
-
+<style>
+    .header__top__right__social a:hover{
+        font-size: 11pt;
+        cursor: pointer;
+        color: rgb(29, 29, 29);
+    }
+</style>
 
 <secssion class="checkout spad">
     <div class="container">
@@ -376,7 +367,19 @@
                                             </script>
                                         </div>
                                         <div class="sc-hjRWVT fPlNlP">
-                                            <a class="sc-exkUMo jxncag" href="/shop/manage">내 상점 관리</a>
+                                            @if($id == session()->get('id'))
+                                                <a class="sc-exkUMo jxncag" href="/shop/manage">내 상점 관리</a>
+                                            @elseif( in_array(session()->get('id'),$arr_fwr))
+                                                <button class="user-fo following" data-storeid="{{$id}}" style="width:100px; color:white">
+                                                    <i class="fa-solid fa-check">팔로잉</i>
+                                                </button>
+                                                <button type="button" id="call_btn"><i class="fa-solid fa-comment-dots mr-1"></i>채팅</button>
+                                            @else
+                                                <button class="user-fo follow" data-storeid="{{$id}}" style="width:100px; color:white">
+                                                    <i class="fa-solid fa-user-plus">팔로우</i>
+                                                </button>
+                                                <button type="button" id="call_btn"><i class="fa-solid fa-comment-dots mr-1"></i>채팅</button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -386,7 +389,11 @@
                         </div>
                         <div class="sc-eTpRJs jYfwLF" >
                             <div class="sc-dxZgTM kaLeab" id="nameArea">
-                                <div class="sc-BngTV hgrllz">{{ $user->store_name }}<button class="sc-eIHaNI jHdWCJ" id="editStoreName">상점명 수정</button></div>
+                                <div class="sc-BngTV hgrllz">{{ $user->store_name }}
+                                    @if($id == session()->get('id'))
+                                    <button class="sc-eIHaNI jHdWCJ" id="editStoreName">상점명 수정</button>
+                                    @endif
+                                </div>
                             </div>
                             <div class="sc-iomxrj hLGebF">
                                 <div class="sc-dvCyap bPBpdJ"><i class="fa-solid fa-store"></i>상점오픈일<div class="sc-iFMziU kMdfYQ">{{ $open_day }}일 전</div>
@@ -399,7 +406,11 @@
                                 </div>
                             </div>
                             <div class="sc-keVrkP QdtSU" id="IntroArea">{{ $user->introduction }}</div>
-                            <div class="sc-cBdUnI hThOPJ"><button class="sc-eIHaNI jHdWCJ" id="editIntro">소개글 수정</button></div>
+                            @if($id == session()->get('id'))
+                            <div class="sc-cBdUnI hThOPJ">
+                                <button class="sc-eIHaNI jHdWCJ" id="editIntro">소개글 수정</button>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -432,92 +443,6 @@
                             @include('sites.shop.goodsResult')
                             </div>
                         </div>
-                        <!-- <div class="tab-content None" role="tabpanel">
-                            <div class="sc-iYUSvU ikgsKY">
-                                <div>상점문의<span class="sc-jRhVzh loJVai">{{ count($questions) }}</span></div>
-                            </div>
-                            <div class="sc-iHhHRJ iUpXMa">
-                                <div class="sc-hizQCF dkQsQa">
-                                    <div class="sc-eNPDpu eydEOz"><textarea placeholder="상품문의 입력" class="sc-hARARD iilSfO"></textarea></div>
-                                    <div class="sc-ccLTTT ighuEl">
-                                        <div class="sc-hlILIN hgAycc">0 / 100</div><button class="sc-jQMNup cWmvOj"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAgCAYAAAAFQMh/AAAAAXNSR0IArs4c6QAABFdJREFUSA3Nl11MVEcUgPfnIj8B1kRi4AFI9cEiITFGfZXUYNWKxJ9CtBqC0WCMuoEGgfIPBsVsU7MpVdRV0qZpgkZLjU2qrYD6oCTw4A+YoGktTQhiIE1hC7td8Dsb7ua6ruxd2IdOMsy5Z84535wzM/cuRkOYW0tLS8zw8PCR6enpfKPRaCH865mZmRuKolysrKx8qeKMqhCO0WazJUxMTNwBlAF0gJjXkBGNHzN+wHi4pqbme2GFDexwOOIGBwf/JHgccW0pKSm1BQUFkwKRVl9fv4cqnDWZTNbq6urWsIA7OjqUrq6uH4DmwFDI7nRtbW2Zl6j509DQ8JHH42k3m83rzBr9vMS2tjZzT0+PlG9LVFTURrJahvxZZmZmdGdn56/aoCzwd/Qr0a0yaSdClQXa39//HRlm4fvH5ORkc0xMzKdk3kU/Ttan/GOS7RXsc+YNxtnU19fXSuBNERERWfHx8euBucfHx38LAv8PO8u8wAKtq6u7TIBsMthYUVHRW1xcPBoZGbmBhTjngrMVW7F5FfLhAmrkhDoYd3I3s7ib3QTytebm5tiRkZGbKBbHxsZucDqdUtr19NMs9CH6K4zHQgLjLNALOOdKpkAf+IgaQV4iQ0ND7aiW+sE9QG+npaVl6y61QCnvOcY8oJveBxV+YWGhMzU1NRvxLyk75e0Wf9rfsv+5ubkeXRnPQr8h0F7KuxnofQEEa5z6RZz6XvzTgV7nuuWXlpb+I3667jFvm69xzAf6CdB7wYDqfEZGRgnQ3QJNTEzMs1qt/6pzQUtNee04FwDfCvSu6hhsxK+EEp9UoZTfrfWZE8wL4CuMD7Cn2VVVVZ1ax7lkDmAxi5VT7M3UHyq+7wWzYhvzh+g5QO+IsZ6Gn5VMv5wLKnGUQMHItAn9EZxz+IzdDmQTSAf0KJmeCQYV33cyBir7YmVuO9BfAgEC6SjvYaB2PVDxf+s6seITOJfgvAOovH10NfwKMTxL/1FOb6A99Q/kKzWZ1jF5nIO0iz3VDSXTAyw2JKgswpsxH+hdHIg2AoyQ7QDjIAu4zAJu+a9U+wx0P7YX0enOVPX37jHQJBQu+nkCyX3bhq5SNQo0Ut58bC4wFzJU4nlLDWwNcj/lrhIlmXxB0OUiB2rM72X+EtVp17un/nHUPRZwrzpJ0BUEnZJSIqch/8xh65B5dHtYaOtCoBLHJN9Pxg8J9EQUs20ZwQ8CdaDfhywfCAPlzUP+FvGn+WY6G9+gjI2NreaBV7HpqU+pKJ8DSIiOju52u92LXS7XM6C7BcpCFgwVjkJWUmYDXx5fxnwMfL8q7Ha7a2pqygxQoDcWmqmwpAl4LeN4WVnZy/LyckNTU1McoJVkJz9D00dHR9PFkOfepKQkXS8HsQ/WjJzkAYwS6A/IKB1Asjghexie0x+he2GxWOxFRUVDMheOJqd6EV3usMhX2etHjI+Tk5Ofav8FQRfe1tjYuCS8Ef/n0d4Ah7Y0Xn+VgFMAAAAASUVORK5CYII=" width="15" height="16" alt="문의등록버튼 아이콘">등록</button>
-                                    </div>
-                                </div>
-                            </div>
-                            #if()
-                            <div class="sc-lnrBVv iHznkb">등록된 문의가 없습니다. 첫 상품문의를 등록해보세요!</div>
-                            #else
-                            <div class="sc-kqlzXE cdnUBx">
-                                <div class="sc-bJHhxl dBigwn">
-                                    <div class="sc-TuwoP jsbiXH"><a class="sc-hAXbOi fyXqmZ" href="/shop/78105480/reviews"><img src="https://media.bunjang.co.kr/images/crop/841403624_w{res}.jpg" width="48" height="48" alt="프로필 이미지"></a>
-                                        <div class="sc-fQkuQJ bmPrFd">
-                                            <div class="sc-epGmkI bwQYtz">
-                                                <div class="sc-dphlzf cEFHjE">누구세요20</div>
-                                                <div class="sc-fCPvlr cjlMDb">10년 전</div>
-                                            </div>
-                                            <div class="sc-gAmQfK elOXzA">11</div>
-                                            <div class="sc-cCVOAp egoYeK">
-                                                <div class="sc-cfWELz ksfPLN"><i class="fa-solid fa-comment-dots"></i>댓글달기</div>
-                                                <div class="sc-cfWELz ksfPLN"><i class="fa-solid fa-trash-can"></i>삭제하기</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="sc-bJHhxl dBigwn">
-                                    <div class="sc-TuwoP jsbiXH"><a class="sc-hAXbOi fyXqmZ" href="/shop/78105480/reviews"><img src="https://media.bunjang.co.kr/images/crop/841403624_w{res}.jpg" width="48" height="48" alt="프로필 이미지"></a>
-                                        <div class="sc-fQkuQJ bmPrFd">
-                                            <div class="sc-epGmkI bwQYtz">
-                                                <div class="sc-dphlzf cEFHjE">누구세요20</div>
-                                                <div class="sc-fCPvlr cjlMDb">10년 전</div>
-                                            </div>
-                                            <div class="sc-gAmQfK elOXzA">123</div>
-                                            <div class="sc-cCVOAp egoYeK">
-                                                <div class="sc-cfWELz ksfPLN"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAAAXNSR0IArs4c6QAABIFJREFUSA2tl0lok0EUx5M0tVYpsVvqRhQFe6gH0VKkWrFKl1TrQaSggsvR/eAKoiJCbxZRwV0Ul4N6UbCLbU314EatC0b0oJY0Rg1aEcS0DWn9vfRLnH79EmPNwMt787b5z8z7ZiZmUwLN5XJZ+/r6ivr7+xfhPn9gYGAi3G42m7OQf8D99L9Aj5Cb8XtQVVXVSz/hZo7n2dTUZA+FQptJvpEBs+P5qjb8f9I/Q0wdgLyqLZZsCERWoLe3dx+JdkGjteB++EvonnAG+2qxWL4ij2YF8vCbhG4BfCG6DMhEPwg7YbPZ9hQXFwdEF6sNA9LS0jIjGAxeJeEcCSKZDzoJnaqoqJAtiNtkEj09PdU4ySTmijOxr1NSUlaXl5c/jxU8BEhjY2MBwS4ol2CZTa3D4agtKCjoi5Ugnp6tdbJaZ8k3kXyyXeVOp/OhUUwUiKwEBXkfpzzIQ2A1QbIV/9WYXBZgLpJkKTmlsBdVVlZ26JNaRAFiC9txCTEPx3epqaklyQAhuRm02263LyfvTcaxAep6e3v7GLGpLQwE1NtwKsLwi710lpWVeVSn/5ULCwuDbHENYJ6Qa5rf7z+gz2l2u92jPB6PDyDZfAVbmMFxvVNDQ0O7XpdIn1UtVP2kBlmRDgBZIAdjfYrYrV6vt0pAYPDyVZyIGFSOPfwFqbqRyAzsZlJyvmwifiVUF8ljBWGN1rkAmFDEoHK2a8jMVNu/yoA4R4wAWQX9AUJnBiStaZAN/2Wlng7XjkzDSfuMVekkeiagmLt5QDJZIYcIKDuFG7VEa0RfE0a5NN07xpva1tYmR8Vn0VlRjBUhPT1djmvDhk9SakRJ7hOZa0Tur0EgLE0XA+VzmE1A+UEc9C2ZNaLlFgCmtLQ0ubHDTVZEzox8inYa3BBIMmtkcFjTdHigtLQ0ugtSI61QGbRMk2FDW6I1MjTKZDKqGXLlyw6wE7dVfwFyBarFuIrDbafRBYctmTWyTgNwXeNhZpWHCyhvM1h1V1fXbrSHVAeRk1Ujra2tUyjQrayGj1P8hjpO+PYFyFSAuDFYGXQONfFKdUqGTH6zTJhcTkCs4ZSVSzbawpcee9mJZi80iqJtqK+vl2JKagPEURI6WY1bTPSyPnkYiCjZoiM41YF8MryNC2q23nmkfUAcJnYz9Dg3N3cl+cOnqZovCkSUrMx2nI4KGOgRYPbxdkhVA0YikytF4sh9kyfBL6Mc0ReaamRrVtA/DWVCH6FjGRkZp0tKSr4jx23Nzc22zMzMoDqg9m9AHtzZgFrC6t/RJzEEIk5U+CRO2/2IawlOg4dIJJffXegt5EffjW6sDEBf3hqLkYvQf6MgD+bk5JyTRxE2E5Obi60RWzrdDYA5L/pIiwkk4sCrfHwgENhIkqXoZpHorzGRWGK68b8GKBf0DKCy5TegLHxO8oTcHlm5hJNKckDlcA7MQ5wM2UkoS93DID/gPj79Fwz2Htt6+E643K4xG0DfQKv5lDv+CUjMjAYG7f/NYgDK6302fDp8HFy2WQpXVusj/AMT2PEbeA0W2gj2azwAAAAASUVORK5CYII=" width="17" height="14" alt="댓글달기 버튼 이미지">댓글달기</div>
-                                                <div class="sc-cfWELz ksfPLN"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAcCAYAAAB2+A+pAAAAAXNSR0IArs4c6QAAANpJREFUSA1jZCAB7N+/n+Xr16+1QC3J////lwZpZWRkfAqk5nJzczc7Ojr+AYkRA1iIUQRTA7IUaGEdjA+ioQ6oA8qBuPUgghjARIwiJDXJIDYzM7O7r68vIwiD2FB5sBySWrxMkiyGBa+Xl9cumKkwNkwOJk6IZty8efN/QopoIU+Sj2nhALiZoBCgZijgMm/AfDxqMTyu0RnocUWIj64fnT8a1OghQjP+aFDTLGjRDR4NavQQoRl/5AU10Y09UPsKOdwJ8ZHVYmOPvKAeMB/jjGNqtrsGVRwDANq3T3QbKT/vAAAAAElFTkSuQmCC" width="15" height="14" alt="삭제하기 버튼 이미지">삭제하기</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="sc-jwKygS gSsteC">
-                                    <div class="sc-kAdXeD cRwlCh">
-                                        <div class="sc-hCaUpS cpcDvE">
-                                            <div class="sc-bvTASY bnrEqO">신고하기</div><button class="sc-cFlXAS hJvCHs"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAiBJREFUaAXtmM1xwjAQRrFvcE+aSJoIPaSI5MCNHmC4caCK1ECaCE0kBTBccPxl0MyO0C6r1drkIF/Q6Gf3vbU9kplM6lUrUCtQK/BvK7Bard622+3DvQCRGwxS/pYbvCzcHY/H/T0kkBO5e76dJMEKzGazj6Zpvrquex5bIsAjNxjAwhW64QbQHweaTqfzxWLxI60pHcvNKQqMLZELD76bAmNJWODVAkNLWOGzBIaSKIHPFvCWKIU3CXhJeMCbBUolvOCLBKwSnvDFAgmJQ7/ZvXCb3QX+s99hn7DDemyMqn0AoNIVgSUlNHOkHNyYiwCCS4DSGAem7XcT4CTQ3x8Gw2OTvDta2NQ8VwEkiKuNvssz7w6P2O4CCEol/pI0zSDwiM1+D2DQep1Op6vCpPqs8em6q0R00NLebDaP5/N5Hx4bxAjttm3ny+Xy2xKXW+MqEMMDGImpkLeEm0AKPlRbGuMqq+13EdAAauZooem8YoEcsJy5FFJqFwlYgCxrBhEoASlZG8uY7oAHgEcMyGQLeCVGco9YWQIeCQFOr9KY6qNEaSIKTdvYK7C59R84B+zY2PRwlqJzpLZKAAGH3E1jCRy/tRI3HyF6skSVvI8CtLrxXZY+T8M6USCG1wQMga2/uTlZgdxAVuDUupzc7DvQP4ev4Rg8RuWpCP7VQM7wYoOFjqvb6/X6HdVQL3CeiHcCDM5ha7hagVqBWgHHCvwCWAH5e5bAf84AAAAASUVORK5CYII=" width="24" height="24" alt="닫기 버튼 아이콘"></button>
-                                        </div>
-                                        <div class="sc-koErNt hoSImv">
-                                            <div class="sc-gJqsIT fFOOZG">
-                                                <div class="sc-kDhYZr jaHNwd"><span>언어폭력 (비방, 욕설, 성희롱)</span><button type="button"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAQCAYAAAAI0W+oAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXNJREFUeNqslK1Pw1AUxV9fmoq5Ldl/MCSaBLkEAQkIPgxzTUABjoRMsAJmCQ4HJGAAw8yCwGFQaCyOKSpgZmIGzk1OyU1Zu7fRm/yWvtvec1777p0XRVFgjLkGZ+DFFBtzYBeEPn5uwAZYAPPgrSCTGngAVRBY/HTBNxOPoFKASYVaVWp3xegWRGoX97KDf5gE1KhxfSwelosTGkrUwRXwpjDxWFvnWjSP5CIxktcLwRPXDdCawqjFWkOtkNq/RhJDsKaa4VAVuUSDNYYa69Q0aSOJL7AI4hGfIS/0546p8akfsCOKZDfLYMCD7aiDzWrjDp8dsPbPiNiMYhncLX7fsmrVdCQjUeaz21lDb3N2egeaqeErqfsl5pK3barOnchIog3O1d/JBc9BuGTO8LqdJ+Q7HPQemOGBS2e9M7+p2nhnnIiLkbToKngGs+BA3XvlveE4Ees4I32wBD5ULmau7yLgTzCQPbAC9rk+Zc4pfgQYAOZsSsrHKCoBAAAAAElFTkSuQmCC" width="13" height="8" alt="화살표 아이콘"></button></div>
-                                                <div class="sc-dHIava kMwaJm">
-                                                    <div class="sc-guztPN jSLYYi"><textarea placeholder="신고 내용을 직접 작성해주세요.
-                            자세하게 적어주시면 신고처리에 큰 도움이 됩니다."></textarea><button type="button">등록</button></div>
-                                                </div>
-                                            </div>
-                                            <div class="sc-gJqsIT fFOOZG">
-                                                <div class="sc-kDhYZr jaHNwd"><span>거래와 관계 없는 글</span><button type="button"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAQCAYAAAAI0W+oAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXNJREFUeNqslK1Pw1AUxV9fmoq5Ldl/MCSaBLkEAQkIPgxzTUABjoRMsAJmCQ4HJGAAw8yCwGFQaCyOKSpgZmIGzk1OyU1Zu7fRm/yWvtvec1777p0XRVFgjLkGZ+DFFBtzYBeEPn5uwAZYAPPgrSCTGngAVRBY/HTBNxOPoFKASYVaVWp3xegWRGoX97KDf5gE1KhxfSwelosTGkrUwRXwpjDxWFvnWjSP5CIxktcLwRPXDdCawqjFWkOtkNq/RhJDsKaa4VAVuUSDNYYa69Q0aSOJL7AI4hGfIS/0546p8akfsCOKZDfLYMCD7aiDzWrjDp8dsPbPiNiMYhncLX7fsmrVdCQjUeaz21lDb3N2egeaqeErqfsl5pK3barOnchIog3O1d/JBc9BuGTO8LqdJ+Q7HPQemOGBS2e9M7+p2nhnnIiLkbToKngGs+BA3XvlveE4Ees4I32wBD5ULmau7yLgTzCQPbAC9rk+Zc4pfgQYAOZsSsrHKCoBAAAAAElFTkSuQmCC" width="13" height="8" alt="화살표 아이콘"></button></div>
-                                                <div class="sc-dHIava kMwaJm">
-                                                    <div class="sc-guztPN jSLYYi"><textarea placeholder="신고 내용을 직접 작성해주세요.
-                            자세하게 적어주시면 신고처리에 큰 도움이 됩니다."></textarea><button type="button">등록</button></div>
-                                                </div>
-                                            </div>
-                                            <div class="sc-gJqsIT fFOOZG">
-                                                <div class="sc-kDhYZr jaHNwd"><span>기타 (사유)</span><button type="button"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAQCAYAAAAI0W+oAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXNJREFUeNqslK1Pw1AUxV9fmoq5Ldl/MCSaBLkEAQkIPgxzTUABjoRMsAJmCQ4HJGAAw8yCwGFQaCyOKSpgZmIGzk1OyU1Zu7fRm/yWvtvec1777p0XRVFgjLkGZ+DFFBtzYBeEPn5uwAZYAPPgrSCTGngAVRBY/HTBNxOPoFKASYVaVWp3xegWRGoX97KDf5gE1KhxfSwelosTGkrUwRXwpjDxWFvnWjSP5CIxktcLwRPXDdCawqjFWkOtkNq/RhJDsKaa4VAVuUSDNYYa69Q0aSOJL7AI4hGfIS/0546p8akfsCOKZDfLYMCD7aiDzWrjDp8dsPbPiNiMYhncLX7fsmrVdCQjUeaz21lDb3N2egeaqeErqfsl5pK3barOnchIog3O1d/JBc9BuGTO8LqdJ+Q7HPQemOGBS2e9M7+p2nhnnIiLkbToKngGs+BA3XvlveE4Ees4I32wBD5ULmau7yLgTzCQPbAC9rk+Zc4pfgQYAOZsSsrHKCoBAAAAAElFTkSuQmCC" width="13" height="8" alt="화살표 아이콘"></button></div>
-                                                <div class="sc-dHIava kMwaJm">
-                                                    <div class="sc-guztPN jSLYYi"><textarea placeholder="신고 내용을 직접 작성해주세요.
-                            자세하게 적어주시면 신고처리에 큰 도움이 됩니다."></textarea><button type="button">등록</button></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="sc-jwKygS gSsteC">
-                                            <div class="sc-btzYZH loGZtw">
-                                                <h2 class="sc-lhVmIH hWqodb">신고하기</h2>
-                                                <p class="sc-bYSBpT kYaBSe">신고 내용은 번개장터 이용약관 및 정책에 의해서 처리되며, 허위신고 시 번개장터 이용이 제한될 수 있습니다.</p>
-                                                <div class="sc-elJkPf cgZVKM"><button type="button" class="sc-jtRfpW caPtxQ">확인</button><button type="button" class="sc-kTUwUJ cFsfis">취소</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            #endif
-                        </div> -->
                         <div class="tab-content None" id="area-heart">
                             @include('sites.shop.heartsResult')
                         </div>
@@ -586,11 +511,13 @@
                                                         <a class="sc-hrBRpH ekUNbH" href="/shop/main/{{$follow->id}}">상품<b>{{$follow->good_num}}</b></a>
                                                         <a class="sc-ljUfdc bzESTy" href="/shop/main/{{$follow->id}}">팔로워<b>{{$follow->follower}}</b></a>
                                                     </div>
+                                                    @if($id == session()->get('id'))
                                                     <div class="fo-box eekpGe">
                                                         <button class="fo-check following" data-storeid="{{$follow->store_id}}">
                                                             <i class="fa-solid fa-check">팔로잉</i>
                                                         </button>
                                                     </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                             @endforeach
@@ -623,6 +550,7 @@
                                                         <a class="sc-hrBRpH ekUNbH" href="/shop/main/{{$follower->user_id}}">상품<b>{{$follower->good_num}}</b></a>
                                                         <a class="sc-ljUfdc bzESTy" href="/shop/main/{{$follower->user_id}}">팔로워<b>{{$follower->follower}}</b></a>
                                                     </div>
+                                                    @if($id == session()->get('id'))
                                                     <div class="fwr-box eekpGe">
                                                         @if( $isfollow[$loop->index] == 1)
                                                         <button class="fwr-check following" data-storeid="{{$follower->user_id}}">
@@ -634,6 +562,7 @@
                                                         </button>
                                                         @endif
                                                     </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                             @endforeach

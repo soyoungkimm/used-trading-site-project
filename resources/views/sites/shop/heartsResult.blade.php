@@ -6,18 +6,23 @@
     @else
         <div class="sc-dXfzlN dSkUMt">
             <div class="sc-iIHjhz ikTeLI">
+                @if($id == session()->get('id'))
                 <div class="heart-box dIDDMH">
                     <div class="allCheckBox notAllChekced"></div><button class="Delete-hearts iHTyYv">선택삭제</button>
                 </div>
+                
                 <div class="heart-orders qbrJx"><a class="heart-order bTGwPH" value="0">최신순</a><a class="heart-order fApKPX" value="1">저가순</a><a class="heart-order fApKPX" value="2">고가순</a></div>
+                @endif
             </div>
             <div class="sc-fvLVrH kiTElI">
                 @foreach($hearts as $heart)
                 <div class="heart-block fGcQcm" data-id="{{$heart->goods_id}}">
                     <a class="heart-item irufUT" href="/goods/{{$heart->goods_id}}">
+                        @if($id == session()->get('id'))
                         <div class="heart-box eiboyg">
                             <div class="checkBox noCheck"></div>
                         </div>
+                        @endif
                         <div class="sc-eNNmBn dGHWnZ"><img src="{{ asset('storage/images/goods/'.$heart->name) }}" alt="상품 이미지">
                             @if($heart->delivery_fee==1)
                             <div class="sc-dEfkYy bOJzhO">배송비포함</div>

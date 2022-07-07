@@ -150,7 +150,7 @@ Route::prefix('pay')->group(function () {
 
 // site shop
 Route::prefix('shop')->group(function () {
-    Route::GET('/main', [ShopController::class, 'main']);//메인화면
+    Route::GET('/main/{id}', [ShopController::class, 'main']);//메인화면
     Route::GET('/manage', [ShopController::class, 'manage']);//상품관리
     Route::GET('/log/{user}', [ShopController::class, 'log']);//구매/판매 내역
 

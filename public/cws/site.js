@@ -142,4 +142,12 @@ $(document).on('click','.fwr-box>.fwr-check',function(){
     follows(num,str);
 });
 
+//상점프로필 팔로우 버튼
+$(document).on('click','.user-fo',function(){
+
+    let str = ".user-fo";
+
+    follows(0,str);
+});
+
 

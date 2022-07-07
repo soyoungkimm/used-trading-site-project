@@ -272,7 +272,7 @@
                                 <a href="/shop/main" id="my_store_a">내 상점</a>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
-                                    <li><a href="/shop/main">내 상품</a></li>
+                                    <li><a href="/shop/main/{{session()->get('id')}}">내 상품</a></li>
                                     <li><a href="/shop/manage">상점 관리</a></li>
                                     <li><a href="/users/show">계정 설정</a></li>
                                     <li><a href="/users/pay-history">결제 내역</a></li>

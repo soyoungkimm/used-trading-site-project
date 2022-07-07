@@ -90,6 +90,13 @@
         });
     });
 </script>
+<style>
+    .header__top__right__social a:hover{
+        font-size: 11pt;
+        cursor: pointer;
+        color: rgb(29, 29, 29);
+    }
+</style>
 
 
 <secssion class="checkout spad">

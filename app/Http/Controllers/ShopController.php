@@ -19,7 +19,7 @@ class ShopController extends Controller{
 
     public function main(Request $request){//메인페이지 반환
 
-        $user = User::where('id',auth()->id())->first();
+        $user = User::where('id',$request->id)->first();
 
         //상점오픈일 계산
         $today = new DateTime();
@@ -27,7 +27,7 @@ class ShopController extends Controller{
         $open_day = date_diff($open_date,$today)->d; //day만 저장
 
         //판매상품 정보 가져오기, 이미지는 첫번째만, 카테고리명 추가
-        $goods = Good::where('user_id',auth()->id())
+        $goods = Good::where('user_id',$request->id)
             ->join('goods_images', 'goods.id', '=', 'goods_images.goods_id')
             ->join('categorys', 'goods.category_id', '=', 'categorys.id')
             ->select('goods.id as goods_id','goods.*', 'goods_images.*', 'categorys.id as categorys_id', 'categorys.name as categorys_name')
@@ -55,7 +55,7 @@ class ShopController extends Controller{
 
 
         //찜한 상품 가져오기
-        $hearts = HeartGood::where('heart_goods.user_id',auth()->id())
+        $hearts = HeartGood::where('heart_goods.user_id',$request->id)
             ->join('goods', 'heart_goods.goods_id', '=', 'goods.id')
             ->join('goods_images', 'goods.id', '=', 'goods_images.goods_id')
             ->select('goods.id as goods_id', 'goods.*', 'goods_images.*')
@@ -68,24 +68,38 @@ class ShopController extends Controller{
         }
 
         //상점문의 가져오기
-        $questions = Question::where('user_id',auth()->id())->get(); 
+        $questions = Question::where('user_id',$request->id)->get(); 
         
 
         //팔로잉 목록
-        $follows = Follow::where('user_id',auth()->id())
+        $follows = Follow::where('user_id',$request->id)
             ->join('users','follows.store_id','=', 'users.id')
             ->get();
 
         //팔로워 목록
-        $followers = Follow::where('store_id',auth()->id())
+        $followers = Follow::where('store_id',$request->id)
             ->join('users','follows.user_id', '=', 'users.id')
             ->get(); 
+
+        //팔로워리스트 배열화
+        $followerlists = Follow::where('store_id',$request->id)
+            ->join('users','follows.user_id', '=', 'users.id')
+            ->select('follows.user_id')
+            ->get(); 
+        $followerlists = $followerlists->toArray();
+
+        $arr_fwr = array();
+        for($i=0; $i<sizeof($followerlists); $i++){
+            $arr_fwr[$i] = $followerlists[$i]['user_id'];
+        }
+        
+        //dump($arr_fwr);
 
         //맞팔 확인
         $isfollow = [];
         foreach($followers as $follower){
             if(DB::table('follows')
-                ->where('user_id',auth()->id())
+                ->where('user_id',$request->id)
                 ->where('store_id',$follower->user_id)
                 ->exists()){
                 array_push($isfollow, 1);//true
@@ -95,11 +109,11 @@ class ShopController extends Controller{
         }
 
         //내상점 평점
-        $stars = Review::where('user_id', auth()->id())->get()->avg('star');
+        $stars = Review::where('user_id', $request->id)->get()->avg('star');
         if(empty($stars)) $stars=0;
 
         //후기 별점
-        $reviews = Review::where('goods.user_id',auth()->id())
+        $reviews = Review::where('goods.user_id',$request->id)
             ->join('goods','goods.id', '=', 'reviews.goods_id')
             ->join('users','users.id', '=', 'reviews.user_id')
             ->select('goods.id as goods_id', 'goods.content as goods_content', 'goods.*', 'reviews.*', 'users.id as user_id' , 'users.*')
@@ -111,7 +125,8 @@ class ShopController extends Controller{
         }
 
         return view('sites.shop.main',[
-            'open_day' => $open_day,
+            'id'        => $request->id,
+            'open_day'  => $open_day,
             'user'      => $user, 
             'goods'     => $goods,
             'questions' => $questions,
@@ -121,7 +136,8 @@ class ShopController extends Controller{
             'cate_arrs' => $cate_arr,
             'stars'     => $stars,
             'reviews'   => $reviews,
-            'isfollow'  => $isfollow
+            'isfollow'  => $isfollow,
+            'arr_fwr' => $arr_fwr
         ]);
 
     }
@@ -259,8 +275,8 @@ class ShopController extends Controller{
             ->get();
 
         return view('sites.shop.manage',[
-            'goods' => $goods,
-            'payments'   => $payments
+            'goods'     => $goods,
+            'payments'  => $payments
         ]);
     }
 
