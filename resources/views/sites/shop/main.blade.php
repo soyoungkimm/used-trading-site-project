@@ -9,43 +9,12 @@
     }
     });
 
-
-
     //프로필 뒷 배경 설정
     $(function() {
         $(document).ready(function() {
             var src = $('#profile').attr("src");
             $("#bHTJYK").css({"background-image":"url("+src+")"});
         });
-    });
-
-    //select가 클릭되었을 때, 상품 필터링
-    $(document).on('click','.nice-select>.list', function(){
-        const selector = document.querySelectorAll('.nice-select>.list>.option')
-        const storeItems = document.querySelectorAll('.sell-item')
-
-        selector.forEach(b=>b.addEventListener('click',(e)=>{
-
-            e.preventDefault()
-
-            const filter = e.target.dataset.value
-            
-            storeItems.forEach(i=>{
-                if(filter ==='all'){
-                    i.style.display = 'block';
-
-                }else{
-                    if(i.classList.contains(filter)){
-                        i.style.display='block';
-
-                    }
-                    else{
-                        i.style.display='none';
-                    }
-                }
-            })
-        })
-        )
     });
 
     //상점명 수정-폼 생성
@@ -182,7 +151,7 @@
 
     //상품 정렬
     $(document).on('click','.goods-orders>.goods-order',function(){
-        let id = {{ session()->get('id') }};
+        let id = {{ $id }};
         const num = $(".goods-orders .goods-order").index($(this));
 
         $.ajax({
@@ -196,10 +165,10 @@
             },
             success : function(data) {
 
-                $('#area-good').empty();
-                $('#area-good').html(data);
-                $('good-num').empty();
-                $('good-num').html(data.length);
+                $('#area-goods').empty();
+                $('#area-goods').html(data);
+                // $('good-num').empty();
+                // $('good-num').html(data.length);
                 
             },
             error: function(request,status,error){ 
@@ -427,21 +396,8 @@
                         </div>
                     </div>
                     <div class="content sc-giOsra dnwkyQ">
-                        <div class="tab-content Block" role="tabpanel" > 
-                            <div class="sc-iYUSvU ikgsKY">
-                                <div>상품 <span class="sc-hdPSEv cGBwKR"> {{ count($goods) }}</span></div>
-                                <div class="sc-gleUXh fuJZOD">
-                                    <select class="selector" onClick="start();">
-                                        <option  value="all">전체</option>
-                                        @foreach($cate_arrs as $cate_arr)
-                                        <option  value="{{$cate_arr['categorys_id']}}">{{$cate_arr['categorys_name']}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div id="area-good">
+                        <div class="tab-content Block" id="area-goods" > 
                             @include('sites.shop.goodsResult')
-                            </div>
                         </div>
                         <div class="tab-content None" id="area-heart">
                             @include('sites.shop.heartsResult')

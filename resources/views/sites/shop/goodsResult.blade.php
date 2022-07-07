@@ -1,6 +1,50 @@
+<script>
+//select가 클릭되었을 때, 상품 필터링
+    $(document).ready(function(){
+        const selector = document.querySelectorAll('.nice-select>.list>.option')
+        const storeItems = document.querySelectorAll('.sell-item')
 
+        selector.forEach(b=>b.addEventListener('click',(e)=>{
 
+            e.preventDefault()
 
+            const filter = e.target.dataset.value
+            
+            storeItems.forEach(i=>{
+                if(filter ==='all'){
+                    i.style.display = 'block';
+
+                }else{
+                    if(i.classList.contains(filter)){
+                        i.style.display='block';
+
+                    }
+                    else{
+                        i.style.display='none';
+                    }
+                }
+            })
+        })
+        )
+    });
+</script>
+
+<div class="sc-iYUSvU ikgsKY">
+    <div>상품 <span class="sc-hdPSEv cGBwKR"> {{ count($goods) }}</span></div>
+    <div class="sc-gleUXh fuJZOD">
+        <div class="nice-select selector" tabindex="0">
+            <span class="current">전체</span>
+            <ul class="list">
+                <li data-value="all" class="option selected">전체</li>
+                @foreach($cate_arrs as $cate_arr)
+                <li data-value="{{$cate_arr['categorys_id']}}" class="option">{{$cate_arr['categorys_name']}}</li>
+                @endforeach
+            </ul>
+        </div>
+
+    </div>
+</div>
+<div id="area-good">
 @if( count($goods) == 0 )
 <div class="sc-bNQFlB ljYihu">등록된 상품이 없습니다.</div>
 @else
@@ -38,4 +82,4 @@
 </div>
 @endif
 
-    
+</div>

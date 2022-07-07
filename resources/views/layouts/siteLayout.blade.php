@@ -269,7 +269,7 @@
                             </div>
                         @auth
                             <div class="header__top__right__language">
-                                <a href="/shop/main" id="my_store_a">내 상점</a>
+                                <a href="/shop/main/{{session()->get('id')}}" id="my_store_a">내 상점</a>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
                                     <li><a href="/shop/main/{{session()->get('id')}}">내 상품</a></li>
