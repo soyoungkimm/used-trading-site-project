@@ -23,6 +23,12 @@
     color:#fff;
 }
 
+.area-following img,
+.area-follower img{
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 #call_btn{
     
     width: 100px;

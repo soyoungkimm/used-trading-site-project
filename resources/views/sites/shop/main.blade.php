@@ -444,7 +444,7 @@
                             @endif
                         </div>
                         <div class="tab-content None">
-                            <div class="sc-eweMDZ ejYOno">
+                            <div class="area-following ejYOno">
                                 <div class="sc-iYUSvU ikgsKY">
                                     <div>팔로잉<span class="follow-num hhxeJe">{{ count($follows) }}</span></div>
                                 </div>
@@ -490,16 +490,16 @@
                                 @if( count($followers) == 0)
                                 <div class="sc-ijnzTp kUDvRT">아직 이 상점을 팔로우한 사람이 없습니다.</div>
                                 @else
-                                    <div class="sc-bQmweE ecwGGF">
+                                    <div class="area-follower ecwGGF">
                                         <div class="sc-iEPtyo bnvnpY">
                                             @foreach($followers as $follower)
                                             <div class="sc-gUlUPW fisZng">
                                                 <div class="sc-dHaUqb hGHIcc">
                                                     <a class="sc-LAuEU iitCmj" href="/shop/main/{{$follower->user_id}}">
-                                                        @if( empty($followers->image) )
+                                                        @if( empty($follower->image) )
                                                             <img src="{{ asset('storage/images/users/noProfile.png') }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/main/{{$follower->user_id}}">{{$follower->store_name}}
                                                         @else
-                                                            <img src="{{ asset('storage/images/users/'.$followers->image) }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/main/{{$follower->user_id}}">{{$follower->store_name}}
+                                                            <img src="{{ asset('storage/images/users/'.$follower->image) }}" width="120" height="120" alt="프로필 이미지"></a><a class="sc-fcTNbh dLTnOt" href="/shop/main/{{$follower->user_id}}">{{$follower->store_name}}
                                                         @endif
                                                     </a>
                                                     <div class="sc-ghUbLI ddTIuq">
