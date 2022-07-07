@@ -2,6 +2,15 @@ a:hover, a:after, a:before, a:focus{
     color:#000 !important;
 }
 
+.onTab{
+    font-weight:bold;
+    color:#FF9900;
+}
+
+.offTab{
+    color:#6c757d;
+}
+
 .btn-mainColor{
     background-color:#FF9900;
     color:#fff;
@@ -1482,6 +1491,29 @@ a:hover, a:focus {
 }
 /* 상품관리 끝 */
 
+.btn-on{
+    padding: 0px 0.5rem;
+    height: 2rem;
+    border: 0px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 13px;
+    background-color: #FF9900;
+    color:#fff;
+    margin-right:10px;
+}
 
+
+.btn-off{
+    padding: 0px 0.5rem;
+    height: 2rem;
+    border: 0px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 13px;
+    background-color: rgb(244, 244, 250);
+    color:rgb(155, 153, 169);
+    margin-right:10px;
+}
 
 

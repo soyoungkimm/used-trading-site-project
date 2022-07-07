@@ -376,7 +376,7 @@
                                             </script>
                                         </div>
                                         <div class="sc-hjRWVT fPlNlP">
-                                            <a class="sc-exkUMo jxncag" href="/shop/manage/{{ session()->get('id') }}">내 상점 관리</a>
+                                            <a class="sc-exkUMo jxncag" href="/shop/manage">내 상점 관리</a>
                                         </div>
                                     </div>
                                 </div>

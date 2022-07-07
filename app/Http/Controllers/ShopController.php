@@ -250,9 +250,17 @@ class ShopController extends Controller{
             ->orderby('goods.writeday','desc')
             ->get();
 
+        $payments = DB::table('payments')
+            ->join('goods', 'payments.goods_id', '=', 'goods.id')
+            ->join('goods_images', 'goods.id', '=', 'goods_images.goods_id')
+            ->select('payments.*', 'goods.title as goods_title', "goods.id as good_id", "goods.*", "goods_images.name as pic")
+            ->where('goods_images.order','0')
+            ->where('payments.buy_user_id', auth()->id())
+            ->get();
 
         return view('sites.shop.manage',[
-            'goods' => $goods
+            'goods' => $goods,
+            'payments'   => $payments
         ]);
     }
 
@@ -289,6 +297,30 @@ class ShopController extends Controller{
 
         return view('sites.shop.manageResult',[
             'goods' => $goods
+        ]);
+    }
+
+    public function ajax_payHistory(Request $req){
+
+        $payments = DB::table('payments')
+            ->join('goods', 'payments.goods_id', '=', 'goods.id')
+            ->join('goods_images', 'goods.id', '=', 'goods_images.goods_id')
+            ->select('payments.*', 'goods.title as goods_title', "goods.id as good_id", "goods.*", "goods_images.name as pic")
+            ->where('goods_images.order','0');
+
+        if($req->type == "buy"){
+            $payments = $payments
+                ->where('payments.buy_user_id', auth()->id())
+                ->get();
+        }
+        else if($req->type == "sale"){
+            $payments = $payments
+                ->where('payments.sale_user_id', auth()->id())
+                ->get();
+        }
+
+        return view('sites.shop.payHistorys',[
+            'payments' => $payments
         ]);
     }
 }

@@ -153,10 +153,13 @@ Route::prefix('shop')->group(function () {
     Route::GET('/main', [ShopController::class, 'main']);//메인화면
     Route::GET('/manage', [ShopController::class, 'manage']);//상품관리
     Route::GET('/log/{user}', [ShopController::class, 'log']);//구매/판매 내역
+
+    //ajax
     Route::PUT('/update_StoreIntro', [ShopController::class, 'ajax_edit_intro']);//상점소개 수정
     Route::PUT('/update_StoreName', [ShopController::class, 'ajax_edit_storename']);//상점이름 수정
     Route::PUT('/update_saleStatus', [ShopController::class, 'ajax_saleStatus']);//판매상태 수정
     Route::POST('/ajax_heart', [ShopController::class, 'ajax_hearts']);//찜 탭
     Route::POST('/ajax_good', [ShopController::class, 'ajax_goods']);//상품 탭
-    Route::POST('/ajax_manage', [ShopController::class, 'ajax_managing']);//상품관리 테이블
+    Route::POST('/ajax_manage', [ShopController::class, 'ajax_managing']);//상품관리 테이블 갱신
+    Route::POST('/ajax_payHistory', [ShopController::class, 'ajax_payHistory']);//거래내역 테이블 갱신
 });
