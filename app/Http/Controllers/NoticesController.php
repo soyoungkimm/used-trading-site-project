@@ -9,7 +9,7 @@ class NoticesController extends Controller
 {
     public function index()
     {
-        $notices = Notice::on()->orderBy("id")->simplePaginate(5);
+        $notices = Notice::on()->orderBy("id", "desc")->simplePaginate(5);
 
         return view('sites.notices.index', [
             'notices' => $notices,
