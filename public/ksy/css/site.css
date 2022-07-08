@@ -690,7 +690,7 @@ pre {
 
 #call_btn, #now_buy_btn {
     border : 1px solid #FF9900; 
-    background : #fff; 
+    background : hsl(36, 100%, 90%); 
     color : #FF9900;
     width : 41%; 
     text-align : center;
@@ -800,9 +800,10 @@ pre {
 
 #goods_info {
     border : 1px solid rgb(223, 223, 223); 
-    margin : 20px 20px 20px 60px; 
+    margin : 10px 10px 10px 60px; 
     padding : 20px; 
     background :rgb(246, 246, 246);
+    width : 100%
 }
 
 #store_info_u {
@@ -1231,4 +1232,13 @@ pre {
 }
 #state1, #state2, #exchange1, #exchange2, #delivery_fee {
     accent-color : rgb(239, 98, 16);
+}
+.hero__text span {
+    color: #FF9900;
+}
+#original_img {
+    max-height : 600px; 
+    object-fit: contain; 
+    background : rgba(0,0,0,0); 
+    border: rgba(0,0,0,0);
 }

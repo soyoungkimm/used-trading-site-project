@@ -20,10 +20,10 @@
     <div class="col">
         <div class="hero__item set-bg" data-setbg="{{ asset('img/main_ad.jpg') }}">
             <div class="hero__text">
-                <span>인덕 마켓</span>
+                <span>인덕마켓</span>
                 <h2>Induk <br />Market</h2>
                 <p>지금 바로 중고 거래를 시작해보세요!</p>
-                <a href="goods/create" class="primary-btn" style="background: #FF9900">내 물건 팔기</a>
+                <a onclick="clickSellBtn('{{ auth()->check() }}')" class="primary-btn" style="background: #FF9900; color : #fff; cursor : pointer;">내 물건 팔기</a>
             </div>
         </div>
     </div>

@@ -388,31 +388,16 @@ class GoodsController extends Controller
 
         // 연관 상품 가져오기
         if ($good->category_de_id != null) {
-            if($good->category_de_de_id != null){
-                $related_goods = DB::table('goods')
-                    ->join('goods_images', 'goods_images.goods_id', '=', 'goods.id')
-                    ->select('goods.title', 'goods.price', 'goods.id', 'goods_images.name as goods_image')
-                    ->where('goods.category_id', $good->category_id)
-                    ->where('goods.category_de_id', $good->category_de_id)
-                    ->where('goods.category_de_de_id', $good->category_de_de_id)
-                    ->where('goods_images.order', 0)
-                    ->where('goods.id', '!=', $good->id)
-                    ->orderBy('goods.writeday', 'desc')
-                    ->limit(4)
-                    ->get();
-            }
-            else {
-                $related_goods = DB::table('goods')
-                    ->join('goods_images', 'goods_images.goods_id', '=', 'goods.id')
-                    ->select('goods.title', 'goods.price', 'goods.id', 'goods_images.name as goods_image')
-                    ->where('goods.category_id', $good->category_id)
-                    ->where('goods.category_de_id', $good->category_de_id)
-                    ->where('goods_images.order', 0)
-                    ->where('goods.id', '!=', $good->id)
-                    ->orderBy('goods.writeday', 'desc')
-                    ->limit(4)
-                    ->get();
-            }
+            $related_goods = DB::table('goods')
+                ->join('goods_images', 'goods_images.goods_id', '=', 'goods.id')
+                ->select('goods.title', 'goods.price', 'goods.id', 'goods_images.name as goods_image')
+                ->where('goods.category_id', $good->category_id)
+                ->where('goods.category_de_id', $good->category_de_id)
+                ->where('goods_images.order', 0)
+                ->where('goods.id', '!=', $good->id)
+                ->orderBy('goods.writeday', 'desc')
+                ->limit(4)
+                ->get();
         }
         else {
             $related_goods = DB::table('goods')
@@ -480,6 +465,10 @@ class GoodsController extends Controller
      */
     public function edit(Good $good)
     {
+        if (auth()->id() != $good->user_id) {
+            return redirect('goods/'.$good->id);
+        }
+
         // 이미지 정보 가져오기
         $images = DB::table('goods_images')->select('name')->where('goods_id', $good->id)->orderby('order')->get();
         $image_names = array();
@@ -523,6 +512,10 @@ class GoodsController extends Controller
      */
     public function update(Request $request, Good $good)
     {
+        if (auth()->id() != $good->user_id) {
+            return redirect('goods/'.$good->id);
+        }
+
         // 유효성 검사
         GoodsController::goods_validate();
 

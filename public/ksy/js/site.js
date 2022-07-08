@@ -1154,10 +1154,10 @@ function create_question(goods_id) {
                             '<div class="col-1">\n' +
                                 '<div class="img_box">\n';
                             if(data.user_image == null) {
-                                str += '<img src="' + image_src + '" alt="img"/>\n'; //  <-- 임시
+                                str += '<img src="' + image_src + 'noProfile.png" alt="img"/>\n'; //  <-- 임시
                             }   
                             else {
-                                str += '<img src="' + image_src + '" alt="img"/>\n';//  <-- 임시
+                                str += '<img src="' + image_src + user_image + '" alt="img"/>\n';//  <-- 임시
                             }
                         str += '</div>\n' +
                             '</div>\n' +
@@ -1214,10 +1214,10 @@ function add_comment(question_id) {
                             '<div class="col-1">\n' +
                                 '<div class="img_box">\n';
                         if(data.user_image == null) {
-                            str += '<img src="' + image_src + '" alt="img"/>\n'; //  <-- 임시
+                            str += '<img src="' + image_src + 'noProfile.png" alt="img"/>\n'; //  <-- 임시
                         }   
                         else {
-                            str += '<img src="' + image_src + '" alt="img"/>\n';//  <-- 임시
+                            str += '<img src="' + image_src + user_image + '" alt="img"/>\n';//  <-- 임시
                         }
                         str += '</div>\n' +
                             '</div>\n' +

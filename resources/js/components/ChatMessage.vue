@@ -16,7 +16,7 @@
             <b-row class="chat-row">
                 <br><br><br>
                 <b-col cols="2" class="align-right">
-                    <b-avatar class="mr-3 chat-avatar" size="3em"></b-avatar>
+                    <b-avatar class="mr-3" variant="info" :src="getImage" size="3em"></b-avatar>
                 </b-col>
                 <b-col>
                     <div class="chat-u-name">{{ message.user_name }}</div>
@@ -58,6 +58,13 @@
 
             getTime: function() {
                 return this.message.time.split('-')[1];
+            },
+
+            getImage: function() {
+                if (this.message.user_image == null) {
+                    return window.location.protocol + "//" + window.location.host + "/storage/images/users/noProfile.png";
+                }
+                return window.location.protocol + "//" + window.location.host + "/storage/images/users/" + this.message.user_image;
             }
         },
 

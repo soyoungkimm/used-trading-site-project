@@ -15,7 +15,7 @@ class MessageController extends Controller
         // 메세지 가져오기
         $messages = DB::table('messages')
             ->join('users', 'messages.from_user', '=', 'users.id')
-            ->select('messages.*', 'users.name as user_name')
+            ->select('messages.*', 'users.name as user_name', 'users.image as user_image')
             ->orWhere(function($query) {
                 $query->where('from_user', request('currentUser'))
                       ->where('to_user', request('chatWith'));
@@ -58,7 +58,7 @@ class MessageController extends Controller
         // 값 가져오기
         $message = DB::table('messages')
             ->join('users', 'messages.from_user', '=', 'users.id')
-            ->select('messages.*', 'users.name as user_name')
+            ->select('messages.*', 'users.name as user_name', 'users.image as user_image')
             ->where('messages.id', $_message->id)
             ->orderby('messages.time')
             ->orderby('messages.id')
@@ -81,12 +81,12 @@ class MessageController extends Controller
         
         // 채팅한 user의 정보 가져옴
         $temps1 = DB::table('users')
-            ->select('users.id', 'users.image', 'users.name')
+            ->select('users.id', 'users.image', 'users.name', "users.image")
             ->join('messages', 'messages.from_user', '=', 'users.id')
             ->orWhere('messages.to_user', $currentUserId)
             ->distinct();
         $temps = DB::table('users')
-            ->select('users.id', 'users.image', 'users.name')
+            ->select('users.id', 'users.image', 'users.name', "users.image")
             ->join('messages', 'messages.to_user', '=', 'users.id')
             ->orWhere('messages.from_user', $currentUserId)
             ->distinct()

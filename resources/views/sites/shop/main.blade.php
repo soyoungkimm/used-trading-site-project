@@ -342,12 +342,12 @@
                                                 <button class="user-fo following" data-storeid="{{$id}}" style="width:100px; color:white">
                                                     <i class="fa-solid fa-check">팔로잉</i>
                                                 </button>
-                                                <button type="button" id="call_btn"><i class="fa-solid fa-comment-dots mr-1"></i>채팅</button>
+                                                <button type="button" id="call_btn" onclick="clickChatting({{ auth()->id() }})"><i class="fa-solid fa-comment-dots mr-1"></i>채팅</button>
                                             @else
                                                 <button class="user-fo follow" data-storeid="{{$id}}" style="width:100px; color:white">
                                                     <i class="fa-solid fa-user-plus">팔로우</i>
                                                 </button>
-                                                <button type="button" id="call_btn"><i class="fa-solid fa-comment-dots mr-1"></i>채팅</button>
+                                                <button type="button" id="call_btn" onclick="clickChatting({{ auth()->id() }})"><i class="fa-solid fa-comment-dots mr-1"></i>채팅</button>
                                             @endif
                                         </div>
                                     </div>
@@ -606,4 +606,22 @@
 <link href="{{ asset('cws/site.css'); }}" rel="stylesheet"/>
 <script src="{{ asset('cws/site.js'); }}"></script>
 <script src="https://kit.fontawesome.com/8ad9e88a63.js" crossorigin="anonymous"></script>
+<script>
+    function clickChatting(userId){
+        // 로그인 안돼있으면 alert 보내고 return하기
+        if (userId == null){
+            alert("로그인 후 이용 가능한 서비스입니다.");
+            return;
+        }
+
+        let windowWidth = 500;
+        let windowHeight = 700;
+
+        var aa = (document.body.scrollTop + (window.innerHeight/2)) ;
+        var x = (window.innerWidth - windowWidth) / 2 ;
+        var y = (aa - (windowHeight / 2));
+        let win = window.open('/chatting/' + {{ $user->id }}, '',"width=" + windowWidth + ",height=" + windowHeight);
+        win.moveTo(x, y);
+    }
+</script>
 @endsection
