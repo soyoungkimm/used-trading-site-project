@@ -43,13 +43,13 @@
                                     <option value="0" selected>상품을 고르세요</option>
                                     {{-- 유효성 검사 걸린 경우 --}}
                                     @if (old('categorys') != '') 
-                                        @foreach ($categorys as $category)
-                                            <option value="{{ $category->id }}">[{{ $category->id }}] {{ $category->name }}</option> 
+                                        @foreach ($categoryss as $category)
+                                            <option value="{{ $category->id }}">[{{ $category->category_name }}] {{ $category->name }}</option> 
                                         @endforeach
                                     {{-- 아닌 경우 --}}
                                     @else
-                                        @foreach ($categorys as $category)
-                                            <option value="{{ $category->id }}">[{{ $category->id }}] {{ $category->name }}</option> 
+                                        @foreach ($categoryss as $category)
+                                            <option value="{{ $category->id }}">[{{ $category->category_name }}] {{ $category->name }}</option> 
                                         @endforeach
                                     @endif
                                 </select>

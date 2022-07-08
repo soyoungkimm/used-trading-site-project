@@ -9,7 +9,7 @@
         <br><br><br>
         <b-list-group v-if="users.length != 0" style="max-width: 750px;">
             <b-list-group-item class="d-flex align-items-center mpointer" v-for="(user, index) in users" :key="user.id" @click="updatedChatView(user.id)">
-                <b-avatar variant="secondary" class="mr-3 my-avatar"></b-avatar>
+                <b-avatar class="mr-3 my-avatar" variant="info" :src="getImage(user.image)" size="3em"></b-avatar>
                 <span class="mr-auto">
                     <span class="u-name">{{ user.name }}</span> 
                     <span class="ms-time">{{ messages[index][0].time }}</span>
@@ -63,7 +63,13 @@
             updatedChatView(userId) {
                 this.$emit('update-chat-view', userId);
             },
-        }
+            getImage(image) {
+                if (image == null) {
+                    image = "noProfile.png";
+                }
+                return window.location.protocol + "//" + window.location.host + "/storage/images/users/" + image;
+            }
+        },
     }
 </script>
 
@@ -77,7 +83,6 @@
     }
 
     .my-avatar { 
-        background : rgb(194, 194, 194);
         margin-right : 20px;
     }
 

@@ -47,7 +47,7 @@
                             <img id="big_img" class="product__details__pic__item--large"
                                 src="{{ asset('storage/images/goods/'.$images[0]->name) }}" alt="대표이미지">
                             <div id="origin_img_area">
-                                <div id="origin">원본</div>
+                                <div id="origin">확대</div>
                                 <i class="fa fa-search" aria-hidden="true" id="origin_search_icon"></i>
                             </div>
                         </div>
@@ -110,29 +110,31 @@
                                         <div class="col-6">
                                             <h6>상품 정보</h6>
                                             <hr>
-                                            <p>{{ $good->content }}</p>
+                                            <p><pre style="white-space: pre-wrap;">{{ $good->content }}</pre></p>
                                             <br>
                                         </div>
-                                        <div class="col-5" id="goods_info">
-                                            <table class="g_s_table">
-                                                <tr>
-                                                    <td class="g_s_table_title" width="35%"><i class="fa fa-map-marker" id="area_icon" aria-hidden="true"></i><b>거래지역</b></td>
-                                                    <td>{{ $good->area }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="g_s_table_title" width="35%"><i class="fa fa-bars" aria-hidden="true" id="category_icon"></i><b>카테고리</b></td>
-                                                    <td>{{ $good->category_name }} {{ $good->category_de_name ? ' > '.$good->category_de_name : ''}} 
-                                                        {{ $good->category_de_de_name ? ' > '.$good->category_de_de_name : '' }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="g_s_table_title" width="35%"><i class="fa fa-tag" id="ttag_icon" aria-hidden="true"></i><b>상품태그</b></td>
-                                                    <td id="tag_td">
-                                                        @foreach($tags as $tag)
-                                                            #{{ $tag->name }}&nbsp;
-                                                        @endforeach
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                        <div class="col-5">
+                                            <div id="goods_info">
+                                                <table class="g_s_table">
+                                                    <tr>
+                                                        <td class="g_s_table_title" width="35%"><i class="fa fa-map-marker" id="area_icon" aria-hidden="true"></i><b>거래지역</b></td>
+                                                        <td>{{ $good->area }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="g_s_table_title" width="35%"><i class="fa fa-bars" aria-hidden="true" id="category_icon"></i><b>카테고리</b></td>
+                                                        <td>{{ $good->category_name }} {{ $good->category_de_name ? ' > '.$good->category_de_name : ''}} 
+                                                            {{ $good->category_de_de_name ? ' > '.$good->category_de_de_name : '' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="g_s_table_title" width="35%"><i class="fa fa-tag" id="ttag_icon" aria-hidden="true"></i><b>상품태그</b></td>
+                                                        <td id="tag_td">
+                                                            @foreach($tags as $tag)
+                                                                #{{ $tag->name }}&nbsp;
+                                                            @endforeach
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -159,8 +161,11 @@
                                                 <div class="row que" id="question_{{ $question->id }}">
                                                     <div class="col-1">
                                                         <div class="img_box">
-                                                            {{-- 임시 --}}
-                                                            <img src="{{ asset('template/ogani-master/pic.png'); }}" alt="img"/>
+                                                            @if ($question->user_image == null)
+                                                                <img src="{{ asset('storage/images/users/noProfile.png') }}" alt="img"/>
+                                                            @else
+                                                                <img src="{{ asset('storage/images/users/'.$question->user_image) }}" alt="img"/>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <div class="col-10 com_a">
@@ -185,8 +190,7 @@
                                                                 </div>
                                                                 <div class="col-1">
                                                                     <div class="img_box">
-                                                                        {{-- 임시 --}}
-                                                                        <img src="{{ asset('template/ogani-master/pic.png'); }}" alt="img"/> 
+                                                                        <img src="{{ asset('storage/images/users/'.$question->user_image) }}" alt="img"/> 
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-9 com_a">
@@ -216,17 +220,19 @@
                                     <hr><br>
                                     <div class="row">
                                         <div class="col-4" id="store_info_u">
-                                            <div class="user_img_box">
-                                                {{-- 임시 --}}
-                                                <img src="{{ asset('template/ogani-master/pic.png'); }}" alt="img"/>
+                                            <div class="user_img_box" style="cursor: pointer" onclick="location.href='/shop/main/{{ $good->user_id }}'">
+                                                @if ($good->user_image == null)
+                                                    <img src="{{ asset('storage/images/users/noProfile.png') }}" alt="img"/>
+                                                @else 
+                                                    <img src="{{ asset('storage/images/users/'.$good->user_image) }}" alt="img"/>
+                                                @endif
                                             </div>
                                             <div id="store_f">
-                                                <p>{{ $good->store_name }}</p>
+                                                <p style="cursor: pointer" onclick="location.href='/shop/main/{{ $good->user_id }}'">{{ $good->store_name }}</p>
                                                 <p>상품 {{ $good->goods_num }}<span id="v_bar">|</span>팔로워수 <span id="follow_num">{{ $good->follower }}</span></p>
                                             </div>
                                             <div>
                                                 {{-- 현재 로그인한 사용자가 본인 글에 들어왔을 경우 --}}
-                                                
                                                 @if (auth()->id() != $good->user_id)
                                                     <button type="button" onclick="click_follow_btn({{ $good->user_id }}, {{ auth()->check() }})" id="follow_btn" class="{{ $isFollow == 0 ? 'follow_btn_t' : 'follow_btn_f' }}">
                                                         <i id="follow_icon" class="fa {{ $isFollow == 0 ? 'fa-check' :'fa-user-plus' }}" aria-hidden="true"></i> <span id="follow_val">{{ $isFollow == 0 ? '팔로잉' : '팔로우' }}</span>
@@ -239,14 +245,13 @@
                                         </div>
                                         <div class="col-4">
                                             <div id="u_goods">
-                                                <p>상품<span id="f_r"><a class="more_a" href="#">더보기 ></a></span></p>
+                                                <p>상품<span id="f_r"><a class="more_a" href="/shop/main/{{ $good->user_id }}">더보기 ></a></span></p>
                                                 <hr>
                                                 @if (isset($user_goods))
                                                     @foreach ($user_goods as $user_good)
                                                         <a class="user_goods_a" href="/goods/{{ $user_good->id }}">
                                                             <div id="u_goods_a">
                                                                 <div id="u_goods_img_box">   
-                                                                    {{-- 임시 --}}
                                                                     <img src="{{ asset('storage/images/goods/'.$user_good->goods_image) }}" alt="상품이미지" id="u_goods_img"/>                
                                                                 </div>
                                                                 <div id="u_goods_t_won">
@@ -263,18 +268,21 @@
                                         </div>
                                         <div class="col-4">
                                             <div id="rev_area">
-                                                <p>상점 후기<span id="f_r"><a class="more_a" href="#">더보기 ></a></span></p>
+                                                <p>상점 후기<span id="f_r"><a class="more_a" href="/shop/main/{{ $good->user_id }}">더보기 ></a></span></p>
                                                 <hr>
                                                 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
                                                 <script src="{{ asset('ksy/js/site.js'); }}"></script>
-                                                @if (isset($user_reviews))
+                                                @if (count($user_reviews) != 0)
                                                     @foreach ($user_reviews as $review)
                                                         <a class="user_goods_a" href="#">
                                                             <div class="row" id="rev_r">
                                                                 <div class="col-2">
                                                                     <div class="review_img_box">
-                                                                        {{-- 임시 --}}
-                                                                        <img src="{{ asset('template/ogani-master/pic.png'); }}" alt="img"/>
+                                                                        @if ($review->image == null)
+                                                                            <img src="{{ asset('storage/images/users/noProfile.png') }}" alt="img"/>
+                                                                        @else 
+                                                                            <img src="{{ asset('storage/images/users/'.$review->image) }}" alt="img"/>
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-10">
@@ -360,7 +368,7 @@
 <!-- iamport.payment.js -->
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
-    var image_src = "{{ asset('template/ogani-master/pic.png') }}";
+    var image_src = "{{ asset('storage/images/users/') }}/";
     var goods_id = '{{ $good->id }}';
 
     // 결제 시스템 변수

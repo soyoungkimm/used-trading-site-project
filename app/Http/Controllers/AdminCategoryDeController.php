@@ -74,7 +74,7 @@ class AdminCategoryDeController extends Controller
         ->where('category_des.id', $id)
         ->first();
 
-        return view('admins.categoryDetails.show',['categorys' => $categorys]);
+        return view('admins.categoryDetails.show',['categoryss' => $categorys]);
     }
  
     /**

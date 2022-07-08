@@ -138,7 +138,7 @@ Route::prefix('users')->group(function () {
 // chatting
 Route::get('/chatting/{chatWith?}', function($chatWith = null) {
     return view('sites.chats.chatting', ['chatWith' => $chatWith ]);
-});
+})->middleware('auth');
 
 
 // pay

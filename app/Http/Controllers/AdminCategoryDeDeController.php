@@ -32,10 +32,14 @@ class AdminCategoryDeDeController extends Controller
      */
     public function create(){//회원추가 페이지 반환
 
-        $categorys = DB::table('category_des')->get();
+        $categorys =  DB::table('category_des')
+        ->join('categorys', 'category_des.category_id', '=', 'categorys.id')
+        ->select('category_des.*', 'categorys.name as category_name')
+        ->orderby('category_name')
+        ->get();
 
         return view('admins.categoryDeDetails.create',[
-            'categorys' => $categorys
+            'categoryss' => $categorys
         ]);
     }
 
@@ -76,7 +80,7 @@ class AdminCategoryDeDeController extends Controller
         ->where('category_de_des.id', $id)
         ->first();
 
-        return view('admins.categoryDeDetails.show',['categorys' => $categorys]);
+        return view('admins.categoryDeDetails.show',['categoryss' => $categorys]);
     }
  
     /**
