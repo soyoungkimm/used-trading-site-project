@@ -14,6 +14,9 @@
                             <div class="pb-5">
                                 <h6 class="text-black-50">Created at - {{ $notice->writeday }}</h6>
                             </div>
+                            <div class="pb-5">
+                                <img src="{{ asset("storage/images/notices/$notice->image") }}" />
+                            </div>
                             <div>
                                 {!! nl2br($notice->content) !!}
                             </div>
