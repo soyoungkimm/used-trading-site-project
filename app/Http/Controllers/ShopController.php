@@ -21,10 +21,11 @@ class ShopController extends Controller{
 
         $user = User::where('id',$request->id)->first();
 
+
+        $introBr = preg_replace('/\r\n|\r|\n/', '<br/>', $user->introduction);
+
         //상점오픈일 계산
-        $today = new DateTime();
-        $open_date = new DateTime($user->open_date);
-        $open_day = date_diff($open_date,$today)->d; //day만 저장
+        $open_day = parent::get_date_diff($user->open_date); 
 
         //판매상품 정보 가져오기, 이미지는 첫번째만, 카테고리명 추가
         $goods = Good::where('user_id',$request->id)
@@ -92,8 +93,6 @@ class ShopController extends Controller{
         for($i=0; $i<sizeof($followerlists); $i++){
             $arr_fwr[$i] = $followerlists[$i]['user_id'];
         }
-        
-        //dump($arr_fwr);
 
         //맞팔 확인
         $isfollow = [];
@@ -123,11 +122,12 @@ class ShopController extends Controller{
         foreach($reviews as $review){
             $review->writeday = parent::get_date_diff($review->writeday);  
         }
-
+// dump($introBr);
         return view('sites.shop.main',[
             'id'        => $request->id,
             'open_day'  => $open_day,
             'user'      => $user, 
+            'introBr'   => $introBr,
             'goods'     => $goods,
             'questions' => $questions,
             'hearts'    => $hearts,
@@ -137,7 +137,7 @@ class ShopController extends Controller{
             'stars'     => $stars,
             'reviews'   => $reviews,
             'isfollow'  => $isfollow,
-            'arr_fwr' => $arr_fwr
+            'arr_fwr'   => $arr_fwr
         ]);
 
     }

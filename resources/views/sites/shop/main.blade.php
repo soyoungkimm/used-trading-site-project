@@ -19,15 +19,17 @@
 
     //상점명 수정-폼 생성
     $(document).on('click','#editStoreName',function(){
+        let name = document.getElementById('nameValue').innerText;
+        name = name.slice(0.,name.length-6);
+
         $('#nameArea').empty();
-        var html = "<div class='input-group editStore'><input id='inputStoreName' value='{{ $user->store_name }}'><div class='input-group-append'><button class='btn' id='btn1'>수정</button></div>";
+        var html = "<div class='input-group editStore'><input id='inputStoreName' value='"+ name +"'><div class='input-group-append'><button class='btn' id='btn1'>수정</button></div>";
         $('#nameArea').html(html);
     });
 
     //상점명 수정- DB업데이트 및 화면수정
     $(document).on('click','#btn1',function(){
         var name= document.getElementById('inputStoreName').value;
-        //var intro = document.getElementById('inputIntoruduction').value;
         var id = {{ session()->get('id') }};
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -40,7 +42,7 @@
             },
             success : function(data) {
 
-                let html ='<div class="sc-BngTV hgrllz">' + data +'<button class="sc-eIHaNI jHdWCJ" id="editStoreName">상점명 수정</button></div>';
+                let html ='<div class="sc-BngTV hgrllz" id="nameValue">' + data +'<button class="sc-eIHaNI jHdWCJ" id="editStoreName">상점명 수정</button></div>';
                 $('#nameArea').empty();
                 $('#nameArea').html(html);
                 $('#nameArea2').empty();
@@ -55,10 +57,13 @@
 
     //소개글 수정-폼 생성
     $(document).on('click','#editIntro',function(){
+        let s = document.getElementById('IntroArea').innerHTML;
+        s = decodeHTMLEntities(s);
+        var str_intro = s.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+
         $('#IntroArea').empty();
-        var html = "<div class='input-group editStore'style='height:100%'><textarea id='inputIntro' style='width:90%;'>{{ $user->introduction }}</textarea><div class='input-group-append'><button class='btn' id='btn2'>수정</button></div>";
+        var html = "<div class='input-group editStore'style='height:100%'><textarea id='inputIntro' style='width:90%;'>"+str_intro+"</textarea><div class='input-group-append'><button class='btn' id='btn2'>수정</button></div>";
         $('#IntroArea').html(html);
-        $("#editIntro").attr("disabled", true);
     });
 
     //소개글 수정- DB업데이트 및 화면수정
@@ -75,7 +80,6 @@
                 intro : intro
             },
             success : function(data) {
-
                 $('#IntroArea').empty();
                 $('#IntroArea').html(data);
             },
@@ -358,14 +362,14 @@
                         </div>
                         <div class="sc-eTpRJs jYfwLF" >
                             <div class="sc-dxZgTM kaLeab" id="nameArea">
-                                <div class="sc-BngTV hgrllz">{{ $user->store_name }}
+                                <div class="sc-BngTV hgrllz" id="nameValue">{{ $user->store_name }}
                                     @if($id == session()->get('id'))
                                     <button class="sc-eIHaNI jHdWCJ" id="editStoreName">상점명 수정</button>
                                     @endif
                                 </div>
                             </div>
                             <div class="sc-iomxrj hLGebF">
-                                <div class="sc-dvCyap bPBpdJ"><i class="fa-solid fa-store"></i>상점오픈일<div class="sc-iFMziU kMdfYQ">{{ $open_day }}일 전</div>
+                                <div class="sc-dvCyap bPBpdJ"><i class="fa-solid fa-store"></i>상점오픈일<div class="sc-iFMziU kMdfYQ">{{ $open_day }}</div>
                                 </div>
                                 <div class="sc-dvCyap bPBpdJ"><i class="fa-solid fa-person"></i>상점방문수<div class="sc-iFMziU kMdfYQ">{{ $user->store_visit }} 명</div>
                                 </div>
