@@ -11,7 +11,7 @@ class AdminNoticesController extends Controller
 {
     public function index()
     {
-        $notices = Notice::on()->orderBy('id')->get();
+        $notices = Notice::on()->orderBy('id', 'desc')->get();
 
         return view('admins.notice.index', ['notices' => $notices]);
     }
