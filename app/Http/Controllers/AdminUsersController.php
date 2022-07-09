@@ -214,7 +214,7 @@ class AdminUsersController extends Controller
         //dd($user);
         //dd(Auth::user());
         if(Auth::attempt($user)){
-             return redirect('/admin/users');
+             return redirect('/admin');
         }
         //dd(Auth::user());
         return redirect('/admin/login');

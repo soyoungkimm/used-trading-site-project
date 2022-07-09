@@ -339,4 +339,14 @@ class ShopController extends Controller{
             'payments' => $payments
         ]);
     }
+
+    public function updateBuyConfirm() {
+
+        $current_mer = request("current_mer");
+        $payment = DB::table('payments')
+            ->where('merchant_uid', $current_mer)
+            ->update(['buy_confirm' => 1]);
+        
+        return redirect('/shop/manage');
+    }
 }

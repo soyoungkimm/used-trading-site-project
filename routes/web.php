@@ -28,7 +28,6 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MainController;
 use App\Events\MyEvent;
 use App\Http\Controllers\PayController;
-use App\Http\Controllers\PayHistorysController;
 use App\Http\Controllers\CalculatesController;
 use App\Http\Controllers\ShopController;
 
@@ -123,15 +122,7 @@ Route::prefix('users')->group(function () {
     Route::DELETE('/delete', [UsersController::class, 'destroy']);//회원 탈퇴
     Route::post('checkUid', [UsersController::class, 'checkUid'])->name('users.checkUid'); // users check uid
     Route::get('/getCurrentUser', [UsersController::class, 'getCurrentUser']);// 현재 로그인한 유저 정보 가져오기
-
-    // payHistorys (결제 내역)
-    Route::get('/pay-history', [PayHistorysController::class, 'index'])->middleware('auth');
-    Route::get('/pay-history/{id}', [PayHistorysController::class, 'show'])->middleware('auth');
-    Route::post('/pay-history/update', [PayHistorysController::class, 'updateBuyConfirm'])->middleware('auth');
-
-    // calculate (정산)
-    Route::get('/calculate', [CalculatesController::class, 'index'])->middleware('auth');
-    Route::get('/calculate/{id}', [CalculatesController::class, 'show'])->middleware('auth');
+    Route::get('/calculate/{id}', [CalculatesController::class, 'show'])->middleware('auth'); // 결제 내역 가져오기
 });
 
 
@@ -162,4 +153,5 @@ Route::prefix('shop')->group(function () {
     Route::POST('/ajax_good', [ShopController::class, 'ajax_goods']);//상품 탭
     Route::POST('/ajax_manage', [ShopController::class, 'ajax_managing']);//상품관리 테이블 갱신
     Route::POST('/ajax_payHistory', [ShopController::class, 'ajax_payHistory']);//거래내역 테이블 갱신
+    Route::POST('/ajax_updateBuyConfirm', [ShopController::class, 'updateBuyConfirm']);//구매확정 갱신
 });

@@ -8,18 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class CalculatesController extends Controller
 {
-    public function index() {
-        $payments = DB::table('payments')
-            ->join('goods', 'payments.goods_id', '=', 'goods.id')
-            ->select('payments.*', 'goods.title as goods_title')
-            ->where('payments.buy_user_id', auth()->id())
-            ->get();
-    
-        return view('sites.pays.calculates.index', [
-            'payments' => $payments
-        ]);
-    }
-
     public function show($id) {
         $payment = DB::table('payments')
             ->join('goods', 'payments.goods_id', '=', 'goods.id')

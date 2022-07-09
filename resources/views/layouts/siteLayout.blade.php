@@ -275,8 +275,6 @@
                                     <li><a href="/shop/main/{{session()->get('id')}}">내 상품</a></li>
                                     <li><a href="/shop/manage">상점 관리</a></li>
                                     <li><a href="/users/show">계정 설정</a></li>
-                                    <li><a href="/users/pay-history">결제 내역</a></li>
-                                    <li><a href="/users/calculate">수입</a></li>
                                 </ul>
                             </div>
                         @endauth
@@ -392,9 +390,9 @@
                         <h6>안내</h6>
                         <ul style="width: 100%">
                             <li><a href="">회사소개</a></li>
-                            <li><a href="">이용약관</a></li>
+                            <li><a href="notices/6">이용약관</a></li>
                             <li><a href="">운영정책</a></li>
-                            <li><a href="">개인정보처리방침</a></li>
+                            <li><a href="notices/6">개인정보처리방침</a></li>
                             <li><a href="">광고운영정책</a></li>
                         </ul>
                     </div>

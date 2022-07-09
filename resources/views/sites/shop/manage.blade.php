@@ -96,14 +96,17 @@
         cursor: pointer;
         color: rgb(29, 29, 29);
     }
+    #h_category, #h_category_de, #h_category_de_de {
+        height: 670px;
+    }
 </style>
 
 
 <secssion class="checkout spad">
     <div class="container">
         <div class="tab-group">
-            <div class="tab p-2 pr-4 my-4 d-inline-block border-right onTab" >상품관리</div>  
-            <div class="tab m-4 d-inline-block offTab">거래내역</div>
+            <div class="tab p-2 pr-4 my-4 d-inline-block border-right onTab" style="cursor : pointer">상품관리</div>  
+            <div class="tab m-4 d-inline-block offTab" style="cursor : pointer">거래내역</div>
         </div>
         
         <div class="tab-content Block">
